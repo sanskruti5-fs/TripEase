@@ -1,0 +1,3349 @@
+{
+  "destinations": {
+    "Goa": {
+      "places": [
+        {
+          "name": "Baga Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Famous for nightlife, water sports, Titoâ€™s Lane, and vibrant beach shacks.",
+          "image": "/images/goa/baga-beach.jpg"
+        },
+        {
+          "name": "Calangute Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Queen of beaches. Family-friendly with great shopping and parasailing.",
+          "image": "/images/goa/calangute-beach.jpg"
+        },
+        {
+          "name": "Anjuna Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Best for sunset views, the famous flea market, cafes, and a chill solo vibe.",
+          "image": "/images/goa/anjuna-beach.jpg"
+        },
+        {
+          "name": "Palolem Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Peaceful bay perfect for kayaking, dolphin rides, couples, and pure relaxation.",
+          "image": "/images/goa/palolem-beach.jpg"
+        },
+        {
+          "name": "Arambol Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Bohemian vibe featuring live music, yoga, and a sweet water lake nearby.",
+          "image": "/images/goa/arambol-beach.jpg"
+        },
+        {
+          "name": "Candolim Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "A relaxed crowd with luxury stays, located close to Fort Aguada.",
+          "image": "/images/goa/candolim-beach.jpg"
+        },
+        {
+          "name": "Basilica of Bom Jesus",
+          "category": "Churches & Heritage",
+          "entryFee": 0,
+          "description": "UNESCO World Heritage site. A must-visit for its stunning baroque architecture and history.",
+          "image": "/images/goa/basilica-of-bom-jesus.jpg"
+        },
+        {
+          "name": "Se Cathedral",
+          "category": "Churches & Heritage",
+          "entryFee": 0,
+          "description": "One of Asiaâ€™s largest churches and a beautifully peaceful heritage site.",
+          "image": "/images/goa/se-cathedral.jpg"
+        },
+        {
+          "name": "Immaculate Conception Church",
+          "category": "Churches & Heritage",
+          "entryFee": 0,
+          "description": "The iconic white church in Panjim seen in countless movies and photos.",
+          "image": "/images/goa/immaculate-conception-church.jpg"
+        },
+        {
+          "name": "Fort Aguada",
+          "category": "Tourist Spots",
+          "entryFee": 25,
+          "description": "Historic 17th-century fort with a lighthouse, sea views, and a great sunset point.",
+          "image": "/images/goa/fort-aguada.jpg"
+        },
+        {
+          "name": "Chapora Fort",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "The famous 'Dil Chahta Hai' fort. An incredible spot for photos and sunset views.",
+          "image": "/images/goa/chapora-fort.jpg"
+        },
+        {
+          "name": "Dudhsagar Falls",
+          "category": "Tourist Spots",
+          "entryFee": 550,
+          "description": "Magnificent four-tiered waterfall. Perfect for an adventure jeep safari and trek.",
+          "image": "/images/goa/dudhsagar-falls.jpg"
+        },
+        {
+          "name": "Fontainhas",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Panjim's Latin Quarter. Famous for its colorful Portuguese streets and photography.",
+          "image": "/images/goa/fontainhas.jpg"
+        },
+        {
+          "name": "Titoâ€™s Club",
+          "category": "Clubs & Nightlife",
+          "entryFee": 2000,
+          "description": "Goaâ€™s most iconic nightclub. The perfect party destination for groups of friends.",
+          "image": "/images/goa/titos-club.jpg"
+        },
+        {
+          "name": "Club Cubana",
+          "category": "Clubs & Nightlife",
+          "entryFee": 2000,
+          "description": "The 'Nightclub in the Sky'. Famous for DJ nights, pool parties, and dancing.",
+          "image": "/images/goa/club-cubana.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Goan Fish Curry",
+          "price": 450,
+          "restaurant": "Souza Lobo, Calangute",
+          "description": "Famous authentic seafood curry perfectly cooked in rich coconut milk.",
+          "image": "/images/goa/goan-fish-curry.jpg"
+        },
+        {
+          "name": "Pork Vindaloo",
+          "price": 550,
+          "restaurant": "Martinâ€™s Corner, Betalbatim",
+          "description": "A fiery classic and perfect for a family dinner with authentic Goan spice.",
+          "image": "/images/goa/pork-vindaloo.jpg"
+        },
+        {
+          "name": "Chicken Cafreal",
+          "price": 400,
+          "restaurant": "Oâ€™Coqueiro, Porvorim",
+          "description": "One of Goaâ€™s signature green-spiced coriander dishes pan-fried to perfection.",
+          "image": "/images/goa/chicken-cafreal.jpg"
+        },
+        {
+          "name": "Bebinca",
+          "price": 150,
+          "restaurant": "Confeitaria 31 de Janeiro",
+          "description": "Traditional Goan layered dessert baked meticulously leaf by leaf.",
+          "image": "/images/goa/bebinca.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Anjuna Flea Market",
+          "specialty": "Boho clothes, jewellery, souvenirs, handicrafts",
+          "image": "/images/goa/anjuna-flea-market.jpg"
+        },
+        {
+          "name": "Mapusa Market",
+          "specialty": "Spices, cashews, sausages, local sweets, pottery",
+          "image": "/images/goa/mapusa-market.jpg"
+        },
+        {
+          "name": "Panjim Market",
+          "specialty": "Cashews, feni, spices, Goan sweets",
+          "image": "/images/goa/panjim-market.jpg"
+        },
+        {
+          "name": "Arpora Night Market",
+          "specialty": "Night shopping, live music, bags, dÃ©cor, food stalls",
+          "image": "/images/goa/arpora-night-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Rahul Sharma",
+          "title": "Goa Heritage & Culture Expert",
+          "experience": "5 years",
+          "rating": 4.8,
+          "pricePerDay": 800,
+          "image": "/images/goa/rahul-sharma.jpg"
+        },
+        {
+          "name": "Anita Desai",
+          "title": "Goa Food & Hidden Spots Guide",
+          "experience": "8 years",
+          "rating": 4.9,
+          "pricePerDay": 1200,
+          "image": "/images/goa/anita-desai.jpg"
+        },
+        {
+          "name": "Vikram Singh",
+          "title": "Adventure & Nightlife Expert",
+          "experience": "3 years",
+          "rating": 4.6,
+          "pricePerDay": 600,
+          "image": "/images/goa/vikram-singh.jpg"
+        }
+      ]
+    },
+    "Mumbai": {
+      "places": [
+        {
+          "name": "Gateway of India",
+          "category": "Historical Landmark",
+          "entryFee": 0,
+          "description": "The iconic basalt arch monument overlooking the Arabian Sea.",
+          "image": "/images/mumbai/gateway-of-india.jpg"
+        },
+        {
+          "name": "Marine Drive",
+          "category": "Sightseeing",
+          "entryFee": 0,
+          "description": "A beautiful 3km curved coastline and promenade known as the Queen's Necklace.",
+          "image": "/images/mumbai/marine-drive.jpg"
+        },
+        {
+          "name": "Juhu Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Street food and family vibe.",
+          "image": "/images/mumbai/juhu-beach.jpg"
+        },
+        {
+          "name": "Elephanta Caves",
+          "category": "Heritage",
+          "entryFee": 40,
+          "description": "A network of sculpted rock-cut cave temples dedicated to Lord Shiva.",
+          "image": "/images/mumbai/elephanta-caves.jpg"
+        },
+        {
+          "name": "Bandra-Worli Sea Link",
+          "category": "Architecture",
+          "entryFee": 0,
+          "description": "A spectacular cable-stayed bridge dominating the modern Mumbai skyline.",
+          "image": "/images/mumbai/bandra-worli-sea-link.jpg"
+        },
+        {
+          "name": "Siddhivinayak Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "One of Mumbaiâ€™s most famous temples.",
+          "image": "/images/mumbai/siddhivinayak-temple.jpg"
+        },
+        {
+          "name": "Haji Ali Dargah",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Sea-linked dargah and peaceful views.",
+          "image": "/images/mumbai/haji-ali-dargah.jpg"
+        },
+        {
+          "name": "Sanjay Gandhi National Park",
+          "category": "Nature",
+          "entryFee": 85,
+          "description": "Safari, caves, cycling and greenery.",
+          "image": "/images/mumbai/sanjay-gandhi-national-park.jpg"
+        },
+        {
+          "name": "Hanging Gardens",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Beautiful Malabar Hill garden.",
+          "image": "/images/mumbai/hanging-gardens.jpg"
+        },
+        {
+          "name": "Colaba Causeway",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Tourist market and street shopping.",
+          "image": "/images/mumbai/colaba-causeway.jpg"
+        },
+        {
+          "name": "CST Station",
+          "category": "Heritage",
+          "entryFee": 0,
+          "description": "A historic and bustling railway station showcasing stunning Victorian Gothic architecture.",
+          "image": "/images/mumbai/cst-station.jpg"
+        },
+        {
+          "name": "Worli Sea Face",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Best for evening chill and photos.",
+          "image": "/images/mumbai/worli-sea-face.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Vada Pav",
+          "price": 40,
+          "restaurant": "Ashok Vada Pav, Dadar",
+          "description": "Mumbaiâ€™s iconic snack.",
+          "image": "/images/mumbai/vada-pav.jpg"
+        },
+        {
+          "name": "Pav Bhaji",
+          "price": 180,
+          "restaurant": "Sardar Pav Bhaji, Tardeo",
+          "description": "Rich buttery bhaji.",
+          "image": "/images/mumbai/pav-bhaji.jpg"
+        },
+        {
+          "name": "Bombay Sandwich",
+          "price": 120,
+          "restaurant": "Raju Sandwich, Churchgate",
+          "description": "Classic grilled sandwich.",
+          "image": "/images/mumbai/bombay-sandwich.jpg"
+        },
+        {
+          "name": "Bhel Puri",
+          "price": 80,
+          "restaurant": "Juhu Chowpatty",
+          "description": "Classic beach-side chaat.",
+          "image": "/images/mumbai/bhel-puri.jpg"
+        },
+        {
+          "name": "Keema Pav",
+          "price": 220,
+          "restaurant": "Kyani & Co, Marine Lines",
+          "description": "Irani cafÃ© special.",
+          "image": "/images/mumbai/keema-pav.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Colaba Causeway",
+          "specialty": "Souvenirs, clothes, jewelry",
+          "image": "/images/mumbai/colaba-causeway.jpg"
+        },
+        {
+          "name": "Crawford Market",
+          "specialty": "Spices, fruits, chocolates (Home Decor)",
+          "image": "/images/mumbai/crawford-market.jpg"
+        },
+        {
+          "name": "Linking Road",
+          "specialty": "Fashion, footwear, accessories",
+          "image": "/images/mumbai/linking-road.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Sameer Khan",
+          "title": "Mumbai Local Life Expert",
+          "experience": "7 years",
+          "rating": 4.9,
+          "pricePerDay": 1000,
+          "image": "/images/mumbai/sameer-khan.jpg"
+        },
+        {
+          "name": "Priya Mehta",
+          "title": "Bollywood & Art Guide",
+          "experience": "4 years",
+          "rating": 4.7,
+          "pricePerDay": 850,
+          "image": "/images/mumbai/priya-mehta.jpg"
+        }
+      ]
+    },
+    "Jaipur": {
+      "places": [
+        {
+          "name": "Amber Fort",
+          "category": "Heritage",
+          "entryFee": 100,
+          "description": "A magnificent yellow sandstone and marble fort offering stunning hilltop views.",
+          "image": "/images/jaipur/amber-fort.jpg"
+        },
+        {
+          "name": "Hawa Mahal",
+          "category": "Tourist Spots",
+          "entryFee": 50,
+          "description": "The iconic 'Palace of Winds' with its unique pink honeycomb facade.",
+          "image": "/images/jaipur/hawa-mahal.jpg"
+        },
+        {
+          "name": "City Palace",
+          "category": "Heritage",
+          "entryFee": 200,
+          "description": "A beautiful complex of royal courtyards, gardens, and a museum.",
+          "image": "/images/jaipur/city-palace.jpg"
+        },
+        {
+          "name": "Jal Mahal",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "A serene and stunning palace seemingly floating in the middle of Man Sagar Lake.",
+          "image": "/images/jaipur/jal-mahal.jpg"
+        },
+        {
+          "name": "Jantar Mantar",
+          "category": "Tourist Spots",
+          "entryFee": 50,
+          "description": "A UNESCO World Heritage site featuring giant, fascinating astronomical instruments.",
+          "image": "/images/jaipur/jantar-mantar.jpg"
+        },
+        {
+          "name": "Nahargarh Fort",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Best sunset fort.",
+          "image": "/images/jaipur/nahargarh-fort.jpg"
+        },
+        {
+          "name": "Albert Hall Museum",
+          "category": "Museum",
+          "entryFee": 40,
+          "description": "Historic art museum.",
+          "image": "/images/jaipur/albert-hall-museum.jpg"
+        },
+        {
+          "name": "Galtaji Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Monkey temple in hills.",
+          "image": "/images/jaipur/galtaji-temple.jpg"
+        },
+        {
+          "name": "Panna Meena Ka Kund",
+          "category": "Architecture",
+          "entryFee": 0,
+          "description": "A stunning, highly symmetrical historical stepwell perfect for photography.",
+          "image": "/images/jaipur/panna-meena-ka-kund.jpg"
+        },
+        {
+          "name": "Birla Mandir",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "White marble temple.",
+          "image": "/images/jaipur/birla-mandir.jpg"
+        },
+        {
+          "name": "Sisodia Rani Garden",
+          "category": "Relaxation",
+          "entryFee": 50,
+          "description": "Beautiful fountains and murals.",
+          "image": "/images/jaipur/sisodia-rani-garden.jpg"
+        },
+        {
+          "name": "Bapu Bazaar",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Traditional Jaipur shopping lane.",
+          "image": "/images/jaipur/bapu-bazaar.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Dal Baati Churma",
+          "price": 350,
+          "restaurant": "LMB, Johari Bazaar",
+          "description": "Most famous Rajasthani dish.",
+          "image": "/images/jaipur/dal-baati-churma.jpg"
+        },
+        {
+          "name": "Laal Maas",
+          "price": 500,
+          "restaurant": "Handi Restaurant",
+          "description": "Spicy royal delicacy.",
+          "image": "/images/jaipur/laal-maas.jpg"
+        },
+        {
+          "name": "Pyaaz Kachori",
+          "price": 60,
+          "restaurant": "Rawat Mishthan Bhandar",
+          "description": "Jaipurâ€™s iconic snack.",
+          "image": "/images/jaipur/pyaaz-kachori.jpg"
+        },
+        {
+          "name": "Ghevar",
+          "price": 180,
+          "restaurant": "LMB",
+          "description": "Traditional Jaipur sweet.",
+          "image": "/images/jaipur/ghevar.jpg"
+        },
+        {
+          "name": "Gatte ki Sabzi",
+          "price": 250,
+          "restaurant": "Chokhi Dhani",
+          "description": "Authentic gram flour curry.",
+          "image": "/images/jaipur/gatte-ki-sabzi.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Johari Bazaar",
+          "specialty": "Jewelry, gemstones, lehengas",
+          "image": "/images/jaipur/johari-bazaar.jpg"
+        },
+        {
+          "name": "Bapu Bazaar",
+          "specialty": "Jootis, handicrafts, textiles",
+          "image": "/images/jaipur/bapu-bazaar.jpg"
+        },
+        {
+          "name": "Tripolia Bazaar",
+          "specialty": "Lac bangles, carpets, brassware",
+          "image": "/images/jaipur/tripolia-bazaar.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Rajesh Rawat",
+          "title": "Royal History Specialist",
+          "experience": "10 years",
+          "rating": 5,
+          "pricePerDay": 1500,
+          "image": "/images/jaipur/rajesh-rawat.jpg"
+        },
+        {
+          "name": "Meenakshi Joshi",
+          "title": "Jaipur Shopping & Textiles",
+          "experience": "5 years",
+          "rating": 4.8,
+          "pricePerDay": 900,
+          "image": "/images/jaipur/meenakshi-joshi.jpg"
+        }
+      ]
+    },
+    "Delhi": {
+      "places": [
+        {
+          "name": "India Gate",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Iconic war memorial and evening hangout.",
+          "image": "/images/delhi/india-gate.jpg"
+        },
+        {
+          "name": "Red Fort",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Historic Mughal fort and UNESCO site.",
+          "image": "/images/delhi/red-fort.jpg"
+        },
+        {
+          "name": "Qutub Minar",
+          "category": "Heritage",
+          "entryFee": 40,
+          "description": "Tallest brick minaret and UNESCO monument.",
+          "image": "/images/delhi/qutub-minar.jpg"
+        },
+        {
+          "name": "Lotus Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Peaceful lotus-shaped Baháʼí temple.",
+          "image": "/images/delhi/lotus-temple.jpg"
+        },
+        {
+          "name": "Akshardham",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Massive temple complex with evening show.",
+          "image": "/images/delhi/akshardham.jpg"
+        },
+        {
+          "name": "Humayun’s Tomb",
+          "category": "Heritage",
+          "entryFee": 40,
+          "description": "Beautiful Mughal garden tomb.",
+          "image": "/images/delhi/humayuns-tomb.jpg"
+        },
+        {
+          "name": "Jama Masjid",
+          "category": "Heritage",
+          "entryFee": 0,
+          "description": "One of India’s largest mosques.",
+          "image": "/images/delhi/jama-masjid.jpg"
+        },
+        {
+          "name": "Connaught Place",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Central Delhi market and cafe zone.",
+          "image": "/images/delhi/connaught-place.jpg"
+        },
+        {
+          "name": "Lodhi Garden",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Green heritage park perfect for walks.",
+          "image": "/images/delhi/lodhi-garden.jpg"
+        },
+        {
+          "name": "Raj Ghat",
+          "category": "Memorial",
+          "entryFee": 0,
+          "description": "Mahatma Gandhi memorial site.",
+          "image": "/images/delhi/raj-ghat.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Chole Bhature",
+          "price": 120,
+          "restaurant": "Sita Ram Diwan Chand",
+          "description": "Delhi’s iconic breakfast.",
+          "image": "/images/delhi/chole-bhature.jpg"
+        },
+        {
+          "name": "Paratha",
+          "price": 100,
+          "restaurant": "Paranthe Wali Gali",
+          "description": "Stuffed parathas in Old Delhi.",
+          "image": "/images/delhi/paratha.jpg"
+        },
+        {
+          "name": "Butter Chicken",
+          "price": 450,
+          "restaurant": "Moti Mahal",
+          "description": "Delhi’s legendary Mughlai dish.",
+          "image": "/images/delhi/butter-chicken.jpg"
+        },
+        {
+          "name": "Chaat",
+          "price": 80,
+          "restaurant": "Bishan Swaroop",
+          "description": "Tangy Delhi street chaat.",
+          "image": "/images/delhi/chaat.jpg"
+        },
+        {
+          "name": "Kebabs",
+          "price": 300,
+          "restaurant": "Karim’s",
+          "description": "Famous Jama Masjid kebabs.",
+          "image": "/images/delhi/kebabs.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Chandni Chowk",
+          "specialty": "Street food, wedding wear, silver, souvenirs",
+          "image": "/images/delhi/chandni-chowk.jpg"
+        },
+        {
+          "name": "Khari Baoli",
+          "specialty": "Asia’s biggest spice market",
+          "image": "/images/delhi/khari-baoli.jpg"
+        },
+        {
+          "name": "Sarojini Nagar",
+          "specialty": "Budget fashion shopping",
+          "image": "/images/delhi/sarojini-nagar.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Arjun Verma",
+          "title": "Delhi Heritage Expert",
+          "experience": "6 years",
+          "rating": 4.8,
+          "pricePerDay": 1000,
+          "image": "/images/guides/male1.jpg"
+        },
+        {
+          "name": "Meera Kapoor",
+          "title": "Delhi Food & Market Guide",
+          "experience": "5 years",
+          "rating": 4.7,
+          "pricePerDay": 900,
+          "image": "/images/guides/female1.jpg"
+        }
+      ]
+    },
+    "Agra": {
+      "places": [
+        {
+          "name": "Taj Mahal",
+          "category": "Heritage",
+          "entryFee": 250,
+          "description": "World’s most iconic monument of love.",
+          "image": "/images/agra/taj-mahal.jpg"
+        },
+        {
+          "name": "Agra Fort",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Massive Mughal fort.",
+          "image": "/images/agra/agra-fort.jpg"
+        },
+        {
+          "name": "Mehtab Bagh",
+          "category": "Relaxation",
+          "entryFee": 25,
+          "description": "Best sunset Taj view garden.",
+          "image": "/images/agra/mehtab-bagh.jpg"
+        },
+        {
+          "name": "Itmad-ud-Daulah",
+          "category": "Heritage",
+          "entryFee": 30,
+          "description": "Baby Taj marble tomb.",
+          "image": "/images/agra/itmad-ud-daulah.jpg"
+        },
+        {
+          "name": "Fatehpur Sikri",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Historic Mughal city.",
+          "image": "/images/agra/fatehpur-sikri.jpg"
+        },
+        {
+          "name": "Akbar’s Tomb",
+          "category": "Heritage",
+          "entryFee": 30,
+          "description": "Emperor Akbar mausoleum.",
+          "image": "/images/agra/akbar-s-tomb.jpg"
+        },
+        {
+          "name": "Taj Museum",
+          "category": "Museum",
+          "entryFee": 20,
+          "description": "History of Taj Mahal.",
+          "image": "/images/agra/taj-museum.jpg"
+        },
+        {
+          "name": "Wildlife SOS",
+          "category": "Nature",
+          "entryFee": 0,
+          "description": "Bear rescue center.",
+          "image": "/images/agra/wildlife-sos.jpg"
+        },
+        {
+          "name": "Kinari Bazaar",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Traditional market near Taj.",
+          "image": "/images/agra/kinari-bazaar.jpg"
+        },
+        {
+          "name": "Yamuna View Point",
+          "category": "Photography",
+          "entryFee": 0,
+          "description": "Great Taj photos.",
+          "image": "/images/agra/yamuna-view-point.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Petha",
+          "price": 150,
+          "restaurant": "Panchi Petha",
+          "description": "Agra’s famous sweet.",
+          "image": "/images/agra/petha.jpg"
+        },
+        {
+          "name": "Bedai & Jalebi",
+          "price": 100,
+          "restaurant": "Deviram",
+          "description": "Classic Agra breakfast.",
+          "image": "/images/agra/bedai-jalebi.jpg"
+        },
+        {
+          "name": "Mughlai Curry",
+          "price": 400,
+          "restaurant": "Pinch of Spice",
+          "description": "Royal Mughlai meal.",
+          "image": "/images/agra/mughlai-curry.jpg"
+        },
+        {
+          "name": "Dalmoth",
+          "price": 120,
+          "restaurant": "Panchi",
+          "description": "Famous namkeen snack.",
+          "image": "/images/agra/dalmoth.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Sadar Bazaar",
+          "specialty": "Leather, petha, handicrafts",
+          "image": "/images/agra/sadar-bazaar.jpg"
+        },
+        {
+          "name": "Kinari Bazaar",
+          "specialty": "Marble work, souvenirs",
+          "image": "/images/agra/kinari-bazaar.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Rizwan Khan",
+          "title": "Agra Mughal Heritage Guide",
+          "experience": "8 years",
+          "rating": 4.9,
+          "pricePerDay": 1100,
+          "image": "/images/guides/male2.jpg"
+        }
+      ]
+    },
+    "Hyderabad": {
+      "places": [
+        {
+          "name": "Charminar",
+          "category": "Heritage",
+          "entryFee": 25,
+          "description": "Iconic symbol of Hyderabad.",
+          "image": "/images/hyderabad/charminar.jpg"
+        },
+        {
+          "name": "Golconda Fort",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Historic fort with sound show.",
+          "image": "/images/hyderabad/golconda-fort.jpg"
+        },
+        {
+          "name": "Ramoji Film City",
+          "category": "Entertainment",
+          "entryFee": 1200,
+          "description": "World’s largest film city.",
+          "image": "/images/hyderabad/ramoji-film-city.jpg"
+        },
+        {
+          "name": "Hussain Sagar",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Lake with Buddha statue.",
+          "image": "/images/hyderabad/hussain-sagar.jpg"
+        },
+        {
+          "name": "Birla Mandir",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "White marble temple.",
+          "image": "/images/hyderabad/birla-mandir.jpg"
+        },
+        {
+          "name": "Salar Jung Museum",
+          "category": "Museum",
+          "entryFee": 50,
+          "description": "One of India’s biggest museums.",
+          "image": "/images/hyderabad/salar-jung-museum.jpg"
+        },
+        {
+          "name": "Chowmahalla Palace",
+          "category": "Heritage",
+          "entryFee": 80,
+          "description": "Nizam royal palace.",
+          "image": "/images/hyderabad/chowmahalla-palace.jpg"
+        },
+        {
+          "name": "Nehru Zoo",
+          "category": "Nature",
+          "entryFee": 60,
+          "description": "Popular family attraction.",
+          "image": "/images/hyderabad/nehru-zoo.jpg"
+        },
+        {
+          "name": "Tank Bund",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Evening lakefront.",
+          "image": "/images/hyderabad/tank-bund.jpg"
+        },
+        {
+          "name": "Shilparamam",
+          "category": "Shopping",
+          "entryFee": 40,
+          "description": "Arts and crafts village.",
+          "image": "/images/hyderabad/shilparamam.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Hyderabadi Biryani",
+          "price": 350,
+          "restaurant": "Paradise",
+          "description": "City’s signature biryani.",
+          "image": "/images/hyderabad/hyderabadi-biryani.jpg"
+        },
+        {
+          "name": "Haleem",
+          "price": 250,
+          "restaurant": "Pista House",
+          "description": "Ramzan special delicacy.",
+          "image": "/images/hyderabad/haleem.jpg"
+        },
+        {
+          "name": "Irani Chai",
+          "price": 80,
+          "restaurant": "Cafe Niloufer",
+          "description": "Classic tea experience.",
+          "image": "/images/hyderabad/irani-chai.jpg"
+        },
+        {
+          "name": "Double Ka Meetha",
+          "price": 150,
+          "restaurant": "Shadab",
+          "description": "Traditional dessert.",
+          "image": "/images/hyderabad/double-ka-meetha.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Laad Bazaar",
+          "specialty": "Bangles, pearls, bridal wear",
+          "image": "/images/hyderabad/laad-bazaar.jpg"
+        },
+        {
+          "name": "Begum Bazaar",
+          "specialty": "Spices, dry fruits, utensils",
+          "image": "/images/hyderabad/begum-bazaar.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Sameer Ali",
+          "title": "Hyderabad Culture & Food Guide",
+          "experience": "7 years",
+          "rating": 4.8,
+          "pricePerDay": 1000,
+          "image": "/images/guides/male3.jpg"
+        }
+      ]
+    },
+    "Varanasi": {
+      "places": [
+        {
+          "name": "Kashi Vishwanath",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Most sacred Shiva temple.",
+          "image": "/images/varanasi/kashi-vishwanath.jpg"
+        },
+        {
+          "name": "Dashashwamedh Ghat",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Famous Ganga Aarti ghat.",
+          "image": "/images/varanasi/dashashwamedh-ghat.jpg"
+        },
+        {
+          "name": "Assi Ghat",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Best sunrise and boat rides.",
+          "image": "/images/varanasi/assi-ghat.jpg"
+        },
+        {
+          "name": "Sarnath",
+          "category": "Heritage",
+          "entryFee": 25,
+          "description": "Buddhist pilgrimage site.",
+          "image": "/images/varanasi/sarnath.jpg"
+        },
+        {
+          "name": "Ramnagar Fort",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Historic riverside fort.",
+          "image": "/images/varanasi/ramnagar-fort.jpg"
+        },
+        {
+          "name": "Manikarnika Ghat",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Ancient sacred ghat.",
+          "image": "/images/varanasi/manikarnika-ghat.jpg"
+        },
+        {
+          "name": "Tulsi Manas Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Temple of Ramcharitmanas.",
+          "image": "/images/varanasi/tulsi-manas-temple.jpg"
+        },
+        {
+          "name": "Banaras Hindu University",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Beautiful campus.",
+          "image": "/images/varanasi/banaras-hindu-university.jpg"
+        },
+        {
+          "name": "Bharat Kala Bhavan",
+          "category": "Museum",
+          "entryFee": 20,
+          "description": "Art and culture museum.",
+          "image": "/images/varanasi/bharat-kala-bhavan.jpg"
+        },
+        {
+          "name": "Boat Ride",
+          "category": "Experience",
+          "entryFee": 300,
+          "description": "Sunrise Ganga boat ride.",
+          "image": "/images/varanasi/boat-ride.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Kachori Sabzi",
+          "price": 80,
+          "restaurant": "Kashi Chaat",
+          "description": "Classic Banaras breakfast.",
+          "image": "/images/varanasi/kachori-sabzi.jpg"
+        },
+        {
+          "name": "Banarasi Paan",
+          "price": 50,
+          "restaurant": "Keshav Paan",
+          "description": "World-famous paan.",
+          "image": "/images/varanasi/banarasi-paan.jpg"
+        },
+        {
+          "name": "Malaiyyo",
+          "price": 100,
+          "restaurant": "Shreeji Sweets",
+          "description": "Winter special foam dessert.",
+          "image": "/images/varanasi/malaiyyo.jpg"
+        },
+        {
+          "name": "Lassi",
+          "price": 90,
+          "restaurant": "Pehlwan Lassi",
+          "description": "Rich मलाई lassi.",
+          "image": "/images/varanasi/lassi.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Godowlia Market",
+          "specialty": "Silk sarees, puja items",
+          "image": "/images/varanasi/godowlia-market.jpg"
+        },
+        {
+          "name": "Vishwanath Gali",
+          "specialty": "Paan, sweets, souvenirs",
+          "image": "/images/varanasi/vishwanath-gali.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Pandit Ravi Mishra",
+          "title": "Spiritual & Ghat Guide",
+          "experience": "10 years",
+          "rating": 4.9,
+          "pricePerDay": 1200,
+          "image": "/images/guides/male4.jpg"
+        }
+      ]
+    },
+    "Udaipur": {
+      "places": [
+        {
+          "name": "City Palace",
+          "category": "Heritage",
+          "entryFee": 300,
+          "description": "Grand palace overlooking Lake Pichola.",
+          "image": "/images/udaipur/city-palace.jpg"
+        },
+        {
+          "name": "Lake Pichola",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Boat rides and sunset lake views.",
+          "image": "/images/udaipur/lake-pichola.jpg"
+        },
+        {
+          "name": "Jag Mandir",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Beautiful island palace.",
+          "image": "/images/udaipur/jag-mandir.jpg"
+        },
+        {
+          "name": "Fateh Sagar Lake",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Popular evening lakefront.",
+          "image": "/images/udaipur/fateh-sagar-lake.jpg"
+        },
+        {
+          "name": "Sajjangarh Palace",
+          "category": "Photography",
+          "entryFee": 80,
+          "description": "Monsoon Palace with sunset view.",
+          "image": "/images/udaipur/sajjangarh-palace.jpg"
+        },
+        {
+          "name": "Saheliyon Ki Bari",
+          "category": "Relaxation",
+          "entryFee": 30,
+          "description": "Historic fountains and gardens.",
+          "image": "/images/udaipur/saheliyon-ki-bari.jpg"
+        },
+        {
+          "name": "Bagore Ki Haveli",
+          "category": "Heritage",
+          "entryFee": 60,
+          "description": "Traditional haveli and folk show.",
+          "image": "/images/udaipur/bagore-ki-haveli.jpg"
+        },
+        {
+          "name": "Jagdish Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Famous temple near City Palace.",
+          "image": "/images/udaipur/jagdish-temple.jpg"
+        },
+        {
+          "name": "Shilpgram",
+          "category": "Culture",
+          "entryFee": 50,
+          "description": "Craft village and local art.",
+          "image": "/images/udaipur/shilpgram.jpg"
+        },
+        {
+          "name": "Karni Mata Ropeway",
+          "category": "Adventure",
+          "entryFee": 150,
+          "description": "Ropeway to hilltop temple.",
+          "image": "/images/udaipur/karni-mata-ropeway.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Dal Baati Churma",
+          "price": 350,
+          "restaurant": "Natraj Dining Hall",
+          "description": "Most famous Rajasthani meal.",
+          "image": "/images/udaipur/dal-baati-churma.jpg"
+        },
+        {
+          "name": "Pyaaz Kachori",
+          "price": 60,
+          "restaurant": "JMB",
+          "description": "Crispy onion-filled kachori.",
+          "image": "/images/udaipur/pyaaz-kachori.jpg"
+        },
+        {
+          "name": "Mirchi Vada",
+          "price": 50,
+          "restaurant": "Local Bada Bazaar Stall",
+          "description": "Spicy evening snack.",
+          "image": "/images/udaipur/mirchi-vada.jpg"
+        },
+        {
+          "name": "Mawa Kachori",
+          "price": 80,
+          "restaurant": "Jagdish Misthan",
+          "description": "Sweet Udaipur specialty.",
+          "image": "/images/udaipur/mawa-kachori.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Bapu Bazaar",
+          "specialty": "Bandhani, mojris, souvenirs",
+          "image": "/images/udaipur/bapu-bazaar.jpg"
+        },
+        {
+          "name": "Hathi Pol",
+          "specialty": "Miniature paintings, handicrafts",
+          "image": "/images/udaipur/hathi-pol.jpg"
+        },
+        {
+          "name": "Bada Bazaar",
+          "specialty": "Street food, textiles, jewelry",
+          "image": "/images/udaipur/bada-bazaar.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Rohit Mehta",
+          "title": "Udaipur Palace & Lake Guide",
+          "experience": "6 years",
+          "rating": 4.8,
+          "pricePerDay": 1000,
+          "image": "/images/guides/male5.jpg"
+        }
+      ]
+    },
+    "Kochi": {
+      "places": [
+        {
+          "name": "Fort Kochi",
+          "category": "Heritage",
+          "entryFee": 0,
+          "description": "Colonial streets and cafes.",
+          "image": "/images/kochi/fort-kochi.jpg"
+        },
+        {
+          "name": "Chinese Fishing Nets",
+          "category": "Photography",
+          "entryFee": 0,
+          "description": "Iconic Kochi waterfront.",
+          "image": "/images/kochi/chinese-fishing-nets.jpg"
+        },
+        {
+          "name": "Mattancherry Palace",
+          "category": "Heritage",
+          "entryFee": 20,
+          "description": "Dutch palace museum.",
+          "image": "/images/kochi/mattancherry-palace.jpg"
+        },
+        {
+          "name": "Jew Town",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Antiques and spice shops.",
+          "image": "/images/kochi/jew-town.jpg"
+        },
+        {
+          "name": "Marine Drive",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Waterfront promenade.",
+          "image": "/images/kochi/marine-drive.jpg"
+        },
+        {
+          "name": "Cherai Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Family-friendly beach.",
+          "image": "/images/kochi/cherai-beach.jpg"
+        },
+        {
+          "name": "Hill Palace",
+          "category": "Museum",
+          "entryFee": 30,
+          "description": "Largest archaeological museum in Kerala.",
+          "image": "/images/kochi/hill-palace.jpg"
+        },
+        {
+          "name": "Santa Cruz Basilica",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Historic church.",
+          "image": "/images/kochi/santa-cruz-basilica.jpg"
+        },
+        {
+          "name": "Lulu Mall",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Premium shopping destination.",
+          "image": "/images/kochi/lulu-mall.jpg"
+        },
+        {
+          "name": "Bolgatty Palace",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Island palace and resort.",
+          "image": "/images/kochi/bolgatty-palace.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Kerala Fish Curry",
+          "price": 450,
+          "restaurant": "Fort House",
+          "description": "Authentic coconut fish curry.",
+          "image": "/images/kochi/kerala-fish-curry.jpg"
+        },
+        {
+          "name": "Appam & Stew",
+          "price": 250,
+          "restaurant": "Kashi Art Cafe",
+          "description": "Classic Kerala breakfast.",
+          "image": "/images/kochi/appam---stew.jpg"
+        },
+        {
+          "name": "Prawn Fry",
+          "price": 500,
+          "restaurant": "Oceanos",
+          "description": "Fresh seafood specialty.",
+          "image": "/images/kochi/prawn-fry.jpg"
+        },
+        {
+          "name": "Malabar Parotta",
+          "price": 180,
+          "restaurant": "Paragon",
+          "description": "Flaky Kerala bread combo.",
+          "image": "/images/kochi/malabar-parotta.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Broadway Market",
+          "specialty": "Spices, household, local shopping",
+          "image": "/images/kochi/broadway-market.jpg"
+        },
+        {
+          "name": "Jew Town Market",
+          "specialty": "Antiques, spices, handicrafts",
+          "image": "/images/kochi/jew-town-market.jpg"
+        },
+        {
+          "name": "Lulu Mall",
+          "specialty": "Fashion, luxury shopping",
+          "image": "/images/kochi/lulu-mall.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Anand Nair",
+          "title": "Kochi Heritage & Food Guide",
+          "experience": "7 years",
+          "rating": 4.9,
+          "pricePerDay": 1100,
+          "image": "/images/guides/male6.jpg"
+        }
+      ]
+    },
+    "Chennai": {
+      "places": [
+        {
+          "name": "Marina Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Longest urban beach.",
+          "image": "/images/chennai/marina-beach.jpg"
+        },
+        {
+          "name": "Kapaleeshwarar Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Historic Dravidian temple.",
+          "image": "/images/chennai/kapaleeshwarar-temple.jpg"
+        },
+        {
+          "name": "Fort St George",
+          "category": "Heritage",
+          "entryFee": 30,
+          "description": "Colonial fort museum.",
+          "image": "/images/chennai/fort-st-george.jpg"
+        },
+        {
+          "name": "San Thome Basilica",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Iconic white church.",
+          "image": "/images/chennai/san-thome-basilica.jpg"
+        },
+        {
+          "name": "Mahabalipuram",
+          "category": "Heritage",
+          "entryFee": 40,
+          "description": "UNESCO shore temples.",
+          "image": "/images/chennai/mahabalipuram.jpg"
+        },
+        {
+          "name": "Elliotâ€™s Beach",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Calm evening beach.",
+          "image": "/images/chennai/elliots-beach.jpg"
+        },
+        {
+          "name": "VGP Marine Kingdom",
+          "category": "Family",
+          "entryFee": 800,
+          "description": "Aquarium and marine life.",
+          "image": "/images/chennai/vgp-marine-kingdom.jpg"
+        },
+        {
+          "name": "Guindy National Park",
+          "category": "Nature",
+          "entryFee": 50,
+          "description": "Urban wildlife park.",
+          "image": "/images/chennai/guindy-national-park.jpg"
+        },
+        {
+          "name": "Phoenix Mall",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Luxury mall.",
+          "image": "/images/chennai/phoenix-mall.jpg"
+        },
+        {
+          "name": "DakshinaChitra",
+          "category": "Culture",
+          "entryFee": 120,
+          "description": "South Indian heritage museum.",
+          "image": "/images/chennai/dakshinachitra.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Dosa",
+          "price": 120,
+          "restaurant": "Murugan Idli",
+          "description": "Crispy Chennai classic.",
+          "image": "/images/chennai/dosa.jpg"
+        },
+        {
+          "name": "Filter Coffee",
+          "price": 60,
+          "restaurant": "Ratna Cafe",
+          "description": "Authentic South Indian coffee.",
+          "image": "/images/chennai/filter-coffee.jpg"
+        },
+        {
+          "name": "Chettinad Chicken",
+          "price": 380,
+          "restaurant": "Anjappar",
+          "description": "Spicy Tamil specialty.",
+          "image": "/images/chennai/chettinad-chicken.jpg"
+        },
+        {
+          "name": "Idli Sambar",
+          "price": 90,
+          "restaurant": "Sangeetha",
+          "description": "Best breakfast combo.",
+          "image": "/images/chennai/idli-sambar.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "T Nagar",
+          "specialty": "Gold, sarees, shopping",
+          "image": "/images/chennai/t-nagar.jpg"
+        },
+        {
+          "name": "Pondy Bazaar",
+          "specialty": "Street fashion, footwear",
+          "image": "/images/chennai/pondy-bazaar.jpg"
+        },
+        {
+          "name": "George Town",
+          "specialty": "Wholesale spices and electronics",
+          "image": "/images/chennai/george-town.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Karthik Raman",
+          "title": "Chennai Temple & Food Guide",
+          "experience": "5 years",
+          "rating": 4.7,
+          "pricePerDay": 900,
+          "image": "/images/guides/male7.jpg"
+        }
+      ]
+    },
+    "Kolkata": {
+      "places": [
+        {
+          "name": "Victoria Memorial",
+          "category": "Heritage",
+          "entryFee": 30,
+          "description": "Iconic marble museum.",
+          "image": "/images/kolkata/victoria-memorial.jpg"
+        },
+        {
+          "name": "Howrah Bridge",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Famous cantilever bridge.",
+          "image": "/images/kolkata/howrah-bridge.jpg"
+        },
+        {
+          "name": "Dakshineswar Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Sacred riverside temple.",
+          "image": "/images/kolkata/dakshineswar-temple.jpg"
+        },
+        {
+          "name": "Park Street",
+          "category": "Nightlife",
+          "entryFee": 0,
+          "description": "Food street and nightlife hub.",
+          "image": "/images/kolkata/park-street.jpg"
+        },
+        {
+          "name": "Indian Museum",
+          "category": "Museum",
+          "entryFee": 50,
+          "description": "Indiaâ€™s oldest museum.",
+          "image": "/images/kolkata/indian-museum.jpg"
+        },
+        {
+          "name": "Eco Park",
+          "category": "Relaxation",
+          "entryFee": 30,
+          "description": "Huge family park.",
+          "image": "/images/kolkata/eco-park.jpg"
+        },
+        {
+          "name": "Prinsep Ghat",
+          "category": "Photography",
+          "entryFee": 0,
+          "description": "Sunset riverfront views.",
+          "image": "/images/kolkata/prinsep-ghat.jpg"
+        },
+        {
+          "name": "Science City",
+          "category": "Family",
+          "entryFee": 100,
+          "description": "Interactive science exhibits.",
+          "image": "/images/kolkata/science-city.jpg"
+        },
+        {
+          "name": "Belur Math",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Peaceful monastery.",
+          "image": "/images/kolkata/belur-math.jpg"
+        },
+        {
+          "name": "South Park Cemetery",
+          "category": "Heritage",
+          "entryFee": 20,
+          "description": "Colonial history spot.",
+          "image": "/images/kolkata/south-park-cemetery.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Kathi Roll",
+          "price": 120,
+          "restaurant": "Nizamâ€™s",
+          "description": "Kolkataâ€™s iconic roll.",
+          "image": "/images/kolkata/kathi-roll.jpg"
+        },
+        {
+          "name": "Phuchka",
+          "price": 60,
+          "restaurant": "Vivekananda Park",
+          "description": "Best street snack.",
+          "image": "/images/kolkata/phuchka.jpg"
+        },
+        {
+          "name": "Mishti Doi",
+          "price": 80,
+          "restaurant": "Balaram Mullick",
+          "description": "Classic Bengali dessert.",
+          "image": "/images/kolkata/mishti-doi.jpg"
+        },
+        {
+          "name": "Fish Fry",
+          "price": 220,
+          "restaurant": "Arsalan",
+          "description": "Popular Kolkata seafood snack.",
+          "image": "/images/kolkata/fish-fry.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "New Market",
+          "specialty": "Clothes, bakery, souvenirs",
+          "image": "/images/kolkata/new-market.jpg"
+        },
+        {
+          "name": "Gariahat",
+          "specialty": "Sarees, jewelry, street shopping",
+          "image": "/images/kolkata/gariahat.jpg"
+        },
+        {
+          "name": "College Street",
+          "specialty": "Books and coffee houses",
+          "image": "/images/kolkata/college-street.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "name": "Subhojit Sen",
+          "title": "Kolkata Culture & Food Guide",
+          "experience": "8 years",
+          "rating": 4.9,
+          "pricePerDay": 1000,
+          "image": "/images/guides/male8.jpg"
+        }
+      ]
+    },
+    "Manali": {
+      "places": [
+        {
+          "name": "Solang Valley",
+          "category": "Adventure",
+          "entryFee": 0,
+          "description": "Paragliding, zipline, snow sports and ATV rides.",
+          "image": "/images/manali/solang-valley.jpg"
+        },
+        {
+          "name": "Rohtang Pass",
+          "category": "Adventure",
+          "entryFee": 550,
+          "description": "Snow point with epic mountain roads.",
+          "image": "/images/manali/rohtang-pass.jpg"
+        },
+        {
+          "name": "Hadimba Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Famous cedar forest temple.",
+          "image": "/images/manali/hadimba-temple.jpg"
+        },
+        {
+          "name": "Old Manali",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Cafes, shopping and backpacker vibe.",
+          "image": "/images/manali/old-manali.jpg"
+        },
+        {
+          "name": "Mall Road",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Main market for food and shopping.",
+          "image": "/images/manali/mall-road.jpg"
+        },
+        {
+          "name": "Jogini Falls",
+          "category": "Trekking",
+          "entryFee": 0,
+          "description": "Short scenic waterfall trek.",
+          "image": "/images/manali/jogini-falls.jpg"
+        },
+        {
+          "name": "Beas River Rafting",
+          "category": "Adventure",
+          "entryFee": 1200,
+          "description": "Popular rafting activity.",
+          "image": "/images/manali/beas-river-rafting.jpg"
+        },
+        {
+          "name": "Manu Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Ancient temple in Old Manali.",
+          "image": "/images/manali/manu-temple.jpg"
+        },
+        {
+          "name": "Vashisht Hot Springs",
+          "category": "Relaxation",
+          "entryFee": 50,
+          "description": "Natural hot water springs.",
+          "image": "/images/manali/vashisht-hot-springs.jpg"
+        },
+        {
+          "name": "Sissu",
+          "category": "Road Trip",
+          "entryFee": 0,
+          "description": "Beautiful tunnel route destination.",
+          "image": "/images/manali/sissu.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Siddu",
+          "price": 180,
+          "restaurant": "Johnsonâ€™s Cafe",
+          "description": "Himachali steamed bread specialty.",
+          "image": "/images/manali/siddu.jpg"
+        },
+        {
+          "name": "Trout Fish",
+          "price": 450,
+          "restaurant": "Chopsticks",
+          "description": "Fresh mountain fish dish.",
+          "image": "/images/manali/trout-fish.jpg"
+        },
+        {
+          "name": "Thukpa",
+          "price": 220,
+          "restaurant": "Tibetan Monastery Cafe",
+          "description": "Perfect cold weather noodle soup.",
+          "image": "/images/manali/thukpa.jpg"
+        },
+        {
+          "name": "Momos",
+          "price": 120,
+          "restaurant": "Old Manali Cafe",
+          "description": "Backpacker favorite snack.",
+          "image": "/images/manali/momos.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Mall Road",
+          "specialty": "Woolens, cafes, souvenirs",
+          "image": "/images/manali/mall-road.jpg"
+        },
+        {
+          "name": "Old Manali Market",
+          "specialty": "Boho clothes, cafes, handmade jewelry",
+          "image": "/images/manali/old-manali-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g11",
+          "name": "Tenzin Dorjee",
+          "title": "Manali Adventure & Trekking Guide",
+          "experience": "8 years",
+          "rating": 4.9,
+          "pricePerDay": 1200,
+          "image": "/images/guides/male1.jpg"
+        }
+      ]
+    },
+    "Bengaluru": {
+      "places": [
+        {
+          "name": "Cubbon Park",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Green city heart for walks.",
+          "image": "/images/bengaluru/cubbon-park.jpg"
+        },
+        {
+          "name": "Lalbagh",
+          "category": "Nature",
+          "entryFee": 40,
+          "description": "Historic botanical garden.",
+          "image": "/images/bengaluru/lalbagh.jpg"
+        },
+        {
+          "name": "Bangalore Palace",
+          "category": "Heritage",
+          "entryFee": 230,
+          "description": "Royal palace architecture.",
+          "image": "/images/bengaluru/bangalore-palace.jpg"
+        },
+        {
+          "name": "UB City",
+          "category": "Luxury",
+          "entryFee": 0,
+          "description": "Luxury shopping and nightlife.",
+          "image": "/images/bengaluru/ub-city.jpg"
+        },
+        {
+          "name": "MG Road",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Best shopping and cafes.",
+          "image": "/images/bengaluru/mg-road.jpg"
+        },
+        {
+          "name": "Nandi Hills",
+          "category": "Adventure",
+          "entryFee": 0,
+          "description": "Sunrise bike ride spot.",
+          "image": "/images/bengaluru/nandi-hills.jpg"
+        },
+        {
+          "name": "Wonderla",
+          "category": "Adventure",
+          "entryFee": 1200,
+          "description": "Thrill rides and water park.",
+          "image": "/images/bengaluru/wonderla.jpg"
+        },
+        {
+          "name": "ISKCON Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Beautiful temple complex.",
+          "image": "/images/bengaluru/iskcon-temple.jpg"
+        },
+        {
+          "name": "Commercial Street",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Budget shopping hotspot.",
+          "image": "/images/bengaluru/commercial-street.jpg"
+        },
+        {
+          "name": "Bannerghatta National Park",
+          "category": "Nature",
+          "entryFee": 100,
+          "description": "Safari and zoo.",
+          "image": "/images/bengaluru/bannerghatta-national-park.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Masala Dosa",
+          "price": 120,
+          "restaurant": "CTR",
+          "description": "Classic Bengaluru breakfast.",
+          "image": "/images/bengaluru/masala-dosa.jpg"
+        },
+        {
+          "name": "Filter Coffee",
+          "price": 60,
+          "restaurant": "Brahmin’s Coffee Bar",
+          "description": "Must-try coffee.",
+          "image": "/images/bengaluru/filter-coffee.jpg"
+        },
+        {
+          "name": "Bisi Bele Bath",
+          "price": 140,
+          "restaurant": "MTR",
+          "description": "Traditional Karnataka meal.",
+          "image": "/images/bengaluru/bisi-bele-bath.jpg"
+        },
+        {
+          "name": "Donne Biryani",
+          "price": 250,
+          "restaurant": "Shivaji Military Hotel",
+          "description": "Famous local biryani.",
+          "image": "/images/bengaluru/donne-biryani.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Commercial Street",
+          "specialty": "Fashion, footwear, accessories",
+          "image": "/images/bengaluru/commercial-street.jpg"
+        },
+        {
+          "name": "Chickpet",
+          "specialty": "Silk sarees, wholesale shopping",
+          "image": "/images/bengaluru/chickpet.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g12",
+          "name": "Kiran Kumar",
+          "title": "Bengaluru Pubs & Tech City Guide",
+          "experience": "5 years",
+          "rating": 4.7,
+          "pricePerDay": 900,
+          "image": "/images/guides/male2.jpg"
+        }
+      ]
+    },
+    "Rishikesh": {
+      "places": [
+        {
+          "name": "River Rafting",
+          "category": "Adventure",
+          "entryFee": 1000,
+          "description": "India’s most famous rafting destination.",
+          "image": "/images/rishikesh/river-rafting.jpg"
+        },
+        {
+          "name": "Laxman Jhula",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Iconic suspension bridge.",
+          "image": "/images/rishikesh/laxman-jhula.jpg"
+        },
+        {
+          "name": "Ram Jhula",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Beautiful Ganga bridge walk.",
+          "image": "/images/rishikesh/ram-jhula.jpg"
+        },
+        {
+          "name": "Triveni Ghat",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Evening Ganga Aarti.",
+          "image": "/images/rishikesh/triveni-ghat.jpg"
+        },
+        {
+          "name": "Beatles Ashram",
+          "category": "Heritage",
+          "entryFee": 200,
+          "description": "Most Instagrammable spot.",
+          "image": "/images/rishikesh/beatles-ashram.jpg"
+        },
+        {
+          "name": "Bungee Jumping",
+          "category": "Adventure",
+          "entryFee": 3500,
+          "description": "High adrenaline activity.",
+          "image": "/images/rishikesh/bungee-jumping.jpg"
+        },
+        {
+          "name": "Neer Garh Waterfall",
+          "category": "Trekking",
+          "entryFee": 50,
+          "description": "Easy scenic waterfall hike.",
+          "image": "/images/rishikesh/neer-garh-waterfall.jpg"
+        },
+        {
+          "name": "Shivpuri Camping",
+          "category": "Adventure",
+          "entryFee": 1800,
+          "description": "Camping and bonfire experience.",
+          "image": "/images/rishikesh/shivpuri-camping.jpg"
+        },
+        {
+          "name": "Parmarth Niketan",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Yoga and meditation spot.",
+          "image": "/images/rishikesh/parmarth-niketan.jpg"
+        },
+        {
+          "name": "Rajaji National Park",
+          "category": "Nature",
+          "entryFee": 150,
+          "description": "Wildlife safari nearby.",
+          "image": "/images/rishikesh/rajaji-national-park.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Aloo Puri",
+          "price": 100,
+          "restaurant": "Chotiwala",
+          "description": "Classic Rishikesh breakfast.",
+          "image": "/images/rishikesh/aloo-puri.jpg"
+        },
+        {
+          "name": "Woodfire Pizza",
+          "price": 350,
+          "restaurant": "Little Buddha Cafe",
+          "description": "Cafe favorite near Ganga.",
+          "image": "/images/rishikesh/woodfire-pizza.jpg"
+        },
+        {
+          "name": "Lassi",
+          "price": 90,
+          "restaurant": "Ramana’s Garden",
+          "description": "Refreshing drink.",
+          "image": "/images/rishikesh/lassi.jpg"
+        },
+        {
+          "name": "Israeli Platter",
+          "price": 450,
+          "restaurant": "Cafe de Goa",
+          "description": "Popular among backpackers.",
+          "image": "/images/rishikesh/israeli-platter.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Laxman Jhula Market",
+          "specialty": "Spiritual items, clothes, jewelry",
+          "image": "/images/rishikesh/laxman-jhula-market.jpg"
+        },
+        {
+          "name": "Ram Jhula Market",
+          "specialty": "Souvenirs, ayurvedic products",
+          "image": "/images/rishikesh/ram-jhula-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g13",
+          "name": "Swami Raghav",
+          "title": "Rishikesh Yoga & Spiritual Guide",
+          "experience": "12 years",
+          "rating": 5,
+          "pricePerDay": 1500,
+          "image": "/images/guides/male3.jpg"
+        }
+      ]
+    },
+    "Leh-Ladakh": {
+      "places": [
+        {
+          "name": "Pangong Lake",
+          "category": "Adventure",
+          "entryFee": 0,
+          "description": "Blue high-altitude lake.",
+          "image": "/images/leh-ladakh/pangong-lake.jpg"
+        },
+        {
+          "name": "Nubra Valley",
+          "category": "Adventure",
+          "entryFee": 0,
+          "description": "Sand dunes and camel rides.",
+          "image": "/images/leh-ladakh/nubra-valley.jpg"
+        },
+        {
+          "name": "Khardung La",
+          "category": "Road Trip",
+          "entryFee": 0,
+          "description": "World-famous high mountain pass.",
+          "image": "/images/leh-ladakh/khardung-la.jpg"
+        },
+        {
+          "name": "Magnetic Hill",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Optical illusion road.",
+          "image": "/images/leh-ladakh/magnetic-hill.jpg"
+        },
+        {
+          "name": "Leh Palace",
+          "category": "Heritage",
+          "entryFee": 50,
+          "description": "Historic hilltop palace.",
+          "image": "/images/leh-ladakh/leh-palace.jpg"
+        },
+        {
+          "name": "Shanti Stupa",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Best Leh sunset point.",
+          "image": "/images/leh-ladakh/shanti-stupa.jpg"
+        },
+        {
+          "name": "Tso Moriri",
+          "category": "Adventure",
+          "entryFee": 0,
+          "description": "Peaceful alpine lake.",
+          "image": "/images/leh-ladakh/tso-moriri.jpg"
+        },
+        {
+          "name": "Thiksey Monastery",
+          "category": "Spiritual",
+          "entryFee": 30,
+          "description": "Beautiful monastery view.",
+          "image": "/images/leh-ladakh/thiksey-monastery.jpg"
+        },
+        {
+          "name": "Zanskar Rafting",
+          "category": "Adventure",
+          "entryFee": 2500,
+          "description": "Extreme rafting route.",
+          "image": "/images/leh-ladakh/zanskar-rafting.jpg"
+        },
+        {
+          "name": "Leh Market",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Local woolens and souvenirs.",
+          "image": "/images/leh-ladakh/leh-market.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Thukpa",
+          "price": 250,
+          "restaurant": "Gesmo Restaurant",
+          "description": "Warm noodle soup.",
+          "image": "/images/leh-ladakh/thukpa.jpg"
+        },
+        {
+          "name": "Momos",
+          "price": 180,
+          "restaurant": "Lamayuru Restaurant",
+          "description": "Local steamed dumplings.",
+          "image": "/images/leh-ladakh/momos.jpg"
+        },
+        {
+          "name": "Butter Tea",
+          "price": 50,
+          "restaurant": "Local Home Stay",
+          "description": "Traditional salty tea.",
+          "image": "/images/leh-ladakh/butter-tea.jpg"
+        },
+        {
+          "name": "Skyu",
+          "price": 300,
+          "restaurant": "The Tibetan Kitchen",
+          "description": "Authentic Ladakhi pasta stew.",
+          "image": "/images/leh-ladakh/skyu.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Leh Main Bazaar",
+          "specialty": "Woolens, prayer flags, jewelry",
+          "image": "/images/leh-ladakh/leh-main-bazaar.jpg"
+        },
+        {
+          "name": "Moti Market",
+          "specialty": "Tibetan handicrafts, pashmina",
+          "image": "/images/leh-ladakh/moti-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g14",
+          "name": "Stanzin Lobsang",
+          "title": "Ladakh Mountain & Biking Expert",
+          "experience": "10 years",
+          "rating": 4.9,
+          "pricePerDay": 2000,
+          "image": "/images/guides/male4.jpg"
+        }
+      ]
+    },
+    "Bangkok": {
+      "places": [
+        {
+          "name": "Grand Palace",
+          "category": "Heritage",
+          "entryFee": 1200,
+          "description": "Royal palace and temple complex.",
+          "image": "/images/bangkok/grand-palace.jpg"
+        },
+        {
+          "name": "Wat Arun",
+          "category": "Spiritual",
+          "entryFee": 500,
+          "description": "Iconic riverside temple.",
+          "image": "/images/bangkok/wat-arun.jpg"
+        },
+        {
+          "name": "Chatuchak Market",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Massive weekend market.",
+          "image": "/images/bangkok/chatuchak-market.jpg"
+        },
+        {
+          "name": "Khao San Road",
+          "category": "Nightlife",
+          "entryFee": 0,
+          "description": "Backpacker nightlife hub.",
+          "image": "/images/bangkok/khao-san-road.jpg"
+        },
+        {
+          "name": "Chao Phraya Cruise",
+          "category": "Relaxation",
+          "entryFee": 1500,
+          "description": "Luxury evening river cruise.",
+          "image": "/images/bangkok/chao-phraya-cruise.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Pad Thai",
+          "price": 280,
+          "restaurant": "Thipsamai",
+          "description": "Thailand’s signature noodles.",
+          "image": "/images/bangkok/pad-thai.jpg"
+        },
+        {
+          "name": "Mango Sticky Rice",
+          "price": 200,
+          "restaurant": "Mae Varee",
+          "description": "Sweet coconut milk dessert.",
+          "image": "/images/bangkok/mango-sticky-rice.jpg"
+        },
+        {
+          "name": "Tom Yum Soup",
+          "price": 320,
+          "restaurant": "Pe Aor",
+          "description": "Hot and sour seafood soup.",
+          "image": "/images/bangkok/tom-yum-soup.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Chatuchak Market",
+          "specialty": "Fashion, souvenirs, street food",
+          "image": "/images/bangkok/chatuchak-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g15",
+          "name": "Somchai Smith",
+          "title": "Bangkok Food & Market Specialist",
+          "experience": "6 years",
+          "rating": 4.8,
+          "pricePerDay": 1100,
+          "image": "/images/guides/male5.jpg"
+        }
+      ]
+    },
+    "Dubai": {
+      "places": [
+        {
+          "name": "Burj Khalifa",
+          "category": "Luxury",
+          "entryFee": 2500,
+          "description": "Skyline views from tallest tower.",
+          "image": "/images/dubai/burj-khalifa.jpg"
+        },
+        {
+          "name": "Dubai Mall",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Luxury brands and aquarium.",
+          "image": "/images/dubai/dubai-mall.jpg"
+        },
+        {
+          "name": "Palm Jumeirah",
+          "category": "Luxury",
+          "entryFee": 0,
+          "description": "Iconic island resort zone.",
+          "image": "/images/dubai/palm-jumeirah.jpg"
+        },
+        {
+          "name": "Desert Safari",
+          "category": "Adventure",
+          "entryFee": 3500,
+          "description": "Dune bashing and dinner.",
+          "image": "/images/dubai/desert-safari.jpg"
+        },
+        {
+          "name": "Dubai Marina",
+          "category": "Nightlife",
+          "entryFee": 0,
+          "description": "Luxury waterfront promenade.",
+          "image": "/images/dubai/dubai-marina.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Shawarma",
+          "price": 350,
+          "restaurant": "Al Mallah",
+          "description": "Dubai street food classic.",
+          "image": "/images/dubai/shawarma.jpg"
+        },
+        {
+          "name": "Kunafa",
+          "price": 420,
+          "restaurant": "Feras Sweets",
+          "description": "Sweet cheese dessert.",
+          "image": "/images/dubai/kunafa.jpg"
+        },
+        {
+          "name": "Mixed Grill",
+          "price": 950,
+          "restaurant": "Zaroob",
+          "description": "Premium Arabic platter.",
+          "image": "/images/dubai/mixed-grill.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Gold Souk",
+          "specialty": "Gold jewelry and luxury gifts",
+          "image": "/images/dubai/gold-souk.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g16",
+          "name": "Omar Hassan",
+          "title": "Dubai Luxury & Desert Safari Guide",
+          "experience": "7 years",
+          "rating": 4.8,
+          "pricePerDay": 1800,
+          "image": "/images/guides/male6.jpg"
+        }
+      ]
+    },
+    "Singapore": {
+      "places": [
+        {
+          "name": "Marina Bay Sands",
+          "category": "Luxury",
+          "entryFee": 3000,
+          "description": "Sky deck and skyline.",
+          "image": "/images/singapore/marina-bay-sands.jpg"
+        },
+        {
+          "name": "Sentosa Island",
+          "category": "Family",
+          "entryFee": 1800,
+          "description": "Beaches and attractions.",
+          "image": "/images/singapore/sentosa-island.jpg"
+        },
+        {
+          "name": "Gardens by the Bay",
+          "category": "Nature",
+          "entryFee": 1500,
+          "description": "Supertrees and domes.",
+          "image": "/images/singapore/gardens-by-the-bay.jpg"
+        },
+        {
+          "name": "Merlion Park",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Singaporeâ€™s famous icon.",
+          "image": "/images/singapore/merlion-park.jpg"
+        },
+        {
+          "name": "Universal Studios",
+          "category": "Family",
+          "entryFee": 4200,
+          "description": "Theme park fun.",
+          "image": "/images/singapore/universal-studios.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Chilli Crab",
+          "price": 1200,
+          "restaurant": "Jumbo Seafood",
+          "description": "Singaporeâ€™s signature crab.",
+          "image": "/images/singapore/chilli-crab.jpg"
+        },
+        {
+          "name": "Hainanese Chicken Rice",
+          "price": 350,
+          "restaurant": "Tian Tian",
+          "description": "Famous local rice dish.",
+          "image": "/images/singapore/hainanese-chicken-rice.jpg"
+        },
+        {
+          "name": "Laksa",
+          "price": 300,
+          "restaurant": "328 Katong Laksa",
+          "description": "Spicy coconut noodle soup.",
+          "image": "/images/singapore/laksa.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Bugis Street",
+          "specialty": "Fashion, gadgets, souvenirs",
+          "image": "/images/singapore/bugis-street.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g17",
+          "name": "Tan Wei Long",
+          "title": "Singapore Modern City & Garden Guide",
+          "experience": "9 years",
+          "rating": 4.9,
+          "pricePerDay": 1600,
+          "image": "/images/guides/male7.jpg"
+        }
+      ]
+    },
+    "Tokyo": {
+      "places": [
+        {
+          "name": "Shibuya Crossing",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Worldâ€™s busiest crossing.",
+          "image": "/images/tokyo/shibuya-crossing.jpg"
+        },
+        {
+          "name": "Tokyo Tower",
+          "category": "Tourist Spots",
+          "entryFee": 1500,
+          "description": "Panoramic city views.",
+          "image": "/images/tokyo/tokyo-tower.jpg"
+        },
+        {
+          "name": "Akihabara",
+          "category": "Technology",
+          "entryFee": 0,
+          "description": "Anime and electronics hub.",
+          "image": "/images/tokyo/akihabara.jpg"
+        },
+        {
+          "name": "Sensoji Temple",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Historic Asakusa temple.",
+          "image": "/images/tokyo/sensoji-temple.jpg"
+        },
+        {
+          "name": "Mount Fuji Day Tour",
+          "category": "Adventure",
+          "entryFee": 4500,
+          "description": "Japanâ€™s iconic mountain.",
+          "image": "/images/tokyo/mount-fuji-day-tour.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Sushi",
+          "price": 1500,
+          "restaurant": "Sukiyabashi",
+          "description": "Premium Tokyo sushi.",
+          "image": "/images/tokyo/sushi.jpg"
+        },
+        {
+          "name": "Ramen",
+          "price": 600,
+          "restaurant": "Ichiran",
+          "description": "Classic Japanese noodles.",
+          "image": "/images/tokyo/ramen.jpg"
+        },
+        {
+          "name": "Takoyaki",
+          "price": 350,
+          "restaurant": "Gindaco",
+          "description": "Octopus street snack.",
+          "image": "/images/tokyo/takoyaki.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Akihabara Market",
+          "specialty": "Anime, gadgets, electronics",
+          "image": "/images/tokyo/akihabara-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g18",
+          "name": "Kenji Tanaka",
+          "title": "Tokyo Culture & Anime Scene Expert",
+          "experience": "8 years",
+          "rating": 4.9,
+          "pricePerDay": 2200,
+          "image": "/images/guides/male8.jpg"
+        }
+      ]
+    },
+    "Bali": {
+      "places": [
+        {
+          "name": "Uluwatu Temple",
+          "category": "Spiritual",
+          "entryFee": 700,
+          "description": "Cliffside sunset temple.",
+          "image": "/images/bali/uluwatu-temple.jpg"
+        },
+        {
+          "name": "Ubud Rice Terrace",
+          "category": "Nature",
+          "entryFee": 400,
+          "description": "Scenic rice fields.",
+          "image": "/images/bali/ubud-rice-terrace.jpg"
+        },
+        {
+          "name": "Seminyak Beach",
+          "category": "Luxury",
+          "entryFee": 0,
+          "description": "Beach clubs and sunset.",
+          "image": "/images/bali/seminyak-beach.jpg"
+        },
+        {
+          "name": "Tanah Lot",
+          "category": "Spiritual",
+          "entryFee": 600,
+          "description": "Sea temple views.",
+          "image": "/images/bali/tanah-lot.jpg"
+        },
+        {
+          "name": "Nusa Penida",
+          "category": "Adventure",
+          "entryFee": 2500,
+          "description": "Island cliffs and beaches.",
+          "image": "/images/bali/nusa-penida.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Nasi Goreng",
+          "price": 280,
+          "restaurant": "Locavore",
+          "description": "Indonesiaâ€™s signature fried rice.",
+          "image": "/images/bali/nasi-goreng.jpg"
+        },
+        {
+          "name": "Satay",
+          "price": 260,
+          "restaurant": "Warung Local",
+          "description": "Grilled skewers with sauce.",
+          "image": "/images/bali/satay.jpg"
+        },
+        {
+          "name": "Babi Guling",
+          "price": 450,
+          "restaurant": "Ibu Oka",
+          "description": "Famous Balinese roast pork.",
+          "image": "/images/bali/babi-guling.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Ubud Market",
+          "specialty": "Handmade crafts and decor",
+          "image": "/images/bali/ubud-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g19",
+          "name": "I Putu Bagus",
+          "title": "Bali Island & Spiritual Retreat Guide",
+          "experience": "10 years",
+          "rating": 5,
+          "pricePerDay": 1400,
+          "image": "/images/guides/male1.jpg"
+        }
+      ]
+    },
+    "Kuala Lumpur": {
+      "places": [
+        {
+          "name": "Petronas Towers",
+          "category": "Luxury",
+          "entryFee": 1200,
+          "description": "Twin tower skyline icon.",
+          "image": "/images/kuala lumpur/petronas-towers.jpg"
+        },
+        {
+          "name": "Batu Caves",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Famous cave temple.",
+          "image": "/images/kuala lumpur/batu-caves.jpg"
+        },
+        {
+          "name": "Bukit Bintang",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Nightlife and shopping district.",
+          "image": "/images/kuala lumpur/bukit-bintang.jpg"
+        },
+        {
+          "name": "KL Tower",
+          "category": "Tourist Spots",
+          "entryFee": 1000,
+          "description": "Observation deck views.",
+          "image": "/images/kuala lumpur/kl-tower.jpg"
+        },
+        {
+          "name": "Aquaria KLCC",
+          "category": "Family",
+          "entryFee": 900,
+          "description": "World-class aquarium.",
+          "image": "/images/kuala lumpur/aquaria-klcc.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Nasi Lemak",
+          "price": 250,
+          "restaurant": "Village Park",
+          "description": "Malaysiaâ€™s signature dish.",
+          "image": "/images/kuala-lumpur/nasi-lemak.jpg"
+        },
+        {
+          "name": "Satay",
+          "price": 220,
+          "restaurant": "Kajang Satay",
+          "description": "Grilled skewers classic.",
+          "image": "/images/kuala-lumpur/satay.jpg"
+        },
+        {
+          "name": "Roti Canai",
+          "price": 120,
+          "restaurant": "Valentine Roti",
+          "description": "Flaky flatbread breakfast.",
+          "image": "/images/kuala-lumpur/roti-canai.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Central Market",
+          "specialty": "Crafts and souvenirs",
+          "image": "/images/kuala-lumpur/central-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g20",
+          "name": "Faisal Bin Ahmad",
+          "title": "KL Heritage & Petronas Explorer",
+          "experience": "5 years",
+          "rating": 4.7,
+          "pricePerDay": 950,
+          "image": "/images/guides/male2.jpg"
+        }
+      ]
+    },
+    "Istanbul": {
+      "places": [
+        {
+          "name": "Hagia Sophia",
+          "category": "Heritage",
+          "entryFee": 1200,
+          "description": "Historic Byzantine marvel.",
+          "image": "/images/istanbul/hagia-sophia.jpg"
+        },
+        {
+          "name": "Blue Mosque",
+          "category": "Spiritual",
+          "entryFee": 0,
+          "description": "Ottoman mosque masterpiece.",
+          "image": "/images/istanbul/blue-mosque.jpg"
+        },
+        {
+          "name": "Bosporus Cruise",
+          "category": "Relaxation",
+          "entryFee": 1800,
+          "description": "Europe-Asia scenic cruise.",
+          "image": "/images/istanbul/bosporus-cruise.jpg"
+        },
+        {
+          "name": "Topkapi Palace",
+          "category": "Heritage",
+          "entryFee": 1500,
+          "description": "Ottoman royal palace.",
+          "image": "/images/istanbul/topkapi-palace.jpg"
+        },
+        {
+          "name": "Galata Tower",
+          "category": "Tourist Spots",
+          "entryFee": 900,
+          "description": "Skyline panorama.",
+          "image": "/images/istanbul/galata-tower.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Baklava",
+          "price": 350,
+          "restaurant": "Gulluoglu",
+          "description": "Turkish layered dessert.",
+          "image": "/images/istanbul/baklava.jpg"
+        },
+        {
+          "name": "Kebab",
+          "price": 600,
+          "restaurant": "Hamdi",
+          "description": "Authentic grilled meat.",
+          "image": "/images/istanbul/kebab.jpg"
+        },
+        {
+          "name": "Turkish Delight",
+          "price": 280,
+          "restaurant": "Hafiz Mustafa",
+          "description": "Sweet local candy.",
+          "image": "/images/istanbul/turkish-delight.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Grand Bazaar",
+          "specialty": "Carpets, lamps, spices",
+          "image": "/images/istanbul/grand-bazaar.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g21",
+          "name": "Emre Yilmaz",
+          "title": "Istanbul History & Bazaars Guide",
+          "experience": "15 years",
+          "rating": 5,
+          "pricePerDay": 1300,
+          "image": "/images/guides/male3.jpg"
+        }
+      ]
+    },
+    "Paris": {
+      "places": [
+        {
+          "name": "Eiffel Tower",
+          "category": "Romantic",
+          "entryFee": 2500,
+          "description": "Paris skyline icon.",
+          "image": "/images/paris/eiffel-tower.jpg"
+        },
+        {
+          "name": "Louvre Museum",
+          "category": "Art",
+          "entryFee": 1800,
+          "description": "Home of Mona Lisa.",
+          "image": "/images/paris/louvre-museum.jpg"
+        },
+        {
+          "name": "Seine Cruise",
+          "category": "Relaxation",
+          "entryFee": 2200,
+          "description": "Romantic river cruise.",
+          "image": "/images/paris/seine-cruise.jpg"
+        },
+        {
+          "name": "Notre Dame",
+          "category": "Heritage",
+          "entryFee": 0,
+          "description": "Historic cathedral.",
+          "image": "/images/paris/notre-dame.jpg"
+        },
+        {
+          "name": "Montmartre",
+          "category": "Culture",
+          "entryFee": 0,
+          "description": "Art district and views.",
+          "image": "/images/paris/montmartre.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Croissant",
+          "price": 350,
+          "restaurant": "Du Pain",
+          "description": "Classic French pastry.",
+          "image": "/images/paris/croissant.jpg"
+        },
+        {
+          "name": "Macarons",
+          "price": 600,
+          "restaurant": "LadurÃ©e",
+          "description": "Luxury French sweets.",
+          "image": "/images/paris/macarons.jpg"
+        },
+        {
+          "name": "Escargot",
+          "price": 950,
+          "restaurant": "Lâ€™Escargot",
+          "description": "Classic Paris delicacy.",
+          "image": "/images/paris/escargot.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Champs-Ã‰lysÃ©es",
+          "specialty": "Luxury fashion shopping",
+          "image": "/images/paris/champslyses.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g22",
+          "name": "Jean-Pierre",
+          "title": "Paris Arts & Romantic Walk Expert",
+          "experience": "12 years",
+          "rating": 4.9,
+          "pricePerDay": 2500,
+          "image": "/images/guides/male4.jpg"
+        }
+      ]
+    },
+    "London": {
+      "places": [
+        {
+          "name": "London Eye",
+          "category": "Tourist Spots",
+          "entryFee": 3200,
+          "description": "Skyline giant wheel.",
+          "image": "/images/london/london-eye.jpg"
+        },
+        {
+          "name": "Tower Bridge",
+          "category": "Heritage",
+          "entryFee": 1800,
+          "description": "Historic London bridge.",
+          "image": "/images/london/tower-bridge.jpg"
+        },
+        {
+          "name": "Buckingham Palace",
+          "category": "Royal",
+          "entryFee": 2200,
+          "description": "Royal residence.",
+          "image": "/images/london/buckingham-palace.jpg"
+        },
+        {
+          "name": "Big Ben",
+          "category": "Heritage",
+          "entryFee": 0,
+          "description": "Clock tower icon.",
+          "image": "/images/london/big-ben.jpg"
+        },
+        {
+          "name": "Camden Town",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Street market and culture.",
+          "image": "/images/london/camden-town.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Fish and Chips",
+          "price": 900,
+          "restaurant": "Poppies",
+          "description": "British classic meal.",
+          "image": "/images/london/fish-and-chips.jpg"
+        },
+        {
+          "name": "English Breakfast",
+          "price": 850,
+          "restaurant": "The Breakfast Club",
+          "description": "Full English platter.",
+          "image": "/images/london/english-breakfast.jpg"
+        },
+        {
+          "name": "Sticky Toffee Pudding",
+          "price": 550,
+          "restaurant": "Rules",
+          "description": "Classic British dessert.",
+          "image": "/images/london/sticky-toffee-pudding.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Camden Market",
+          "specialty": "Street fashion and food",
+          "image": "/images/london/camden-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g23",
+          "name": "Arthur P.",
+          "title": "London Royal History & Pub Tour Guide",
+          "experience": "14 years",
+          "rating": 5,
+          "pricePerDay": 2800,
+          "image": "/images/guides/male5.jpg"
+        }
+      ]
+    },
+    "Rome": {
+      "places": [
+        {
+          "name": "Colosseum",
+          "category": "Heritage",
+          "entryFee": 2200,
+          "description": "Ancient Roman amphitheatre.",
+          "image": "/images/rome/colosseum.jpg"
+        },
+        {
+          "name": "Trevi Fountain",
+          "category": "Romantic",
+          "entryFee": 0,
+          "description": "Iconic wish fountain.",
+          "image": "/images/rome/trevi-fountain.jpg"
+        },
+        {
+          "name": "Vatican Museum",
+          "category": "Art",
+          "entryFee": 2500,
+          "description": "World-famous masterpieces.",
+          "image": "/images/rome/vatican-museum.jpg"
+        },
+        {
+          "name": "Pantheon",
+          "category": "Heritage",
+          "entryFee": 400,
+          "description": "Historic Roman temple.",
+          "image": "/images/rome/pantheon.jpg"
+        },
+        {
+          "name": "Roman Forum",
+          "category": "Heritage",
+          "entryFee": 1200,
+          "description": "Ancient ruins complex.",
+          "image": "/images/rome/roman-forum.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Pasta Carbonara",
+          "price": 850,
+          "restaurant": "Roscioli",
+          "description": "Authentic Roman pasta.",
+          "image": "/images/rome/pasta-carbonara.jpg"
+        },
+        {
+          "name": "Margherita Pizza",
+          "price": 700,
+          "restaurant": "Da Baffetto",
+          "description": "Italian classic pizza.",
+          "image": "/images/rome/margherita-pizza.jpg"
+        },
+        {
+          "name": "Tiramisu",
+          "price": 450,
+          "restaurant": "Pompi",
+          "description": "Classic Italian dessert.",
+          "image": "/images/rome/tiramisu.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Campo de' Fiori",
+          "specialty": "Food and souvenirs",
+          "image": "/images/rome/campo-de--fiori.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g24",
+          "name": "Marco Rossi",
+          "title": "Rome Ancient Ruins & Pasta Expert",
+          "experience": "10 years",
+          "rating": 4.9,
+          "pricePerDay": 1800,
+          "image": "/images/guides/male6.jpg"
+        }
+      ]
+    },
+    "Barcelona": {
+      "places": [
+        {
+          "name": "Sagrada Familia",
+          "category": "Heritage",
+          "entryFee": 2200,
+          "description": "Gaudiâ€™s masterpiece.",
+          "image": "/images/barcelona/sagrada-familia.jpg"
+        },
+        {
+          "name": "Park Guell",
+          "category": "Nature",
+          "entryFee": 1200,
+          "description": "Mosaic park views.",
+          "image": "/images/barcelona/park-guell.jpg"
+        },
+        {
+          "name": "La Rambla",
+          "category": "Shopping",
+          "entryFee": 0,
+          "description": "Street shopping and cafes.",
+          "image": "/images/barcelona/la-rambla.jpg"
+        },
+        {
+          "name": "Barceloneta Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Beachside relaxation.",
+          "image": "/images/barcelona/barceloneta-beach.jpg"
+        },
+        {
+          "name": "Casa BatllÃ³",
+          "category": "Architecture",
+          "entryFee": 1800,
+          "description": "Gaudi architecture icon.",
+          "image": "/images/barcelona/casa-batllo.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Paella",
+          "price": 1200,
+          "restaurant": "Can SolÃ©",
+          "description": "Spanish rice classic.",
+          "image": "/images/barcelona/paella.jpg"
+        },
+        {
+          "name": "Tapas",
+          "price": 850,
+          "restaurant": "Ciudad Condal",
+          "description": "Small plates experience.",
+          "image": "/images/barcelona/tapas.jpg"
+        },
+        {
+          "name": "Churros",
+          "price": 300,
+          "restaurant": "Xurreria",
+          "description": "Sweet Spanish snack.",
+          "image": "/images/barcelona/churros.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "La Boqueria",
+          "specialty": "Fresh food and tapas",
+          "image": "/images/barcelona/la-boqueria.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g25",
+          "name": "Jordi Garcia",
+          "title": "Barcelona Gaudi & Beachside Guide",
+          "experience": "8 years",
+          "rating": 4.8,
+          "pricePerDay": 1700,
+          "image": "/images/guides/male7.jpg"
+        }
+      ]
+    },
+    "Amsterdam": {
+      "places": [
+        {
+          "name": "Canal Cruise",
+          "category": "Relaxation",
+          "entryFee": 1800,
+          "description": "Best city canal ride.",
+          "image": "/images/amsterdam/canal-cruise.jpg"
+        },
+        {
+          "name": "Van Gogh Museum",
+          "category": "Art",
+          "entryFee": 2200,
+          "description": "Masterpiece collection.",
+          "image": "/images/amsterdam/van-gogh-museum.jpg"
+        },
+        {
+          "name": "Dam Square",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Historic city center.",
+          "image": "/images/amsterdam/dam-square.jpg"
+        },
+        {
+          "name": "Anne Frank House",
+          "category": "Heritage",
+          "entryFee": 1400,
+          "description": "Historic memorial house.",
+          "image": "/images/amsterdam/anne-frank-house.jpg"
+        },
+        {
+          "name": "Rijksmuseum",
+          "category": "Art",
+          "entryFee": 2000,
+          "description": "Dutch masterpieces.",
+          "image": "/images/amsterdam/rijksmuseum.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Stroopwafel",
+          "price": 300,
+          "restaurant": "Van Wonderen",
+          "description": "Dutch sweet waffle.",
+          "image": "/images/amsterdam/stroopwafel.jpg"
+        },
+        {
+          "name": "Dutch Fries",
+          "price": 250,
+          "restaurant": "Vleminckx",
+          "description": "Loaded crispy fries.",
+          "image": "/images/amsterdam/dutch-fries.jpg"
+        },
+        {
+          "name": "Herring Sandwich",
+          "price": 420,
+          "restaurant": "Stubbeâ€™s",
+          "description": "Classic Amsterdam bite.",
+          "image": "/images/amsterdam/herring-sandwich.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Albert Cuyp Market",
+          "specialty": "Street food and fashion",
+          "image": "/images/amsterdam/albert-cuyp-market.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g26",
+          "name": "Lukas Van Dijk",
+          "title": "Amsterdam Canals & Museum Expert",
+          "experience": "7 years",
+          "rating": 4.7,
+          "pricePerDay": 1600,
+          "image": "/images/guides/male8.jpg"
+        }
+      ]
+    },
+    "New York": {
+      "places": [
+        {
+          "name": "Times Square",
+          "category": "Nightlife",
+          "entryFee": 0,
+          "description": "Lights and shopping.",
+          "image": "/images/new-york/times-square.jpg"
+        },
+        {
+          "name": "Central Park",
+          "category": "Relaxation",
+          "entryFee": 0,
+          "description": "Massive city park.",
+          "image": "/images/new-york/central-park.jpg"
+        },
+        {
+          "name": "Statue of Liberty",
+          "category": "Heritage",
+          "entryFee": 2200,
+          "description": "USA icon monument.",
+          "image": "/images/new-york/statue-of-liberty.jpg"
+        },
+        {
+          "name": "Brooklyn Bridge",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Skyline bridge walk.",
+          "image": "/images/new-york/brooklyn-bridge.jpg"
+        },
+        {
+          "name": "Empire State Building",
+          "category": "Luxury",
+          "entryFee": 2500,
+          "description": "Observation deck skyline.",
+          "image": "/images/new-york/empire-state-building.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "New York Pizza",
+          "price": 450,
+          "restaurant": "Joeâ€™s Pizza",
+          "description": "Classic NY slice.",
+          "image": "/images/new-york/new-york-pizza.jpg"
+        },
+        {
+          "name": "Bagel",
+          "price": 250,
+          "restaurant": "Ess-a-Bagel",
+          "description": "Breakfast city classic.",
+          "image": "/images/new-york/bagel.jpg"
+        },
+        {
+          "name": "Cheesecake",
+          "price": 550,
+          "restaurant": "Juniorâ€™s",
+          "description": "NY signature dessert.",
+          "image": "/images/new-york/cheesecake.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "SoHo",
+          "specialty": "Luxury shopping and fashion",
+          "image": "/images/new-york/soho.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g27",
+          "name": "Michael S.",
+          "title": "NYC Skyline & Street Life Explorer",
+          "experience": "10 years",
+          "rating": 4.9,
+          "pricePerDay": 3000,
+          "image": "/images/guides/male1.jpg"
+        }
+      ]
+    },
+    "Los Angeles": {
+      "places": [
+        {
+          "name": "Hollywood Sign",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "LAâ€™s iconic landmark.",
+          "image": "/images/los angeles/hollywood-sign.jpg"
+        },
+        {
+          "name": "Santa Monica",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Beach and pier.",
+          "image": "/images/los angeles/santa-monica.jpg"
+        },
+        {
+          "name": "Universal Studios",
+          "category": "Family",
+          "entryFee": 4500,
+          "description": "Movie theme park.",
+          "image": "/images/los angeles/universal-studios.jpg"
+        },
+        {
+          "name": "Venice Beach",
+          "category": "Beaches",
+          "entryFee": 0,
+          "description": "Street culture and beach.",
+          "image": "/images/los angeles/venice-beach.jpg"
+        },
+        {
+          "name": "Griffith Observatory",
+          "category": "Tourist Spots",
+          "entryFee": 0,
+          "description": "Best city views.",
+          "image": "/images/los angeles/griffith-observatory.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Tacos",
+          "price": 500,
+          "restaurant": "Guisados",
+          "description": "LA street food classic.",
+          "image": "/images/los-angeles/tacos.jpg"
+        },
+        {
+          "name": "Burgers",
+          "price": 650,
+          "restaurant": "In-N-Out",
+          "description": "California signature burger.",
+          "image": "/images/los-angeles/burgers.jpg"
+        },
+        {
+          "name": "Sushi Rolls",
+          "price": 900,
+          "restaurant": "Sugarfish",
+          "description": "LA fusion sushi.",
+          "image": "/images/los-angeles/sushi-rolls.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Rodeo Drive",
+          "specialty": "Luxury brands and shopping",
+          "image": "/images/los-angeles/rodeo-drive.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g28",
+          "name": "Steve J.",
+          "title": "LA Hollywood & Beachside Specialist",
+          "experience": "6 years",
+          "rating": 4.8,
+          "pricePerDay": 2500,
+          "image": "/images/guides/male2.jpg"
+        }
+      ]
+    },
+    "Las Vegas": {
+      "places": [
+        {
+          "name": "The Strip",
+          "category": "Nightlife",
+          "entryFee": 0,
+          "description": "Vegas nightlife boulevard.",
+          "image": "/images/las vegas/the-strip.jpg"
+        },
+        {
+          "name": "Bellagio Fountains",
+          "category": "Luxury",
+          "entryFee": 0,
+          "description": "Luxury fountain show.",
+          "image": "/images/las vegas/bellagio-fountains.jpg"
+        },
+        {
+          "name": "Fremont Street",
+          "category": "Nightlife",
+          "entryFee": 0,
+          "description": "Live shows and lights.",
+          "image": "/images/las vegas/fremont-street.jpg"
+        },
+        {
+          "name": "High Roller",
+          "category": "Tourist Spots",
+          "entryFee": 2500,
+          "description": "Giant skyline wheel.",
+          "image": "/images/las vegas/high-roller.jpg"
+        },
+        {
+          "name": "Red Rock Canyon",
+          "category": "Adventure",
+          "entryFee": 1200,
+          "description": "Nature escape near Vegas.",
+          "image": "/images/las vegas/red-rock-canyon.jpg"
+        }
+      ],
+      "food": [
+        {
+          "name": "Buffet Dinner",
+          "price": 2500,
+          "restaurant": "Wynn Buffet",
+          "description": "Vegas luxury buffet.",
+          "image": "/images/las-vegas/buffet-dinner.jpg"
+        },
+        {
+          "name": "Steak",
+          "price": 3200,
+          "restaurant": "Gordon Ramsay Steak",
+          "description": "Premium steakhouse meal.",
+          "image": "/images/las-vegas/steak.jpg"
+        },
+        {
+          "name": "Shrimp Cocktail",
+          "price": 850,
+          "restaurant": "Golden Gate",
+          "description": "Vegas classic snack.",
+          "image": "/images/las-vegas/shrimp-cocktail.jpg"
+        }
+      ],
+      "markets": [
+        {
+          "name": "Forum Shops",
+          "specialty": "Luxury shopping and fashion",
+          "image": "/images/las-vegas/forum-shops.jpg"
+        }
+      ],
+      "guides": [
+        {
+          "id": "g29",
+          "name": "Lucky Leo",
+          "title": "Vegas Lights & Nightlife Master",
+          "experience": "8 years",
+          "rating": 4.9,
+          "pricePerDay": 3200,
+          "image": "/images/guides/male3.jpg"
+        }
+      ]
+    }
+  },
+  "transport": {
+    "domestic_india": {
+      "flights": [
+        {
+          "id": "dom-1",
+          "operator": "IndiGo",
+          "logo": "https://placehold.co/100x100/eeeeee/222222?text=6E",
+          "depTime": "08:30 AM",
+          "arrTime": "09:50 AM",
+          "duration": "1h 20m",
+          "price": "₹4,500",
+          "from": "BOM",
+          "to": "DEL"
+        },
+        {
+          "id": "dom-2",
+          "operator": "Air India",
+          "logo": "https://placehold.co/100x100/eeeeee/222222?text=AI",
+          "depTime": "11:00 AM",
+          "arrTime": "12:15 PM",
+          "duration": "1h 15m",
+          "price": "₹5,200",
+          "from": "BOM",
+          "to": "BLR"
+        }
+      ],
+      "trains": [
+        {
+          "id": "t-1",
+          "operator": "Rajdhani Exp",
+          "logo": "https://placehold.co/100x100/e6f7ff/0050b3?text=IR",
+          "depTime": "16:40 PM",
+          "arrTime": "10:50 AM",
+          "duration": "18h 10m",
+          "price": "₹2,450",
+          "from": "BOM",
+          "to": "DEL"
+        }
+      ]
+    },
+    "international": {
+      "flights": [
+        {
+          "id": "intl-1",
+          "operator": "Emirates",
+          "logo": "https://placehold.co/100x100/eeeeee/222222?text=EK",
+          "depTime": "04:30 AM",
+          "arrTime": "08:15 AM",
+          "duration": "3h 45m",
+          "price": "₹28,500",
+          "from": "DXB",
+          "to": "LHR"
+        },
+        {
+          "id": "intl-2",
+          "operator": "Qatar Airways",
+          "logo": "https://placehold.co/100x100/eeeeee/222222?text=QR",
+          "depTime": "11:00 AM",
+          "arrTime": "15:45 PM",
+          "duration": "4h 45m",
+          "price": "₹32,200",
+          "from": "DOH",
+          "to": "PAR"
+        }
+      ],
+      "trains": [
+        {
+          "id": "it-1",
+          "operator": "Eurostar",
+          "logo": "https://placehold.co/100x100/e6f7ff/0050b3?text=EU",
+          "depTime": "10:24 AM",
+          "arrTime": "13:47 PM",
+          "duration": "2h 23m",
+          "price": "₹8,500",
+          "from": "LON",
+          "to": "PAR"
+        }
+      ]
+    }
+  },
+  "version": "1.1.0",
+  "lastUpdated": "2026-04-07T02:37:00Z"
+}
