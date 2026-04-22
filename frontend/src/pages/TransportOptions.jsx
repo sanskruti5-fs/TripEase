@@ -14,11 +14,76 @@ const TransportOptions = () => {
     const routeDest = location.state?.plan?.destination || "Goa";
     const travelDate = location.state?.plan?.dates || "14 April 2026";
 
-    // Static Demo Data (Always works)
+    // IATA Mapping for all cities
+    const getIataCode = (city) => {
+        const mapping = {
+            'Goa': 'GOI', 'Mumbai': 'BOM', 'Delhi': 'DEL', 'Jaipur': 'JAI', 'Bangalore': 'BLR',
+            'Hyderabad': 'HYD', 'Chennai': 'MAA', 'Kolkata': 'CCU', 'Udaipur': 'UDR', 'Kochi': 'COK',
+            'Varanasi': 'VNS', 'Rishikesh': 'DED', 'Agra': 'AGR', 'Manali': 'KUU', 'Dubai': 'DXB',
+            'London': 'LHR', 'Paris': 'CDG', 'Tokyo': 'HND', 'New York': 'JFK', 'Bali': 'DPS',
+            'Bangkok': 'BKK', 'Singapore': 'SIN', 'Istanbul': 'IST', 'Rome': 'FCO', 'Amsterdam': 'AMS'
+        };
+        return mapping[city] || 'BOM';
+    };
+
+    const formatApiDate = (dateStr) => {
+        try {
+            const parts = dateStr.split(' ');
+            if (parts.length === 3) {
+                const months = { 'January': '01', 'April': '04', 'May': '05', 'June': '06' }; // Add more as needed
+                return `2026-${months[parts[1]] || '04'}-${parts[0].padStart(2, '0')}`;
+            }
+            return '2026-04-14';
+        } catch (e) { return '2026-04-14'; }
+    };
+
+    const [liveFlights, setLiveFlights] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchFlights = async () => {
+        setLoading(true);
+        const originCode = getIataCode(routeOrigin);
+        const destCode = getIataCode(routeDest);
+        const date = formatApiDate(travelDate);
+
+        try {
+            const res = await fetch(`https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originCode}&to=${destCode}&departDate=${date}`, {
+                headers: {
+                    'X-RapidAPI-Key': '8578e7d3aemshc3f133f7409b184p188149jsn826f94fe7236',
+                    'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
+                }
+            });
+            const data = await res.json();
+            if (data?.data?.flights) {
+                const mapped = data.data.flights.slice(0, 3).map(f => ({
+                    id: f.id,
+                    operator: f.airlineName,
+                    logo: f.airlineLogo,
+                    depTime: f.departureTime,
+                    arrTime: f.arrivalTime,
+                    duration: f.duration,
+                    price: `₹${f.price}`,
+                    from: originCode,
+                    to: destCode
+                }));
+                setLiveFlights(mapped);
+            }
+        } catch (err) {
+            console.error('Flight API failed:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchFlights();
+    }, [routeOrigin, routeDest]);
+
+    // Static Demo Data (Fallbacks)
     const transportData = {
-        flights: [
-            { id: 1, operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', depTime: '06:15 AM', arrTime: '07:30 AM', duration: '1h 15m', price: '₹3,450', from: 'BOM', to: 'GOI' },
-            { id: 2, operator: 'Air India', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=AI', depTime: '10:00 AM', arrTime: '11:20 AM', duration: '1h 20m', price: '₹4,200', from: 'BOM', to: 'GOI' }
+        flights: liveFlights.length > 0 ? liveFlights : [
+            { id: 'f1', operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', depTime: '06:15 AM', arrTime: '07:30 AM', duration: '1h 15m', price: '₹3,450', from: getIataCode(routeOrigin), to: getIataCode(routeDest) },
+            { id: 'f2', operator: 'Air India', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=AI', depTime: '10:00 AM', arrTime: '11:20 AM', duration: '1h 20m', price: '₹4,200', from: getIataCode(routeOrigin), to: getIataCode(routeDest) }
         ],
         trains: [
             { id: 1, operator: 'Tejas Express', logo: 'https://placehold.co/100x100/fff7e6/d46b08?text=TX', depTime: '05:50 AM', arrTime: '13:30 PM', duration: '7h 40m', price: '₹1,850', from: 'CSMT', to: 'MAO' },
@@ -72,7 +137,12 @@ const TransportOptions = () => {
                 </aside>
 
                 <main className="transport-list">
-                    {currentData.length > 0 ? (
+                    {loading && activeTab === 'flights' ? (
+                        <div className="loading-flights">
+                            <div className="spinner"></div>
+                            <p>Fetching real-time flights for {routeDest}...</p>
+                        </div>
+                    ) : currentData.length > 0 ? (
                         currentData.map(item => (
                             <div className={`transport-card ${selectedTransport?.id === item.id ? 'selected' : ''}`} key={item.id}>
                                 <div className="card-left">
