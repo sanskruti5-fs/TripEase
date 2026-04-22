@@ -108,7 +108,9 @@ const TripPlanner = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     days: formData.days,
-                    vibe: formData.tripType || 'relaxing'
+                    vibe: formData.tripType || 'relaxing',
+                    origin: formData.origin,
+                    destination: formData.destination
                 })
             });
 
