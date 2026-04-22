@@ -15,6 +15,7 @@ const AIItinerary = () => {
     const navigate = useNavigate();
     const itineraryRef = useRef(null);
     const [expandedDay, setExpandedDay] = useState(0);
+    const [isDownloading, setIsDownloading] = useState(false);
     const { plan, tripDetails } = location.state || {};
 
     if (!plan || !plan.itinerary || !tripDetails) {
@@ -30,6 +31,7 @@ const AIItinerary = () => {
     const handleDownload = async () => {
         if (!itineraryRef.current) return;
         
+        setIsDownloading(true);
         // Temporarily expand all days for capture
         const originalExpanded = expandedDay;
         const allExpanded = true; 
@@ -57,6 +59,8 @@ const AIItinerary = () => {
         } catch (err) {
             console.error('Download Error:', err);
             alert('Failed to generate photo. Please try again.');
+        } finally {
+            setIsDownloading(false);
         }
     };
 
@@ -246,10 +250,12 @@ const AIItinerary = () => {
                     </div>
 
                     <div className="sidebar-promo">
-                        <Map size={24} />
-                        <h4>Want to see this on a map?</h4>
-                        <p>Unlock real-time navigation and live booking.</p>
-                        <button className="btn-save-itinerary">Save Itinerary</button>
+                        <Download size={24} />
+                        <h4>Want to save this plan?</h4>
+                        <p>Download your itinerary as a high-quality poster to share with friends.</p>
+                        <button className="btn-save-itinerary" onClick={handleDownload} disabled={isDownloading}>
+                            {isDownloading ? 'Generating...' : 'Download Poster'}
+                        </button>
                     </div>
                 </aside>
             </div>
