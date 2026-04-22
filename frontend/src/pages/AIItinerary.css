@@ -19,6 +19,30 @@
 /* Header Redesign */
 .ai-itinerary-header {
     margin-bottom: 60px;
+    position: relative;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+    margin-bottom: 15px; /* Shift lower from the top edge */
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.back-btn:hover {
+    background: #f8f9fa;
+    transform: translateX(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
 .header-flex {

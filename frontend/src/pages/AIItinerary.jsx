@@ -34,34 +34,38 @@ const AIItinerary = () => {
         setIsDownloading(true);
         // Temporarily expand all days for capture
         const originalExpanded = expandedDay;
-        const allExpanded = true; 
+        setExpandedDay('ALL'); 
         
-        try {
-            const canvas = await html2canvas(itineraryRef.current, {
-                useCORS: true,
-                scale: 2,
-                backgroundColor: '#ffffff',
-                windowWidth: 1200,
-                onclone: (clonedDoc) => {
-                    const header = clonedDoc.querySelector('.photo-header');
-                    const noCapture = clonedDoc.querySelector('.no-capture');
-                    const contents = clonedDoc.querySelectorAll('.day-content-wrapper');
-                    if (header) header.style.display = 'block';
-                    if (noCapture) noCapture.style.display = 'none';
-                    contents.forEach(el => el.style.display = 'block');
-                }
-            });
-            
-            const link = document.createElement('a');
-            link.download = `TripEase-${tripDetails.destination}-Itinerary.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        } catch (err) {
-            console.error('Download Error:', err);
-            alert('Failed to generate photo. Please try again.');
-        } finally {
-            setIsDownloading(false);
-        }
+        // Wait for Framer Motion to expand all elements in DOM
+        setTimeout(async () => {
+            try {
+                const canvas = await html2canvas(itineraryRef.current, {
+                    useCORS: true,
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    windowWidth: 1200,
+                    onclone: (clonedDoc) => {
+                        const header = clonedDoc.querySelector('.photo-header');
+                        const noCapture = clonedDoc.querySelector('.no-capture');
+                        const contents = clonedDoc.querySelectorAll('.day-content-wrapper');
+                        if (header) header.style.display = 'block';
+                        if (noCapture) noCapture.style.display = 'none';
+                        contents.forEach(el => el.style.display = 'block');
+                    }
+                });
+                
+                const link = document.createElement('a');
+                link.download = `TripEase-${tripDetails.destination}-Itinerary.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } catch (err) {
+                console.error('Download Error:', err);
+                alert('Failed to generate photo. Please try again.');
+            } finally {
+                setExpandedDay(originalExpanded);
+                setIsDownloading(false);
+            }
+        }, 500);
     };
 
     const groupActivities = (activities) => {
@@ -135,7 +139,7 @@ const AIItinerary = () => {
                 <div className="itinerary-grid">
                     {plan.itinerary.map((day, idx) => {
                         const groups = groupActivities(day.activities);
-                        const isExpanded = expandedDay === idx;
+                        const isExpanded = expandedDay === idx || expandedDay === 'ALL';
 
                         return (
                             <motion.div 
