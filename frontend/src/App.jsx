@@ -7,7 +7,6 @@ import TripPlanner from './pages/TripPlanner.jsx'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import RealTimePlanner from './pages/RealTimePlanner'
-import TripCostBar from './components/TripCostBar'
 
 
 import FoodMarket from './pages/FoodMarket'
@@ -42,7 +41,6 @@ function App() {
           <Route path="/ai-itinerary" element={<ProtectedRoute><AIItinerary /></ProtectedRoute>} />
         </Routes>
       </main>
-      <TripCostBar />
       <Footer />
       <BackToTop />
     </>

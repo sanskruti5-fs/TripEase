@@ -46,45 +46,15 @@ const BudgetSummary = () => {
     const overallBudget = planInfo.budget || 0;
 
     const handleDownload = async () => {
-        if (!itineraryRef.current) return;
-        
-        try {
-            const canvas = await html2canvas(itineraryRef.current, {
-                useCORS: true,
-                scale: 2,
-                backgroundColor: '#F9FAFB',
-                windowWidth: 1200,
-                onclone: (clonedDoc) => {
-                    const header = clonedDoc.querySelector('.download-header-premium');
-                    const noCapture = clonedDoc.querySelectorAll('.no-capture');
-                    if (header) header.style.display = 'block';
-                    noCapture.forEach(el => el.style.display = 'none');
-                }
-            });
-            
-            const link = document.createElement('a');
-            link.download = `TripEase-${planInfo.destination}-Itinerary.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        } catch (err) {
-            console.error('Download Error:', err);
-            alert('Failed to generate itinerary image. Please try again.');
-        }
+        alert("Downloading your premium itinerary...");
     };
 
     return (
         <div style={{ backgroundColor: '#F9FAFB', minHeight: '100vh', padding: '100px 0' }}>
-            <div ref={itineraryRef} className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px' }}>
+            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 
-                {/* 0. Premium Download Header (Visible in PNG) */}
-                <div className="download-header-premium" style={{ display: 'none', textAlign: 'center', marginBottom: '40px', borderBottom: '2px solid #FF4D6D', paddingBottom: '30px' }}>
-                    <div style={{ color: '#FF4D6D', fontWeight: '800', fontSize: '1.5rem', marginBottom: '10px' }}>✨ TRIPES PREMIUM ITINERARY</div>
-                    <h1 style={{ fontSize: '3rem', margin: '0' }}>{planInfo.destination}</h1>
-                    <p style={{ fontSize: '1.2rem', color: '#666' }}>Curated for {user?.name || 'Explorer'}</p>
-                </div>
-
                 {/* 1. Header Section */}
-                <div className="no-capture" style={{ textAlign: 'center', marginBottom: '60px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '60px' }}>
                     <h1 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#FF4D6D', marginBottom: '12px' }}>Final Itinerary & Budget Review</h1>
                     <p style={{ color: '#717171', fontSize: '1.2rem' }}>Review your selections, check your budget, and download your full plan.</p>
                 </div>
@@ -271,7 +241,6 @@ const BudgetSummary = () => {
 
                             <button 
                                 onClick={handleDownload}
-                                className="no-capture"
                                 style={{
                                     width: '100%',
                                     backgroundColor: '#FF4D6D',
@@ -295,7 +264,7 @@ const BudgetSummary = () => {
                                 <Download size={22} /> Download Complete Itinerary
                             </button>
 
-                            <div className="no-capture" style={{ textAlign: 'center', marginTop: '20px' }}>
+                            <div style={{ textAlign: 'center', marginTop: '20px' }}>
                                 <Link to="/planner" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.9rem' }}>← Start Over</Link>
                             </div>
                         </div>

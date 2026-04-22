@@ -191,35 +191,23 @@ Day 3: Local market shopping & Departure.`;
                             </div>
 
                             <div className="featured-section">
-                                <label className="section-label">Featured Travel Destinations</label>
+                                <label className="section-label">Popular Verified Destinations</label>
                                 <div className="city-grid">
-                                    {popularCities.filter(c => typeof c === 'object').map(city => {
-                                        // Asset resolution for featured cities
-                                        let displayImg = city.img;
-                                        if (city.name.toLowerCase() === 'jaipur') displayImg = '/images/jaipur/vintage.png';
-                                        if (city.name.toLowerCase() === 'goa') displayImg = '/images/goa/modern.png';
-                                        if (city.name.toLowerCase() === 'mumbai') displayImg = '/images/mumbai/moody.png';
-
-                                        return (
-                                            <motion.div
-                                                whileHover={{ y: -10, scale: 1.02 }}
-                                                whileTap={{ scale: 0.98 }}
-                                                key={city.name}
-                                                onClick={() => selectDestination(city.name)}
-                                                className={`vintage-city-card ${formData.destination === city.name ? 'selected' : ''}`}
-                                            >
-                                                <div className="poster-frame">
-                                                    <img src={displayImg} alt={city.name} />
-                                                    <div className="poster-overlay">
-                                                        <div className="poster-text">
-                                                            <span className="poster-city-name">{city.name}</span>
-                                                            <div className="poster-badge"><Star size={10} fill="currentColor" /> Premium</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                        );
-                                    })}
+                                    {popularCities.filter(c => typeof c === 'object').map(city => (
+                                        <motion.div
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            key={city.name}
+                                            onClick={() => selectDestination(city.name)}
+                                            className={`city-card ${formData.destination === city.name ? 'selected' : ''}`}
+                                        >
+                                            <img src={city.img} alt={city.name} />
+                                            <div className="city-card-overlay">
+                                                <span className="city-name">{city.name}</span>
+                                                <div className="verified-badge"><CheckCircle2 size={12} /> Verified</div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
                                 </div>
                             </div>
 

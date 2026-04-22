@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, CheckCircle } from 'lucide-react';
-import { useTrip } from '../context/TripContext';
 
 const mockGuides = [
     { id: 'g1', name: 'Rahul Sharma', experience: '5 years', rating: 4.8, pricePerDay: 800, image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80' },
@@ -26,9 +25,9 @@ const galleryImages = [
 const GuidesReviews = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { toggleItem, isSelected } = useTrip();
     const planInfo = location.state?.plan;
 
+    const [selectedGuide, setSelectedGuide] = useState(null);
     const [guidesData, setGuidesData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -80,9 +79,18 @@ const GuidesReviews = () => {
     });
 
     const handleNext = () => {
+        // Total guide cost depends on number of days (from planInfo.days)
+        const guideCost = selectedGuide ? (selectedGuide.pricePerDay * planInfo.days) : 0;
+
         navigate('/accommodation', {
             state: {
-                ...location.state
+                plan: { ...planInfo, guideCost },
+                selectedAttractions: location.state?.selectedAttractions || [],
+                selectedFoods: location.state?.selectedFoods || [],
+                selectedMarkets: location.state?.selectedMarkets || [],
+                selectedStay: location.state?.selectedStay,
+                selectedTransport: location.state?.selectedTransport,
+                selectedGuide: selectedGuide
             }
         });
     };
@@ -123,12 +131,25 @@ const GuidesReviews = () => {
                                     padding: '24px',
                                     display: 'flex',
                                     gap: '24px',
-                                    boxShadow: isSelected('guide', guide) ? '0 0 0 3px var(--primary-color)' : 'var(--shadow-sm)',
+                                    boxShadow: selectedGuide?.id === guide.id ? '0 0 0 3px var(--primary-color)' : 'var(--shadow-sm)',
                                     alignItems: 'center',
-                                    cursor: 'pointer',
-                                    position: 'relative'
+                                    cursor: 'pointer'
                                 }}
-                                onClick={() => toggleItem('guide', guide)}
+                                onClick={() => {
+                                    if (selectedGuide?.id !== guide.id) {
+                                        const baseFoodCost = planInfo.days * 800;
+                                        const transportCost = planInfo.transportMode ? planInfo.transportMode.price : 0;
+                                        const extraFoodCost = planInfo.extraFoodCost || 0;
+                                        const spentSoFar = transportCost + baseFoodCost + extraFoodCost;
+                                        const cost = guide.pricePerDay * planInfo.days;
+
+                                        if (spentSoFar + cost > planInfo.budget) {
+                                            alert(`Selecting ${guide.name} exceeds your overall budget of ₹${planInfo.budget.toLocaleString('en-IN')}! Try a different option.`);
+                                            return;
+                                        }
+                                    }
+                                    setSelectedGuide(selectedGuide?.id === guide.id ? null : guide);
+                                }}
                             >
                                 <img
                                     src={guide.image}
@@ -141,23 +162,9 @@ const GuidesReviews = () => {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F59E0B', margin: '4px 0' }}>
                                         <Star size={14} fill="currentColor" /> {guide.rating}
                                     </div>
-                                    <div style={{ fontWeight: '600', color: 'var(--primary-color)' }}>₹{guide.pricePerDay || guide.price} / day</div>
-                                    
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px', cursor: 'pointer' }}>
-                                        <input 
-                                            type="checkbox" 
-                                            id={`guide-${guide.id}`} 
-                                            checked={isSelected('guide', guide)} 
-                                            onChange={(e) => {
-                                                e.stopPropagation();
-                                                toggleItem('guide', guide);
-                                            }} 
-                                            style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}
-                                        />
-                                        <label htmlFor={`guide-${guide.id}`} style={{ fontWeight: '600', color: '#222', fontSize: '0.9rem', cursor: 'pointer' }} onClick={(e) => e.stopPropagation()}>Add to Itinerary</label>
-                                    </div>
+                                    <div style={{ fontWeight: '600', color: 'var(--primary-color)' }}>₹{guide.pricePerDay} / day</div>
                                 </div>
-                                {isSelected('guide', guide) && <CheckCircle color="var(--primary-color)" style={{ position: 'absolute', top: '15px', right: '15px' }} />}
+                                {selectedGuide?.id === guide.id && <CheckCircle color="var(--primary-color)" />}
                             </motion.div>
                         ))}
                     </div>

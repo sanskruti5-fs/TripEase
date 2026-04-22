@@ -163,74 +163,52 @@
   gap: 16px;
 }
 
-.vintage-city-card {
-  height: 220px;
-  border-radius: 12px;
+.city-card {
+  height: 100px;
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  background: #fdfaf6;
-  padding: 8px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  border: 1px solid #e0d5c1;
 }
 
-.poster-frame {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  border-radius: 6px;
-  border: 1px solid rgba(0,0,0,0.1);
-}
-
-.poster-frame img {
+.city-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 0.4s ease;
 }
 
-.vintage-city-card:hover .poster-frame img {
-  transform: scale(1.1) rotate(1deg);
+.city-card:hover img {
+  transform: scale(1.1);
 }
 
-.poster-overlay {
+.city-card.selected {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.city-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 15px;
+  padding: 12px;
   color: white;
 }
 
-.poster-city-name {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+.city-name {
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
-.poster-badge {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #FFD700;
+.verified-badge {
+  font-size: 0.65rem;
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-top: 4px;
-  font-weight: 700;
-}
-
-.vintage-city-card.selected {
-  border: 3px solid #FF4D6D;
-  transform: scale(1.05);
-  box-shadow: 0 15px 30px rgba(255, 77, 109, 0.2);
+  opacity: 0.9;
 }
 
 .divider-with-text {
