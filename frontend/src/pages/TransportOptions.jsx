@@ -1,319 +1,137 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import itineraryData from '../data/itineraryData.json';
+import { TrainFront, Bus, Plane, ChevronRight, Filter, Clock, CreditCard } from 'lucide-react';
 import './TransportOptions.css';
 
 const TransportOptions = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [activeTab, setActiveTab] = useState('flights');
-  const [selectedTransport, setSelectedTransport] = useState(null);
-  
-  // Tasks 1 & 2: State and API Logic
-  const [liveFlights, setLiveFlights] = useState([]);
-  const [liveTrains, setLiveTrains] = useState([]);
-  const [liveBuses, setLiveBuses] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [activeTab, setActiveTab] = useState('flights');
+    const [selectedTransport, setSelectedTransport] = useState(null);
 
-  const routeOrigin = location.state?.plan?.origin || "Mumbai";
-  const routeDest = location.state?.plan?.destination || "Goa";
-  const travelDate = location.state?.plan?.dates || "14 April 2026";
+    // Get origin and destination from state, or use fallbacks
+    const routeOrigin = location.state?.plan?.origin || "Mumbai";
+    const routeDest = location.state?.plan?.destination || "Goa";
+    const travelDate = location.state?.plan?.dates || "14 April 2026";
 
-  const getIataCode = (city) => {
-    const cityName = city.trim();
-    const mapping = {
-      'Goa': { code: 'GOI', region: 'domestic_india' },
-      'Mumbai': { code: 'BOM', region: 'domestic_india' },
-      'Jaipur': { code: 'JAI', region: 'domestic_india' },
-      'Delhi': { code: 'DEL', region: 'domestic_india' },
-      'Hyderabad': { code: 'HYD', region: 'domestic_india' },
-      'Udaipur': { code: 'UDR', region: 'domestic_india' },
-      'Kochi': { code: 'COK', region: 'domestic_india' },
-      'Kolkata': { code: 'CCU', region: 'domestic_india' },
-      'Bengaluru': { code: 'BLR', region: 'domestic_india' },
-      'Varanasi': { code: 'VNS', region: 'domestic_india' },
-      'Rishikesh': { code: 'DED', region: 'domestic_india' },
-      'Leh-Ladakh': { code: 'IXL', region: 'domestic_india' },
-      'Agra': { code: 'AGR', region: 'domestic_india' },
-      'Manali': { code: 'KUU', region: 'domestic_india' },
-      'Chennai': { code: 'MAA', region: 'domestic_india' },
-      'Bali': { code: 'DPS', region: 'international' },
-      'Bangkok': { code: 'BKK', region: 'international' },
-      'Dubai': { code: 'DXB', region: 'international' },
-      'Singapore': { code: 'SIN', region: 'international' },
-      'London': { code: 'LON', region: 'international' },
-      'Paris': { code: 'PAR', region: 'international' },
-      'Tokyo': { code: 'TYO', region: 'international' },
-      'Rome': { code: 'ROM', region: 'international' },
-      'Istanbul': { code: 'IST', region: 'international' },
-      'Barcelona': { code: 'BCN', region: 'international' },
-      'Amsterdam': { code: 'AMS', region: 'international' },
-      'New York': { code: 'NYC', region: 'international' },
-      'Los Angeles': { code: 'LAX', region: 'international' },
-      'Las Vegas': { code: 'LAS', region: 'international' }
+    // Static Demo Data (Always works)
+    const transportData = {
+        flights: [
+            { id: 1, operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', depTime: '06:15 AM', arrTime: '07:30 AM', duration: '1h 15m', price: '₹3,450', from: 'BOM', to: 'GOI' },
+            { id: 2, operator: 'Air India', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=AI', depTime: '10:00 AM', arrTime: '11:20 AM', duration: '1h 20m', price: '₹4,200', from: 'BOM', to: 'GOI' }
+        ],
+        trains: [
+            { id: 1, operator: 'Tejas Express', logo: 'https://placehold.co/100x100/fff7e6/d46b08?text=TX', depTime: '05:50 AM', arrTime: '13:30 PM', duration: '7h 40m', price: '₹1,850', from: 'CSMT', to: 'MAO' },
+            { id: 2, operator: 'Konkan Kanya', logo: 'https://placehold.co/100x100/fff7e6/d46b08?text=KK', depTime: '23:05 PM', arrTime: '10:45 AM', duration: '11h 40m', price: '₹1,250', from: 'CSMT', to: 'MAO' }
+        ],
+        buses: [
+            { id: 1, operator: 'VRL Travels', logo: 'https://placehold.co/100x100/f6ffed/389e0d?text=VRL', depTime: '21:00 PM', arrTime: '08:30 AM', duration: '11h 30m', price: '₹1,100', from: 'Borivali', to: 'Panjim', badge: 'AC Sleeper' },
+            { id: 2, operator: 'Zingbus', logo: 'https://placehold.co/100x100/f6ffed/389e0d?text=ZB', depTime: '22:30 PM', arrTime: '09:00 AM', duration: '10h 30m', price: '₹950', from: 'Sion', to: 'Mapusa', badge: 'Electric AC' }
+        ]
     };
-    const found = Object.keys(mapping).find(k => k.toLowerCase() === cityName.toLowerCase());
-    return found ? mapping[found] : { code: 'BOM', region: 'domestic_india' };
-  };
 
-  const formatApiDate = (dateStr) => {
-    try {
-      const parts = dateStr.split(' ');
-      if (parts.length === 3) {
-        const day = parts[0].padStart(2, '0');
-        const months = { 'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May': '05', 'June': '06', 'July': '07', 'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12' };
-        const month = months[parts[1]] || '04';
-        const year = parts[2];
-        return `${year}-${month}-${day}`;
-      }
-      return '2026-04-14';
-    } catch (err) { return '2026-04-14'; }
-  };
+    const tabs = [
+        { id: 'flights', label: 'Flights', icon: <Plane size={20} /> },
+        { id: 'trains', label: 'Trains', icon: <TrainFront size={20} /> },
+        { id: 'buses', label: 'Buses', icon: <Bus size={20} /> }
+    ];
 
-  const normalizeFlightData = (apiResponse, originCode, destCode) => {
-    if (!apiResponse || !apiResponse.data || !apiResponse.data.flights) return [];
-    return apiResponse.data.flights.slice(0, 5).map((flight, index) => ({
-      id: `live-${index}`,
-      operator: flight.airlineName || 'Airlines',
-      logo: flight.airlineLogo || 'https://placehold.co/100x100/eeeeee/222222?text=FL',
-      depTime: flight.departureTime || '08:00 AM',
-      arrTime: flight.arrivalTime || '10:00 AM',
-      duration: flight.duration || '2h 0m',
-      price: `₹${flight.price || '4,500'}`,
-      from: flight.originCode || originCode,
-      to: flight.destinationCode || destCode
-    }));
-  };
+    const currentData = transportData[activeTab] || [];
 
-  const fetchTransportData = async (type) => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/transport`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ origin: routeOrigin, destination: routeDest, type })
-      });
-      const data = await response.json();
-      return data;
-    } catch (err) { return []; }
-  };
-
-  const fetchAllTransport = async () => {
-    setIsLoading(true);
-    const originInfo = getIataCode(routeOrigin);
-    const destInfo = getIataCode(routeDest);
-    const departDate = formatApiDate(travelDate);
-    const fallbackHub = destInfo.region === 'international' ? 'international' : 'domestic_india';
-
-    try {
-      const flightApiUrl = `https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originInfo.code}&to=${destInfo.code}&departDate=${departDate}`;
-      const flightRes = await fetch(flightApiUrl, {
-        method: 'GET',
-        headers: {
-          'X-RapidAPI-Key': '8578e7d3aemshc3f133f7409b184p188149jsn826f94fe7236',
-          'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
-        }
-      });
-      if (flightRes.ok) {
-        const flightData = await flightRes.json();
-        const norm = normalizeFlightData(flightData, originInfo.code, destInfo.code);
-        setLiveFlights(norm.length > 0 ? norm : (itineraryData.transport[fallbackHub]?.flights || []));
-      } else { setLiveFlights(itineraryData.transport[fallbackHub]?.flights || []); }
-    } catch (e) { setLiveFlights(itineraryData.transport[fallbackHub]?.flights || []); }
-
-    const trains = await fetchTransportData('trains');
-    const buses = await fetchTransportData('buses');
-    setLiveTrains(trains.length > 0 ? trains : []);
-    setLiveBuses(buses.length > 0 ? buses : []);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchAllTransport();
-  }, []);
-
-  const cabsData = [
-    { id: 1, operator: 'Swift Dzire or similar', badge: 'Sedan', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=300&q=80', luggage: '2 Bags', pax: '4 Seats', price: '₹8,500' },
-    { id: 2, operator: 'Innova Crysta', badge: 'SUV', image: 'https://images.unsplash.com/photo-1669022648719-75b244791ee0?auto=format&fit=crop&w=300&q=80', luggage: '4 Bags', pax: '6 Seats', price: '₹12,000' }
-  ];
-
-  return (
-    <div className="transport-page">
-      {/* HEADER & ROUTE */}
-      <div className="transport-header">
-        <h2 className="route-title">{routeOrigin} ➔ {routeDest}</h2>
-        <p className="route-date">{travelDate} | 1 Passenger</p>
-        
-        <div className="transport-tabs">
-          {tabs.map(tab => (
-            <button 
-              key={tab.id}
-              className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setSelectedTransport(null);
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="transport-layout">
-        {/* SIDEBAR FILTERS */}
-        <aside className="filters-sidebar">
-          <h3>Filters</h3>
-          
-          <div className="filter-section">
-            <h4>Price Range</h4>
-            <input type="range" min="500" max="15000" defaultValue="15000" className="filter-slider" />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#666', marginTop: '8px' }}>
-              <span>₹500</span>
-              <span>₹15k+</span>
+    return (
+        <div className="transport-page">
+            <div className="transport-header">
+                <h2 className="route-title">{routeOrigin} ➔ {routeDest}</h2>
+                <p className="route-date">{travelDate} | 1 Adult</p>
+                
+                <div className="transport-tabs">
+                    {tabs.map(tab => (
+                        <button 
+                            key={tab.id}
+                            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => { setActiveTab(tab.id); setSelectedTransport(null); }}
+                        >
+                            {tab.icon} {tab.label}
+                        </button>
+                    ))}
+                </div>
             </div>
-          </div>
 
-          <div className="filter-section">
-            <h4>Departure Time</h4>
-            <label className="filter-option"><input type="checkbox" /> Morning (Before 12 PM)</label>
-            <label className="filter-option"><input type="checkbox" /> Afternoon (12 PM - 6 PM)</label>
-            <label className="filter-option"><input type="checkbox" /> Night (After 6 PM)</label>
-          </div>
+            <div className="transport-layout">
+                <aside className="filters-sidebar">
+                    <div className="filter-title"><Filter size={18} /> Filters</div>
+                    <div className="filter-section">
+                        <h4>Price</h4>
+                        <input type="range" min="500" max="10000" className="filter-slider" />
+                    </div>
+                    <div className="filter-section">
+                        <h4>Timing</h4>
+                        <label className="filter-option"><input type="checkbox" /> Morning</label>
+                        <label className="filter-option"><input type="checkbox" /> Evening</label>
+                    </div>
+                </aside>
 
-          {activeTab === 'buses' && (
-            <div className="filter-section">
-              <h4>Vehicle Type</h4>
-              <label className="filter-option"><input type="checkbox" /> A/C</label>
-              <label className="filter-option"><input type="checkbox" /> Non A/C</label>
-              <label className="filter-option"><input type="checkbox" /> Sleeper</label>
+                <main className="transport-list">
+                    {currentData.length > 0 ? (
+                        currentData.map(item => (
+                            <div className={`transport-card ${selectedTransport?.id === item.id ? 'selected' : ''}`} key={item.id}>
+                                <div className="card-left">
+                                    <img src={item.logo} alt={item.operator} className="operator-logo" />
+                                    <div className="operator-info">
+                                        <h4>{item.operator}</h4>
+                                        {item.badge && <span className="type-badge">{item.badge}</span>}
+                                    </div>
+                                </div>
+                                <div className="card-middle">
+                                    <div className="time-group">
+                                        <div className="time">{item.depTime}</div>
+                                        <div className="city">{item.from}</div>
+                                    </div>
+                                    <div className="duration-group">
+                                        <div className="dur-text">{item.duration}</div>
+                                        <div className="dur-line"></div>
+                                    </div>
+                                    <div className="time-group">
+                                        <div className="time">{item.arrTime}</div>
+                                        <div className="city">{item.to}</div>
+                                    </div>
+                                </div>
+                                <div className="card-right">
+                                    <div className="price-tag">{item.price}</div>
+                                    <button 
+                                        className={`select-btn ${selectedTransport?.id === item.id ? 'active' : ''}`}
+                                        onClick={() => setSelectedTransport(item)}
+                                    >
+                                        {selectedTransport?.id === item.id ? 'Selected' : 'Select'}
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="no-data">
+                            <Clock size={40} color="#ccc" />
+                            <p>No {activeTab} available for this route today.</p>
+                        </div>
+                    )}
+                </main>
             </div>
-          )}
 
-          {activeTab === 'cabs' && (
-            <div className="filter-section">
-              <h4>Cab Type</h4>
-              <label className="filter-option"><input type="checkbox" /> Hatchback</label>
-              <label className="filter-option"><input type="checkbox" /> Sedan</label>
-              <label className="filter-option"><input type="checkbox" /> SUV</label>
-            </div>
-          )}
-        </aside>
-
-        {/* MAIN LIST */}
-        <main className="transport-list">
-          
-          {isLoading ? (
-            <div className="loading-container">
-              <div className="spinner"></div>
-              <p>Magic AI is finding the best transport for you...</p>
-              {[1, 2, 3].map(i => (
-                <div key={i} className="transport-card skeleton">
-                  <div className="card-left"><div className="skeleton-img"></div></div>
-                  <div className="card-middle"><div className="skeleton-line"></div></div>
-                  <div className="card-right"><div className="skeleton-btn"></div></div>
+            <footer className="transport-footer">
+                <div className="footer-price">
+                    {selectedTransport ? (
+                        <>Total: <span className="highlight">{selectedTransport.price}</span></>
+                    ) : 'Select a travel option'}
                 </div>
-              ))}
-            </div>
-          ) : (
-            (activeTab === 'flights' ? liveFlights : activeTab === 'trains' ? liveTrains : activeTab === 'buses' ? liveBuses : []).map(item => {
-              const uniqueId = `${activeTab}-${item.id}`;
-              return (
-              <div className="transport-card" key={uniqueId}>
-                <div className="card-left">
-                  {item.logo ? (
-                    <img src={item.logo} alt={item.operator} className="operator-img"/>
-                  ) : (
-                    <div className="operator-placeholder">{item.operator.substring(0, 1)}</div>
-                  )}
-                  <div className="card-details">
-                    <h4>{item.operator}</h4>
-                    {item.badge && <span className="badge">{item.badge}</span>}
-                  </div>
-                </div>
-                <div className="card-middle">
-                  <div className="time-block">
-                    <div className="time">{item.depTime}</div>
-                    <div className="place">{item.from}</div>
-                  </div>
-                  <div className="duration-block">
-                    <div className="duration-text">{item.duration}</div>
-                    <div className="duration-line"></div>
-                  </div>
-                  <div className="time-block">
-                    <div className="time">{item.arrTime}</div>
-                    <div className="place">{item.to}</div>
-                  </div>
-                </div>
-                <div className="card-right">
-                  <div className="price">{item.price}</div>
-                  <button 
-                    className="btn-select"
-                    style={{ background: selectedTransport?.uniqueId === uniqueId ? '#28a745' : '#FF4D6D' }}
-                    onClick={() => setSelectedTransport(selectedTransport?.uniqueId === uniqueId ? null : { ...item, uniqueId })}
-                  >
-                    {selectedTransport?.uniqueId === uniqueId ? 'Selected' : 'Select'}
-                  </button>
-                </div>
-              </div>
-            )})
-          )}
-
-          {activeTab === 'cabs' && cabsData.map(item => {
-            const uniqueId = `cabs-${item.id}`;
-            return (
-            <div className="transport-card" key={uniqueId}>
-              <div className="card-left" style={{ flex: '1.5' }}>
-                <img src={item.image} alt={item.operator} className="cab-img"/>
-                <div className="card-details">
-                  <h4>{item.operator}</h4>
-                  <span className="badge">{item.badge}</span>
-                  <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '6px' }}>
-                    {item.pax} • {item.luggage}
-                  </div>
-                </div>
-              </div>
-              <div className="card-right">
-                <div className="price">{item.price}</div>
                 <button 
-                  className="btn-select"
-                  style={{ background: selectedTransport?.uniqueId === uniqueId ? '#28a745' : '#FF4D6D' }}
-                  onClick={() => setSelectedTransport(selectedTransport?.uniqueId === uniqueId ? null : { ...item, uniqueId })}
+                    className="review-btn" 
+                    disabled={!selectedTransport}
+                    onClick={() => navigate('/final-review', { state: { ...location.state, selectedTransport } })}
                 >
-                  {selectedTransport?.uniqueId === uniqueId ? 'Selected' : 'Select'}
+                    Review Itinerary <ChevronRight size={20} />
                 </button>
-              </div>
-            </div>
-          )})}
-
-        </main>
-      </div>
-
-      {/* FOOTER */}
-      <footer className="sticky-footer" style={{ justifyContent: 'space-between', padding: '16px 40px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <button className="btn-back" onClick={() => navigate(-1)}>Back</button>
-            {selectedTransport && (
-                <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
-                    Total: <span style={{ color: '#FF4D6D' }}>{selectedTransport.price}</span>
-                </div>
-            )}
+            </footer>
         </div>
-        <button className="btn-primary-next" onClick={() => navigate('/final-review', {
-          state: {
-            plan: { ...location.state?.plan, transportCost: selectedTransport ? parseInt(selectedTransport.price.replace(/[^\d]/g, ''), 10) : 0 },
-            selectedAttractions: location.state?.selectedAttractions || [],
-            selectedFoods: location.state?.selectedFoods || [],
-            selectedMarkets: location.state?.selectedMarkets || [],
-            selectedStay: location.state?.selectedStay,
-            selectedGuide: location.state?.selectedGuide,
-            selectedTransport: selectedTransport
-          }
-        })}>
-          Review Final Itinerary
-        </button>
-      </footer>
-    </div>
-  );
+    );
 };
 
 export default TransportOptions;
