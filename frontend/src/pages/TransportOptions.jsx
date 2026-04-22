@@ -200,57 +200,6 @@ const TransportOptions = () => {
                         </div>
                     )}
                 </main>
-
-                {/* --- LIVE BUDGET SIDEBAR --- */}
-                <div style={{
-                    width: '320px',
-                    position: 'sticky',
-                    top: '100px',
-                    height: 'fit-content',
-                    display: window.innerWidth > 900 ? 'block' : 'none'
-                }}>
-                    <div className="glass-panel" style={{
-                        padding: '24px',
-                        borderRadius: '20px',
-                        backgroundColor: 'white',
-                        border: '1px solid #FF4D6D',
-                        boxShadow: '0 10px 30px rgba(255, 77, 109, 0.1)'
-                    }}>
-                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '15px' }}>
-                            Budget Running Total
-                        </h3>
-                        
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#717171', fontSize: '0.9rem' }}>🏨 Stay:</span>
-                                <span style={{ fontWeight: '600' }}>₹{(planInfo.stayCost || 0).toLocaleString()}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#717171', fontSize: '0.9rem' }}>🏛️ Places:</span>
-                                <span style={{ fontWeight: '600' }}>₹{(planInfo.placesCost || 0).toLocaleString()}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: '#717171', fontSize: '0.9rem' }}>🚗 Transport:</span>
-                                <span style={{ fontWeight: '600', color: '#FF4D6D' }}>
-                                    ₹{selectedTransport ? parseInt(selectedTransport.price.replace(/[^0-9]/g, '')).toLocaleString() : 0}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div style={{ borderTop: '2px solid #FF4D6D', paddingTop: '15px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total Estimate:</span>
-                                <span style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#FF4D6D' }}>
-                                    ₹{(
-                                        (planInfo.stayCost || 0) + 
-                                        (planInfo.placesCost || 0) + 
-                                        (selectedTransport ? parseInt(selectedTransport.price.replace(/[^0-9]/g, '')) : 0)
-                                    ).toLocaleString()}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div className="sticky-footer">
