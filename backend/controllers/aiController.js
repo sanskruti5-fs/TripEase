@@ -32,14 +32,23 @@ async function executeWithRetry(fn, maxRetries = 3, delay = 2000) {
 
 const aiController = {
     async generateItinerary(req, res) {
+        console.log('📥 AI Request Received:', req.body);
         let { destination, budget, duration, days, tripType, vibe, origin } = req.body;
         
         // Sync parameters between frontend and backend
         duration = duration || days;
         tripType = tripType || vibe;
 
+        if (!process.env.GEMINI_API_KEY) {
+            console.error('❌ Configuration Error: GEMINI_API_KEY is not set on the server.');
+            return res.status(500).json({ 
+                error: 'AI service is not configured.', 
+                details: 'The server is missing the GEMINI_API_KEY environment variable.' 
+            });
+        }
+
         if (!destination || !duration || !budget || !tripType) {
-            console.error('Validation Error: Missing parameters', { destination, duration, budget, tripType });
+            console.error('⚠️ Validation Error: Missing parameters', { destination, duration, budget, tripType });
             return res.status(400).json({ error: 'Missing required trip parameters' });
         }
 
