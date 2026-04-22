@@ -61,12 +61,11 @@ const aiController = {
         try {
             console.log(`🚀 Starting AI generation for ${destination} (${duration} days, budget: ₹${budget})`);
             
-            const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
-                generationConfig: {
-                    responseMimeType: "application/json"
-                }
-            });
+            // Using 'gemini-1.5-flash-latest' for better compatibility with v1 API
+            const model = genAI.getGenerativeModel(
+                { model: "gemini-1.5-flash-latest" },
+                { apiVersion: 'v1' }
+            );
 
             const prompt = `
                 Create a detailed, high-quality day-by-day travel itinerary for a trip from ${origin || 'the user\'s location'} to ${destination}.
