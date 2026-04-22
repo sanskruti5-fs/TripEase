@@ -25,7 +25,7 @@ const TripPlanner = () => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    
+    const [plan, setPlan] = useState(null);
     const [formData, setFormData] = useState({
         origin: '',
         destination: '',
@@ -100,12 +100,32 @@ const TripPlanner = () => {
     const handleMagicPlan = async () => {
         setLoading(true);
         setError('');
+        setPlan(null);
+        
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/ai/generate`, formData);
-            navigate('/ai-itinerary', { state: { plan: response.data, tripDetails: formData } });
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/plan`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    days: formData.days,
+                    vibe: formData.tripType || 'relaxing'
+                })
+            });
+
+            if (!response.ok) throw new Error('API request failed');
+            
+            const data = await response.text();
+            setPlan(data);
         } catch (err) {
             console.error('Magic AI error:', err);
-            setError('Failed to generate AI plan. ' + (err.response?.data?.error || err.message));
+            setError('Failed to reach AI. Showing fallback plan.');
+            
+            // Fallback Trip Plan
+            const fallbackPlan = `--- FALLBACK 3-DAY RELAXING PLAN ---
+Day 1: Arrival & Evening beach walk. Dinner at a local seaside cafe.
+Day 2: Spa morning & Botanical garden visit. Sunset boat ride.
+Day 3: Local market shopping & Departure.`;
+            setPlan(fallbackPlan);
         } finally {
             setLoading(false);
         }
@@ -306,6 +326,26 @@ const TripPlanner = () => {
                                     {loading ? <Loader2 className="animate-spin" /> : <>✨ Magic AI Plan</>}
                                 </button>
                             </div>
+
+                            {plan && (
+                                <motion.div 
+                                    initial={{ opacity: 0, y: 20 }} 
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="ai-plan-result"
+                                    style={{ marginTop: '30px', padding: '20px', background: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}
+                                >
+                                    <h3 style={{ marginBottom: '15px', color: 'var(--primary-color)' }}>Your AI Itinerary</h3>
+                                    <pre style={{ 
+                                        whiteSpace: 'pre-wrap', 
+                                        fontFamily: 'inherit', 
+                                        fontSize: '14px', 
+                                        lineHeight: '1.6',
+                                        color: '#333'
+                                    }}>
+                                        {plan}
+                                    </pre>
+                                </motion.div>
+                            )}
                         </motion.div>
                     )}
 
