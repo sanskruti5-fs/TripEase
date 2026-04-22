@@ -35,7 +35,8 @@ const aiController = {
         console.log('📥 AI Request Received:', req.body);
         let { destination, budget, duration, days, tripType, vibe, origin } = req.body;
 
-        if (!process.env.GEMINI_API_KEY) {
+        const key = process.env.GEMINI_API_KEY;
+        if (!key) {
             console.error('❌ Configuration Error: GEMINI_API_KEY is not set on the server.');
             return res.status(500).json({ 
                 error: 'AI service is not configured.', 
@@ -43,7 +44,10 @@ const aiController = {
             });
         }
 
-        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        // Verification log (shows first/last 3 chars)
+        console.log(`🔑 Using API Key: ${key.substring(0, 3)}...${key.substring(key.length - 3)}`);
+
+        const genAI = new GoogleGenerativeAI(key);
         
         // Sync parameters between frontend and backend
         duration = duration || days;
