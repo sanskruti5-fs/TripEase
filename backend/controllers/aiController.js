@@ -59,8 +59,16 @@ const aiController = {
         }
 
         try {
-            // Smart Fallback System: Try different model names in case one is restricted
-        const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro", "gemini-1.0-pro"];
+            // Expanded Fallback System: Try all possible names for the flash and pro models
+        const modelsToTry = [
+            "gemini-1.5-flash", 
+            "gemini-1.5-flash-latest", 
+            "gemini-1.5-flash-001",
+            "gemini-1.5-flash-002",
+            "gemini-2.0-flash",
+            "gemini-pro", 
+            "gemini-1.0-pro"
+        ];
         let result;
         let lastError;
 
