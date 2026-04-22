@@ -86,6 +86,7 @@ const Accommodation = () => {
 
         navigate('/transport', {
             state: {
+                ...location.state,
                 plan: { ...planInfo, stayCost, selectedStay }
             }
         });
