@@ -19,6 +19,72 @@ const TransportOptions = () => {
   const routeDest = location.state?.plan?.destination || "Goa";
   const travelDate = location.state?.plan?.dates || "14 April 2026";
 
+  const getIataCode = (city) => {
+    const cityName = city.trim();
+    const mapping = {
+      'Goa': { code: 'GOI', region: 'domestic_india' },
+      'Mumbai': { code: 'BOM', region: 'domestic_india' },
+      'Jaipur': { code: 'JAI', region: 'domestic_india' },
+      'Delhi': { code: 'DEL', region: 'domestic_india' },
+      'Hyderabad': { code: 'HYD', region: 'domestic_india' },
+      'Udaipur': { code: 'UDR', region: 'domestic_india' },
+      'Kochi': { code: 'COK', region: 'domestic_india' },
+      'Kolkata': { code: 'CCU', region: 'domestic_india' },
+      'Bengaluru': { code: 'BLR', region: 'domestic_india' },
+      'Varanasi': { code: 'VNS', region: 'domestic_india' },
+      'Rishikesh': { code: 'DED', region: 'domestic_india' },
+      'Leh-Ladakh': { code: 'IXL', region: 'domestic_india' },
+      'Agra': { code: 'AGR', region: 'domestic_india' },
+      'Manali': { code: 'KUU', region: 'domestic_india' },
+      'Chennai': { code: 'MAA', region: 'domestic_india' },
+      'Bali': { code: 'DPS', region: 'international' },
+      'Bangkok': { code: 'BKK', region: 'international' },
+      'Dubai': { code: 'DXB', region: 'international' },
+      'Singapore': { code: 'SIN', region: 'international' },
+      'London': { code: 'LON', region: 'international' },
+      'Paris': { code: 'PAR', region: 'international' },
+      'Tokyo': { code: 'TYO', region: 'international' },
+      'Rome': { code: 'ROM', region: 'international' },
+      'Istanbul': { code: 'IST', region: 'international' },
+      'Barcelona': { code: 'BCN', region: 'international' },
+      'Amsterdam': { code: 'AMS', region: 'international' },
+      'New York': { code: 'NYC', region: 'international' },
+      'Los Angeles': { code: 'LAX', region: 'international' },
+      'Las Vegas': { code: 'LAS', region: 'international' }
+    };
+    const found = Object.keys(mapping).find(k => k.toLowerCase() === cityName.toLowerCase());
+    return found ? mapping[found] : { code: 'BOM', region: 'domestic_india' };
+  };
+
+  const formatApiDate = (dateStr) => {
+    try {
+      const parts = dateStr.split(' ');
+      if (parts.length === 3) {
+        const day = parts[0].padStart(2, '0');
+        const months = { 'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May': '05', 'June': '06', 'July': '07', 'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12' };
+        const month = months[parts[1]] || '04';
+        const year = parts[2];
+        return `${year}-${month}-${day}`;
+      }
+      return '2026-04-14';
+    } catch (err) { return '2026-04-14'; }
+  };
+
+  const normalizeFlightData = (apiResponse, originCode, destCode) => {
+    if (!apiResponse || !apiResponse.data || !apiResponse.data.flights) return [];
+    return apiResponse.data.flights.slice(0, 5).map((flight, index) => ({
+      id: `live-${index}`,
+      operator: flight.airlineName || 'Airlines',
+      logo: flight.airlineLogo || 'https://placehold.co/100x100/eeeeee/222222?text=FL',
+      depTime: flight.departureTime || '08:00 AM',
+      arrTime: flight.arrivalTime || '10:00 AM',
+      duration: flight.duration || '2h 0m',
+      price: `₹${flight.price || '4,500'}`,
+      from: flight.originCode || originCode,
+      to: flight.destinationCode || destCode
+    }));
+  };
+
   const fetchTransportData = async (type) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/transport`, {
@@ -28,16 +94,11 @@ const TransportOptions = () => {
       });
       const data = await response.json();
       return data;
-    } catch (err) {
-      console.error(`AI ${type} fetch failed:`, err);
-      return [];
-    }
+    } catch (err) { return []; }
   };
 
   const fetchAllTransport = async () => {
     setIsLoading(true);
-    
-    // Fetch Flights
     const originInfo = getIataCode(routeOrigin);
     const destInfo = getIataCode(routeDest);
     const departDate = formatApiDate(travelDate);
@@ -55,25 +116,14 @@ const TransportOptions = () => {
       if (flightRes.ok) {
         const flightData = await flightRes.json();
         const norm = normalizeFlightData(flightData, originInfo.code, destInfo.code);
-        setLiveFlights(norm.length > 0 ? norm : itineraryData.transport[fallbackHub].flights);
-      } else {
-        setLiveFlights(itineraryData.transport[fallbackHub].flights);
-      }
-    } catch (e) {
-      setLiveFlights(itineraryData.transport[fallbackHub].flights);
-    }
+        setLiveFlights(norm.length > 0 ? norm : (itineraryData.transport[fallbackHub]?.flights || []));
+      } else { setLiveFlights(itineraryData.transport[fallbackHub]?.flights || []); }
+    } catch (e) { setLiveFlights(itineraryData.transport[fallbackHub]?.flights || []); }
 
-    // Fetch AI Trains & Buses
     const trains = await fetchTransportData('trains');
     const buses = await fetchTransportData('buses');
-    
-    setLiveTrains(trains.length > 0 ? trains : [
-      { id: 1, operator: 'Konkan Kanya Exp', depTime: '23:05 PM', arrTime: '10:50 AM', duration: '11h 45m', price: '₹1,450', from: 'CSMT', to: 'MAO' }
-    ]);
-    setLiveBuses(buses.length > 0 ? buses : [
-      { id: 1, operator: 'VRL Travels', badge: 'A/C Sleeper', depTime: '22:00 PM', arrTime: '09:30 AM', duration: '11h 30m', price: '₹1,500', from: 'Sion', to: 'Mapusa' }
-    ]);
-
+    setLiveTrains(trains.length > 0 ? trains : []);
+    setLiveBuses(buses.length > 0 ? buses : []);
     setIsLoading(false);
   };
 
