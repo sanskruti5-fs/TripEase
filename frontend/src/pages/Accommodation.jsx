@@ -84,14 +84,9 @@ const Accommodation = () => {
     const handleNext = () => {
         const stayCost = selectedStay ? (selectedStay.pricePerNight * planInfo.days) : 0;
 
-        navigate('/transport', {
+        navigate('/suggested-places', {
             state: {
-                plan: { ...planInfo, stayCost },
-                selectedAttractions: location.state?.selectedAttractions || [],
-                selectedFoods: location.state?.selectedFoods || [],
-                selectedMarkets: location.state?.selectedMarkets || [],
-                selectedStay: selectedStay,
-                selectedGuide: location.state?.selectedGuide
+                plan: { ...planInfo, stayCost, selectedStay }
             }
         });
     };

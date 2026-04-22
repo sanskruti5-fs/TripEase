@@ -93,7 +93,7 @@ const SuggestedPlaces = () => {
     const handleNext = () => {
         navigate('/food-market', {
             state: {
-                plan: { ...planInfo, selectedPlaces }
+                plan: { ...planInfo, selectedPlaces, placesCost: totalSelectedCost }
             }
         });
     };
@@ -225,18 +225,29 @@ const SuggestedPlaces = () => {
                         </h3>
                         
                         <div style={{ marginBottom: '20px' }}>
-                            <div style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '5px' }}>Total Budget:</div>
+                            <div style={{ color: 'var(--text-light)', fontSize: '0.8rem' }}>Your Budget:</div>
                             <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>₹{planInfo.budget.toLocaleString()}</div>
                         </div>
 
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🏨 Stay:</span>
+                                <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>₹{(planInfo.stayCost || 0).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🏛️ Places:</span>
+                                <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>₹{totalSelectedCost.toLocaleString()}</span>
+                            </div>
+                        </div>
+
                         <div style={{ marginBottom: '25px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                <span style={{ color: 'var(--text-light)' }}>Places Cost:</span>
-                                <span style={{ fontWeight: '600' }}>₹{totalSelectedCost.toLocaleString()}</span>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                                <span style={{ fontWeight: 'bold' }}>Total So Far:</span>
+                                <span style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>₹{( (planInfo.stayCost || 0) + totalSelectedCost).toLocaleString()}</span>
                             </div>
                             <div style={{ width: '100%', height: '8px', background: '#eee', borderRadius: '4px', overflow: 'hidden' }}>
                                 <div style={{ 
-                                    width: `${Math.min(100, (totalSelectedCost / planInfo.budget) * 100)}%`, 
+                                    width: `${Math.min(100, (((planInfo.stayCost || 0) + totalSelectedCost) / planInfo.budget) * 100)}%`, 
                                     height: '100%', 
                                     background: 'var(--primary-color)',
                                     transition: 'width 0.3s ease'
@@ -248,24 +259,19 @@ const SuggestedPlaces = () => {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                                 <div>
                                     <div style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>Remaining:</div>
-                                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: planInfo.budget - totalSelectedCost < 0 ? '#ef4444' : '#10B981' }}>
-                                        ₹{(planInfo.budget - totalSelectedCost).toLocaleString()}
+                                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: planInfo.budget - (planInfo.stayCost || 0) - totalSelectedCost < 0 ? '#ef4444' : '#10B981' }}>
+                                        ₹{(planInfo.budget - (planInfo.stayCost || 0) - totalSelectedCost).toLocaleString()}
                                     </div>
                                 </div>
-                                <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>Selected:</div>
-                                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{selectedPlaces.length} Spots</div>
-                                </div>
+                                <button
+                                    className="btn-primary-custom"
+                                    onClick={handleNext}
+                                    disabled={selectedPlaces.length === 0}
+                                    style={{ padding: '10px 20px', borderRadius: '12px' }}
+                                >
+                                    Continue →
+                                </button>
                             </div>
-
-                            <button
-                                className="btn-primary-custom"
-                                onClick={handleNext}
-                                disabled={selectedPlaces.length === 0}
-                                style={{ width: '100%', borderRadius: '12px' }}
-                            >
-                                Continue →
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -284,8 +290,8 @@ const SuggestedPlaces = () => {
                 alignItems: 'center'
             }}>
                 <div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>Selected Cost:</div>
-                    <div style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>₹{totalSelectedCost.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>Total Cost:</div>
+                    <div style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>₹{((planInfo.stayCost || 0) + totalSelectedCost).toLocaleString()}</div>
                 </div>
                 <button
                     className="btn-primary-custom"

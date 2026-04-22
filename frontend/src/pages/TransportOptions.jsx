@@ -148,8 +148,8 @@ const TransportOptions = () => {
                 </div>
             </div>
 
-            <div className="transport-layout">
-                <aside className="filters-sidebar">
+            <div className="transport-layout container" style={{ display: 'flex', gap: '30px' }}>
+                <aside className="filters-sidebar" style={{ width: '250px' }}>
                     <div className="filter-title"><Filter size={18} /> Filters</div>
                     <div className="filter-section">
                         <h4>Price</h4>
@@ -157,7 +157,7 @@ const TransportOptions = () => {
                     </div>
                 </aside>
 
-                <main className="transport-list">
+                <main className="transport-list" style={{ flex: 1 }}>
                     {(loading && activeTab === 'flights') || (aiLoading && activeTab === 'ground') ? (
                         <div className="loading-flights">
                             <Loader2 className="animate-spin" size={40} />
@@ -211,6 +211,55 @@ const TransportOptions = () => {
                         </div>
                     )}
                 </main>
+
+                {/* --- LIVE BUDGET SIDEBAR --- */}
+                <div style={{
+                    width: '320px',
+                    position: 'sticky',
+                    top: '100px',
+                    height: 'fit-content'
+                }}>
+                    <div className="glass-panel" style={{
+                        padding: '24px',
+                        borderRadius: '20px',
+                        border: '1px solid var(--primary-color)',
+                        boxShadow: '0 10px 30px rgba(255, 56, 92, 0.1)'
+                    }}>
+                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '15px' }}>
+                            Budget Running Total
+                        </h3>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🏨 Stay:</span>
+                                <span style={{ fontWeight: '600' }}>₹{(planInfo.stayCost || 0).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🏛️ Places:</span>
+                                <span style={{ fontWeight: '600' }}>₹{(location.state?.plan?.placesCost || 0).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🚗 Transport:</span>
+                                <span style={{ fontWeight: '600', color: 'var(--primary-color)' }}>
+                                    ₹{selectedTransport ? parseInt(selectedTransport.price.replace(/[^0-9]/g, '')).toLocaleString() : 0}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style={{ borderTop: '2px solid var(--primary-color)', paddingTop: '15px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total Estimate:</span>
+                                <span style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary-color)' }}>
+                                    ₹{(
+                                        (planInfo.stayCost || 0) + 
+                                        (location.state?.plan?.placesCost || 0) + 
+                                        (selectedTransport ? parseInt(selectedTransport.price.replace(/[^0-9]/g, '')) : 0)
+                                    ).toLocaleString()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <footer className="transport-footer">
