@@ -8,7 +8,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import RealTimePlanner from './pages/RealTimePlanner'
 
-import SuggestedPlaces from './pages/SuggestedPlaces'
+
 import FoodMarket from './pages/FoodMarket'
 import GuidesReviews from './pages/GuidesReviews'
 import Accommodation from './pages/Accommodation'
@@ -31,7 +31,7 @@ function App() {
           {/* Protected Routes */}
           <Route path="/planner" element={<ProtectedRoute><TripPlanner /></ProtectedRoute>} />
           <Route path="/real-time-planner" element={<ProtectedRoute><RealTimePlanner /></ProtectedRoute>} />
-          <Route path="/suggested-places" element={<ProtectedRoute><SuggestedPlaces /></ProtectedRoute>} />
+
           <Route path="/food-market" element={<ProtectedRoute><FoodMarket /></ProtectedRoute>} />
           <Route path="/highlights" element={<ProtectedRoute><DestinationHighlights /></ProtectedRoute>} />
           <Route path="/guides" element={<ProtectedRoute><GuidesReviews /></ProtectedRoute>} />
