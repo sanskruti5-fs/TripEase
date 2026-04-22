@@ -47,7 +47,7 @@ const aiController = {
             console.log(`🚀 Starting AI generation for ${destination} (${duration} days, budget: ₹${budget})`);
             
             const model = genAI.getGenerativeModel({ 
-                model: "gemini-2.5-flash",
+                model: "gemini-1.5-flash",
                 generationConfig: {
                     responseMimeType: "application/json"
                 }
@@ -128,7 +128,5 @@ const aiController = {
         }
     }
 };
-
-module.exports = aiController;
 
 module.exports = aiController;
