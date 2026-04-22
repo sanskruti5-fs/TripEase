@@ -134,11 +134,10 @@ const aiController = {
 
         } catch (error) {
             console.error('❌ Gemini API Error:', error.message);
-            console.error('Error Details:', error.stack);
             res.status(500).json({ 
                 error: 'Failed to generate plan with AI.',
-                details: error.message.includes('quota') ? 'API Quota exceeded.' : error.message,
-                debug_info: process.env.NODE_ENV === 'development' ? error.stack : undefined
+                details: error.message,
+                suggestion: 'Check if your API key is correct and active in Google AI Studio.'
             });
         }
     }
