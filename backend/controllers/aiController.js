@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 
 /**
  * Utility to execute async functions with exponential backoff retry.
@@ -34,10 +34,6 @@ const aiController = {
     async generateItinerary(req, res) {
         console.log('📥 AI Request Received:', req.body);
         let { destination, budget, duration, days, tripType, vibe, origin } = req.body;
-        
-        // Sync parameters between frontend and backend
-        duration = duration || days;
-        tripType = tripType || vibe;
 
         if (!process.env.GEMINI_API_KEY) {
             console.error('❌ Configuration Error: GEMINI_API_KEY is not set on the server.');
@@ -46,6 +42,12 @@ const aiController = {
                 details: 'The server is missing the GEMINI_API_KEY environment variable.' 
             });
         }
+
+        const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        
+        // Sync parameters between frontend and backend
+        duration = duration || days;
+        tripType = tripType || vibe;
 
         if (!destination || !duration || !budget || !tripType) {
             console.error('⚠️ Validation Error: Missing parameters', { destination, duration, budget, tripType });
