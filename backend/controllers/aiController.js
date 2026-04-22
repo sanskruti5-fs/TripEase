@@ -59,15 +59,12 @@ const aiController = {
         }
 
         try {
-            // Expanded Fallback System: Try all possible names for the flash and pro models
+            // Prioritizing gemini-2.0-flash as it was confirmed to work for this user
         const modelsToTry = [
+            "gemini-2.0-flash",
             "gemini-1.5-flash", 
             "gemini-1.5-flash-latest", 
-            "gemini-1.5-flash-001",
-            "gemini-1.5-flash-002",
-            "gemini-2.0-flash",
-            "gemini-pro", 
-            "gemini-1.0-pro"
+            "gemini-pro"
         ];
         let result;
         let lastError;
