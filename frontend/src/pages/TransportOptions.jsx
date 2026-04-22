@@ -222,7 +222,7 @@ const TransportOptions = () => {
                 <button 
                     className="review-btn" 
                     disabled={!selectedTransport}
-                    onClick={() => navigate('/final-review', { state: { ...location.state, selectedTransport } })}
+                    onClick={() => navigate('/budget', { state: { ...location.state, selectedTransport } })}
                 >
                     Review Itinerary <ChevronRight size={20} />
                 </button>
