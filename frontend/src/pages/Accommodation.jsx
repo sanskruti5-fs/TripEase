@@ -84,7 +84,7 @@ const Accommodation = () => {
     const handleNext = () => {
         const stayCost = selectedStay ? (selectedStay.pricePerNight * planInfo.days) : 0;
 
-        navigate('/suggested-places', {
+        navigate('/food-market', {
             state: {
                 plan: { ...planInfo, stayCost, selectedStay }
             }
