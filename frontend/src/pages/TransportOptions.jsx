@@ -13,9 +13,10 @@ const TransportOptions = () => {
     const [loading, setLoading] = useState(false);
     const [aiLoading, setAiLoading] = useState(false);
 
-    const routeOrigin = location.state?.plan?.origin || "Mumbai";
-    const routeDest = location.state?.plan?.destination || "Goa";
-    const travelDate = location.state?.plan?.dates || "14 April 2026";
+    const planInfo = location.state?.plan || {};
+    const routeOrigin = planInfo.origin || "Mumbai";
+    const routeDest = planInfo.destination || "Goa";
+    const travelDate = planInfo.dates || "14 April 2026";
 
     const getIataCode = (city) => {
         const mapping = {
@@ -46,21 +47,13 @@ const TransportOptions = () => {
         const date = formatApiDate(travelDate);
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/flights/searchFlights?from=${originCode}&to=${destCode}&departDate=${date}`, {
+            const res = await fetch(`https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originCode}&to=${destCode}&departDate=${date}`, {
                 headers: {
                     'X-RapidAPI-Key': '8578e7d3aemshc3f133f7409b184p188149jsn826f94fe7236',
                     'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
                 }
             });
-            // Wait, my proxy might not be set up for this specific path. 
-            // I'll use the direct RapidAPI URL as before for consistency.
-            const directRes = await fetch(`https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originCode}&to=${destCode}&departDate=${date}`, {
-                headers: {
-                    'X-RapidAPI-Key': '8578e7d3aemshc3f133f7409b184p188149jsn826f94fe7236',
-                    'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
-                }
-            });
-            const data = await directRes.json();
+            const data = await res.json();
             if (data?.data?.flights) {
                 const mapped = data.data.flights.slice(0, 5).map(f => ({
                     id: f.id,
@@ -95,12 +88,11 @@ const TransportOptions = () => {
             setAiTransport(data);
         } catch (err) {
             console.error('AI Transport error:', err);
-            // Fallback hardcoded data
             setAiTransport([
-                { type: 'train', name: 'Shatabdi Express', departure: '06:00 AM', arrival: '01:00 PM', duration: '7h', price: '₹1,250' },
-                { type: 'train', name: 'Rajdhani Exp', departure: '04:30 PM', arrival: '11:00 PM', duration: '6h 30m', price: '₹2,100' },
-                { type: 'bus', name: 'National Travels', departure: '09:00 PM', arrival: '07:30 AM', duration: '10h 30m', price: '₹950' },
-                { type: 'bus', name: 'Orange Tours', departure: '10:30 PM', arrival: '09:00 AM', duration: '10h 30m', price: '₹1,400' }
+                { id: 't1', type: 'train', name: 'Shatabdi Express', departure: '06:00 AM', arrival: '01:00 PM', duration: '7h', price: '₹1,250' },
+                { id: 't2', type: 'train', name: 'Rajdhani Exp', departure: '04:30 PM', arrival: '11:00 PM', duration: '6h 30m', price: '₹2,100' },
+                { id: 'b1', type: 'bus', name: 'National Travels', departure: '09:00 PM', arrival: '07:30 AM', duration: '10h 30m', price: '₹950' },
+                { id: 'b2', type: 'bus', name: 'Orange Tours', departure: '10:30 PM', arrival: '09:00 AM', duration: '10h 30m', price: '₹1,400' }
             ]);
         } finally {
             setAiLoading(false);
@@ -108,15 +100,12 @@ const TransportOptions = () => {
     };
 
     useEffect(() => {
-        fetchFlights();
-    }, [routeOrigin, routeDest]);
-
-    const handleTabChange = (tab) => {
-        setActiveTab(tab);
-        if (tab === 'ground' && aiTransport.length === 0) {
+        if (activeTab === 'flights') {
+            fetchFlights();
+        } else {
             fetchAiTransport();
         }
-    };
+    }, [activeTab, routeOrigin, routeDest]);
 
     const tabs = [
         { id: 'flights', label: 'Flights', icon: <Plane size={20} /> },
@@ -140,7 +129,7 @@ const TransportOptions = () => {
                         <button 
                             key={tab.id}
                             className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-                            onClick={() => handleTabChange(tab.id)}
+                            onClick={() => setActiveTab(tab.id)}
                         >
                             {tab.icon} {tab.label}
                         </button>
@@ -148,8 +137,8 @@ const TransportOptions = () => {
                 </div>
             </div>
 
-            <div className="transport-layout container" style={{ display: 'flex', gap: '30px' }}>
-                <aside className="filters-sidebar" style={{ width: '250px' }}>
+            <div className="transport-layout container">
+                <aside className="filters-sidebar">
                     <div className="filter-title"><Filter size={18} /> Filters</div>
                     <div className="filter-section">
                         <h4>Price</h4>
@@ -157,10 +146,10 @@ const TransportOptions = () => {
                     </div>
                 </aside>
 
-                <main className="transport-list" style={{ flex: 1 }}>
+                <main className="transport-list">
                     {(loading && activeTab === 'flights') || (aiLoading && activeTab === 'ground') ? (
-                        <div className="loading-flights">
-                            <Loader2 className="animate-spin" size={40} />
+                        <div className="loading-container">
+                            <div className="spinner"></div>
                             <p>{activeTab === 'flights' ? 'Fetching live flights...' : 'Magic AI is finding trains and buses...'}</p>
                         </div>
                     ) : currentDisplayData.length > 0 ? (
@@ -168,35 +157,35 @@ const TransportOptions = () => {
                             <div className={`transport-card ${selectedTransport?.id === (item.id || idx) ? 'selected' : ''}`} key={item.id || idx}>
                                 <div className="card-left">
                                     {item.logo ? (
-                                        <img src={item.logo} alt={item.operator} className="operator-logo" />
+                                        <img src={item.logo} alt={item.operator} className="operator-img" />
                                     ) : (
                                         <div className="operator-icon-placeholder">
                                             {item.type === 'train' ? <TrainFront size={24} /> : <Bus size={24} />}
                                         </div>
                                     )}
-                                    <div className="operator-info">
+                                    <div className="card-details">
                                         <h4>{item.operator || item.name}</h4>
-                                        <span className="type-badge">{item.type.toUpperCase()}</span>
+                                        <span className="badge">{item.type.toUpperCase()}</span>
                                     </div>
                                 </div>
                                 <div className="card-middle">
-                                    <div className="time-group">
+                                    <div className="time-block">
                                         <div className="time">{item.departure}</div>
-                                        <div className="city">{item.from || routeOrigin}</div>
+                                        <div className="place">{item.from || routeOrigin}</div>
                                     </div>
-                                    <div className="duration-group">
-                                        <div className="dur-text">{item.duration}</div>
-                                        <div className="dur-line"></div>
+                                    <div className="duration-block">
+                                        <div className="duration-text">{item.duration}</div>
+                                        <div className="duration-line"></div>
                                     </div>
-                                    <div className="time-group">
+                                    <div className="time-block">
                                         <div className="time">{item.arrival}</div>
-                                        <div className="city">{item.to || routeDest}</div>
+                                        <div className="place">{item.to || routeDest}</div>
                                     </div>
                                 </div>
                                 <div className="card-right">
-                                    <div className="price-tag">{item.price}</div>
+                                    <div className="price">{item.price}</div>
                                     <button 
-                                        className={`select-btn ${selectedTransport?.id === (item.id || idx) ? 'active' : ''}`}
+                                        className="btn-select"
                                         onClick={() => setSelectedTransport({ ...item, id: item.id || idx })}
                                     >
                                         {selectedTransport?.id === (item.id || idx) ? 'Selected' : 'Select'}
@@ -217,13 +206,15 @@ const TransportOptions = () => {
                     width: '320px',
                     position: 'sticky',
                     top: '100px',
-                    height: 'fit-content'
+                    height: 'fit-content',
+                    display: window.innerWidth > 900 ? 'block' : 'none'
                 }}>
                     <div className="glass-panel" style={{
                         padding: '24px',
                         borderRadius: '20px',
-                        border: '1px solid var(--primary-color)',
-                        boxShadow: '0 10px 30px rgba(255, 56, 92, 0.1)'
+                        backgroundColor: 'white',
+                        border: '1px solid #FF4D6D',
+                        boxShadow: '0 10px 30px rgba(255, 77, 109, 0.1)'
                     }}>
                         <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '15px' }}>
                             Budget Running Total
@@ -231,28 +222,28 @@ const TransportOptions = () => {
                         
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🏨 Stay:</span>
+                                <span style={{ color: '#717171', fontSize: '0.9rem' }}>🏨 Stay:</span>
                                 <span style={{ fontWeight: '600' }}>₹{(planInfo.stayCost || 0).toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🏛️ Places:</span>
-                                <span style={{ fontWeight: '600' }}>₹{(location.state?.plan?.placesCost || 0).toLocaleString()}</span>
+                                <span style={{ color: '#717171', fontSize: '0.9rem' }}>🏛️ Places:</span>
+                                <span style={{ fontWeight: '600' }}>₹{(planInfo.placesCost || 0).toLocaleString()}</span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>🚗 Transport:</span>
-                                <span style={{ fontWeight: '600', color: 'var(--primary-color)' }}>
+                                <span style={{ color: '#717171', fontSize: '0.9rem' }}>🚗 Transport:</span>
+                                <span style={{ fontWeight: '600', color: '#FF4D6D' }}>
                                     ₹{selectedTransport ? parseInt(selectedTransport.price.replace(/[^0-9]/g, '')).toLocaleString() : 0}
                                 </span>
                             </div>
                         </div>
 
-                        <div style={{ borderTop: '2px solid var(--primary-color)', paddingTop: '15px' }}>
+                        <div style={{ borderTop: '2px solid #FF4D6D', paddingTop: '15px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total Estimate:</span>
-                                <span style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary-color)' }}>
+                                <span style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#FF4D6D' }}>
                                     ₹{(
                                         (planInfo.stayCost || 0) + 
-                                        (location.state?.plan?.placesCost || 0) + 
+                                        (planInfo.placesCost || 0) + 
                                         (selectedTransport ? parseInt(selectedTransport.price.replace(/[^0-9]/g, '')) : 0)
                                     ).toLocaleString()}
                                 </span>
@@ -262,20 +253,20 @@ const TransportOptions = () => {
                 </div>
             </div>
 
-            <footer className="transport-footer">
-                <div className="footer-price">
+            <div className="sticky-footer">
+                <div style={{ fontSize: '1.2rem' }}>
                     {selectedTransport ? (
-                        <>Total: <span className="highlight">{selectedTransport.price}</span></>
-                    ) : 'Select a travel option'}
+                        <>Selected: <span style={{ color: '#FF4D6D', fontWeight: 'bold' }}>{selectedTransport.operator || selectedTransport.name}</span> ({selectedTransport.price})</>
+                    ) : 'Please select a travel option to proceed'}
                 </div>
                 <button 
-                    className="review-btn" 
+                    className="btn-primary-next" 
                     disabled={!selectedTransport}
-                    onClick={() => navigate('/budget', { state: { ...location.state, selectedTransport } })}
+                    onClick={() => navigate('/final-review', { state: { ...location.state, selectedTransport } })}
                 >
-                    Review Itinerary <ChevronRight size={20} />
+                    Review Final Plan <ChevronRight size={20} />
                 </button>
-            </footer>
+            </div>
         </div>
     );
 };
