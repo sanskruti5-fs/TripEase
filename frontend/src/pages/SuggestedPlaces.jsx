@@ -304,7 +304,5 @@ const SuggestedPlaces = () => {
         </div>
     );
 };
-    );
-};
 
 export default SuggestedPlaces;
