@@ -58,54 +58,65 @@ const aiController = {
             return res.status(400).json({ error: 'Missing required trip parameters' });
         }
 
-        try {
-            console.log(`🚀 Starting AI generation for ${destination} (${duration} days, budget: ₹${budget})`);
-            
-            // Using 'gemini-1.5-flash-latest' for better compatibility with v1 API
-            const model = genAI.getGenerativeModel(
-                { model: "gemini-1.5-flash-latest" },
-                { apiVersion: 'v1' }
-            );
+        // Smart Fallback System: Try different model names in case one is restricted
+        const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro", "gemini-1.0-pro"];
+        let result;
+        let lastError;
 
-            const prompt = `
-                Create a detailed, high-quality day-by-day travel itinerary for a trip from ${origin || 'the user\'s location'} to ${destination}.
-                Trip Details:
-                - Duration: ${duration} days
-                - Budget: ₹${budget} (Total)
-                - Vibe/Type: ${tripType}
+        for (const modelName of modelsToTry) {
+            try {
+                console.log(`🤖 Attempting generation with model: ${modelName}...`);
+                const model = genAI.getGenerativeModel({ model: modelName });
                 
-                CRITICAL GUARDRAILS:
-                1. You MUST respect the exact budget of ₹${budget}. Ensure that the sum of estimated costs (activities + dining) stays within this budget.
-                2. The vibe MUST match "${tripType}". Select activities, locations, and dining that perfectly align with this theme.
-                
-                Requirements:
-                1. Provide 3-4 activities per day (Morning, Afternoon, Evening).
-                2. Include one unique local food/restaurant recommendation for each day.
-                3. Categorize the budget into 'Budget' (Affordable), 'Mid-range', or 'Luxury' based on the ₹${budget} limit.
-                4. Keep the tone inspiring and helpful.
-                5. RETURN ONLY A VALID JSON OBJECT matching the structure below.
-                
-                JSON Structure:
-                {
-                  "itinerary": [
+                const prompt = `
+                    Create a detailed, high-quality day-by-day travel itinerary for a trip from ${origin || 'the user\'s location'} to ${destination}.
+                    Trip Details:
+                    - Duration: ${duration} days
+                    - Budget: ₹${budget} (Total)
+                    - Vibe/Type: ${tripType}
+                    
+                    Requirements:
+                    1. Provide 3-4 activities per day (Morning, Afternoon, Evening).
+                    2. Include one unique local food/restaurant recommendation for each day.
+                    3. Categorize the budget into 'Budget', 'Mid-range', or 'Luxury'.
+                    4. RETURN ONLY A VALID JSON OBJECT.
+                    
+                    JSON Structure:
                     {
-                      "day": 1,
-                      "title": "...",
-                      "activities": [
-                        { "time": "Morning", "task": "...", "location": "...", "estCost": "₹XXX" }
+                      "itinerary": [
+                        {
+                          "day": 1,
+                          "title": "...",
+                          "activities": [
+                            { "time": "Morning", "task": "...", "location": "...", "estCost": "₹XXX" }
+                          ],
+                          "dining": { "name": "...", "dish": "...", "type": "..." }
+                        }
                       ],
-                      "dining": { "name": "...", "dish": "...", "type": "..." }
+                      "travelTips": ["..."],
+                      "budgetSummary": "..."
                     }
-                  ],
-                  "travelTips": ["..."],
-                  "budgetSummary": "..."
-                }
-            `;
+                `;
 
-            // Wrap in retry logic
-            const result = await executeWithRetry(() => model.generateContent(prompt));
-            const response = await result.response;
-            let text = response.text();
+                result = await executeWithRetry(() => model.generateContent(prompt));
+                if (result) {
+                    console.log(`✅ Success with model: ${modelName}`);
+                    break; 
+                }
+            } catch (err) {
+                lastError = err;
+                console.warn(`❌ Model ${modelName} failed: ${err.message}`);
+                if (err.message.includes('404') || err.message.includes('not found')) {
+                    continue; // Try next model
+                }
+                throw err; // Stop if it's a non-model error (like 401 or 429)
+            }
+        }
+
+        if (!result) throw lastError;
+
+        const response = await result.response;
+        let text = response.text();
             
             console.log('--- AI RAW RESPONSE START ---');
             console.log(text);
