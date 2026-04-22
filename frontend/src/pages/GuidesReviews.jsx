@@ -27,18 +27,15 @@ const GuidesReviews = () => {
     const navigate = useNavigate();
     const planInfo = location.state?.plan;
 
-    if (!planInfo) {
-        return <Navigate to="/planner" replace />;
-    }
-
-    const destName = planInfo.destination;
-
     const [selectedGuide, setSelectedGuide] = useState(null);
     const [guidesData, setGuidesData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const destName = planInfo?.destination || '';
+
     useEffect(() => {
+        if (!destName) return;
         const fetchGuides = async () => {
             setLoading(true);
             try {
@@ -70,6 +67,10 @@ const GuidesReviews = () => {
 
         fetchGuides();
     }, [destName]);
+
+    if (!planInfo) {
+        return <Navigate to="/planner" replace />;
+    }
 
     const dynamicReviews = mockReviews.map((review, index) => {
         if (index === 0) return { ...review, text: `TripEase made planning our entire trip to ${destName} so effortless!` };

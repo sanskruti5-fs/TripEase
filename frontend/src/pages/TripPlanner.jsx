@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Wallet, CalendarDays, Compass, Users, User, Sun, TreePine, Navigation, Plane, TrainFront, Bus, CheckCircle2, Hotel, ChevronRight, Search, Star, Mountain, Heart, Gem, Landmark, Palmtree, Loader2 } from 'lucide-react';
 import axios from 'axios';
-import itineraryData from '../data/itineraryData.json';
 import './TripPlanner.css';
 
 const popularCities = [

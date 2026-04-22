@@ -12,7 +12,6 @@ const TransportOptions = () => {
   // Tasks 1 & 2: State and API Logic
   const [liveFlights, setLiveFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const routeOrigin = location.state?.plan?.origin || "Mumbai";
   const routeDest = location.state?.plan?.destination || "Goa";
@@ -101,7 +100,7 @@ const TransportOptions = () => {
   // Task 2: Implement the API Fetch Logic (Hybrid Approach)
   const fetchLiveFlights = async () => {
     setIsLoading(true);
-    setError(null);
+    setIsLoading(true);
 
     const originInfo = getIataCode(routeOrigin);
     const destInfo = getIataCode(routeDest);

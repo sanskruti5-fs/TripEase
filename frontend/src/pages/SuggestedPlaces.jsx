@@ -29,18 +29,15 @@ const SuggestedPlaces = () => {
     const navigate = useNavigate();
     const planInfo = location.state?.plan;
 
-    if (!planInfo) {
-        return <Navigate to="/planner" replace />;
-    }
-
-    const destName = planInfo.destination;
-    const tripType = planInfo.tripType || 'relaxation'; // fallback
     const [places, setPlaces] = useState([]);
     const [selectedPlaces, setSelectedPlaces] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const destName = planInfo?.destination || '';
+
     useEffect(() => {
+        if (!destName) return;
         const fetchPlaces = async () => {
             setPlaces([]);
             setSelectedPlaces([]);
@@ -80,6 +77,10 @@ const SuggestedPlaces = () => {
 
         fetchPlaces();
     }, [destName]);
+
+    if (!planInfo) {
+        return <Navigate to="/planner" replace />;
+    }
 
     const togglePlace = (placeId) => {
         setSelectedPlaces(prev =>

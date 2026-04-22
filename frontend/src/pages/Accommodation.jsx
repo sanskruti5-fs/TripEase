@@ -17,19 +17,16 @@ const Accommodation = () => {
     const navigate = useNavigate();
     const planInfo = location.state?.plan;
 
-    if (!planInfo) {
-        return <Navigate to="/planner" replace />;
-    }
-
-    const destName = planInfo.destination;
-    
     const [activeTab, setActiveTab] = useState('all');
     const [selectedStay, setSelectedStay] = useState(null);
     const [accommodationsData, setAccommodationsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const destName = planInfo?.destination || '';
+
     useEffect(() => {
+        if (!destName) return;
         const fetchAccommodations = async () => {
             setAccommodationsData([]);
             setLoading(true);
@@ -75,6 +72,10 @@ const Accommodation = () => {
 
         fetchAccommodations();
     }, [destName]);
+
+    if (!planInfo) {
+        return <Navigate to="/planner" replace />;
+    }
 
     const filteredStays = activeTab === 'all'
         ? accommodationsData
