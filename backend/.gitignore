@@ -1,0 +1,9 @@
+node_modules/
+.env
+*.log
+err.txt
+out.txt
+out2.txt
+test_ai.log
+test_ai2.log
+test_ai3.log
