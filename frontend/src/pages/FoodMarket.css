@@ -1,0 +1,51 @@
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
+.market-carousel {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 24px;
+  scroll-snap-type: x mandatory;
+}
+
+.market-card-swipe {
+  min-width: 300px;
+  scroll-snap-align: start;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.food-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 0;
+  background: white;
+  border-top: 1px solid var(--border-color);
+  z-index: 100;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 768px) {
+  .food-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .market-card-swipe {
+    min-width: 260px;
+  }
+
+  .food-sticky-footer .container {
+    justify-content: center !important;
+  }
+}

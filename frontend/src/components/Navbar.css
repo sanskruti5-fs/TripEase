@@ -1,0 +1,154 @@
+.navbar-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color, #EBEBEB);
+  transition: background 0.3s ease;
+}
+
+.navbar-container {
+  max-width: var(--max-width, 1280px);
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color, #FF385C);
+  text-decoration: none;
+  z-index: 1001;
+}
+
+.navbar-logo span {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Desktop Nav */
+.nav-desktop {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  font-weight: 500;
+}
+
+.nav-link {
+  color: var(--text-dark, #222222);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+}
+
+.nav-cta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Mobile Toggle */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 8px;
+  color: var(--text-dark);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: white;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 100px 40px;
+  gap: 32px;
+  transform: translateY(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-overlay.is-open {
+  transform: translateY(0);
+}
+
+.mobile-nav-link {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.mobile-cta {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .nav-desktop, .nav-cta-desktop {
+    display: none;
+  }
+  
+  .nav-cta-desktop {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .navbar-container {
+    padding: 12px 20px;
+  }
+}
+
+/* Custom Hamburger Animation */
+.hamburger {
+  width: 24px;
+  height: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bar {
+  width: 100%;
+  height: 2px;
+  background-color: var(--text-dark);
+  transition: 0.3s;
+  border-radius: 2px;
+}
+
+.is-open .bar:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.is-open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.is-open .bar:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}
