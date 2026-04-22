@@ -59,12 +59,12 @@ const aiController = {
         }
 
         try {
-            // Prioritizing gemini-2.0-flash as it was confirmed to work for this user
+            // Prioritizing gemini-2.0-flash, then trying gemini-1.5-pro as a high-quality fallback
         const modelsToTry = [
             "gemini-2.0-flash",
+            "gemini-1.5-pro",
             "gemini-1.5-flash", 
-            "gemini-1.5-flash-latest", 
-            "gemini-pro"
+            "gemini-1.5-flash-latest"
         ];
         let result;
         let lastError;
