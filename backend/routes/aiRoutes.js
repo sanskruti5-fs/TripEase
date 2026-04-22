@@ -60,4 +60,60 @@ Return only plain formatted text. Do NOT use markdown symbols like ** or #. Just
     }
 });
 
+router.post('/transport-ai', async (req, res) => {
+    const { origin, destination } = req.body;
+    const apiKey = process.env.GROQ_API_KEY;
+
+    try {
+        const prompt = `
+Generate transport options from ${origin} to ${destination}.
+
+Requirements:
+- Include exactly 2 train options and 2 bus options
+- For each option include:
+  - type (train or bus)
+  - name
+  - departure time
+  - arrival time
+  - duration
+  - price
+- Data should look realistic based on route
+- Do NOT include any other cities
+- Keep it clean and structured
+
+Return response strictly in JSON format like:
+[
+  {
+    "type": "train",
+    "name": "Express Train",
+    "departure": "06:00 AM",
+    "arrival": "02:00 PM",
+    "duration": "8h",
+    "price": "₹1200"
+  }
+]
+        `;
+
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.1-8b-instant',
+                messages: [{ role: 'user', content: prompt }],
+                response_format: { type: "json_object" }
+            })
+        });
+
+        const data = await response.json();
+        const text = data.choices[0].message.content;
+        const jsonMatch = text.match(/\[[\s\S]*\]/);
+        res.json(JSON.parse(jsonMatch ? jsonMatch[0] : text));
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to generate transport with AI' });
+    }
+});
+
 module.exports = router;
