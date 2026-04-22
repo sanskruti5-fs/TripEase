@@ -98,7 +98,7 @@ const SuggestedPlaces = () => {
         });
     };
 
-    // Helper to extract number from price string (e.g., "₹500" -> 500)
+    // Helper to extract number from price string (e.g., "₹500" -> 500) - Force Rebuild
     const parsePrice = (priceStr) => {
         if (!priceStr || priceStr === 'Varies' || priceStr === 'Free') return 0;
         const num = parseInt(priceStr.replace(/[^0-9]/g, ''));
