@@ -58,7 +58,8 @@ const aiController = {
             return res.status(400).json({ error: 'Missing required trip parameters' });
         }
 
-        // Smart Fallback System: Try different model names in case one is restricted
+        try {
+            // Smart Fallback System: Try different model names in case one is restricted
         const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-flash-latest", "gemini-pro", "gemini-1.0-pro"];
         let result;
         let lastError;
