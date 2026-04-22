@@ -5,6 +5,7 @@ import { Wallet, MapPin, Calendar, Users, Download, ArrowRight, CheckCircle, Cam
 import html2canvas from 'html2canvas';
 
 const BudgetSummary = () => {
+    const [isDownloading, setIsDownloading] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     
@@ -46,7 +47,24 @@ const BudgetSummary = () => {
     const overallBudget = planInfo.budget || 0;
 
     const handleDownload = async () => {
-        alert("Downloading your premium itinerary...");
+        setIsDownloading(true);
+        try {
+            const canvas = await html2canvas(itineraryRef.current, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            });
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const link = document.createElement('a');
+            link.download = `TripEase-Itinerary-${planInfo.destination}.jpg`;
+            link.href = dataUrl;
+            link.click();
+        } catch (error) {
+            console.error('Error generating itinerary:', error);
+            alert('Failed to generate itinerary. Please try again.');
+        } finally {
+            setIsDownloading(false);
+        }
     };
 
     return (
@@ -261,13 +279,219 @@ const BudgetSummary = () => {
                                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
                                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                             >
-                                <Download size={22} /> Download Complete Itinerary
+                                <Download size={22} /> {isDownloading ? 'Generating itinerary...' : 'Download Complete Itinerary'}
                             </button>
 
                             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                                 <Link to="/planner" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.9rem' }}>← Start Over</Link>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* HIDDEN ITINERARY FOR DOWNLOAD */}
+            <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '100%', pointerEvents: 'none' }}>
+                <div ref={itineraryRef} style={{ 
+                    width: '900px', 
+                    backgroundColor: '#ffffff', 
+                    padding: '60px', 
+                    fontFamily: '"Inter", "Roboto", sans-serif',
+                    color: '#1f2937'
+                }}>
+                    {/* Header with Destination Image */}
+                    <div style={{ 
+                        position: 'relative', 
+                        height: '280px', 
+                        borderRadius: '24px', 
+                        overflow: 'hidden', 
+                        marginBottom: '40px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        padding: '40px',
+                        color: 'white',
+                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
+                    }}>
+                        {/* Background Image Setup */}
+                        <div style={{
+                            position: 'absolute',
+                            top: 0, left: 0, right: 0, bottom: 0,
+                            backgroundImage: `url(/images/${planInfo.destination.toLowerCase().replace(/\s+/g, '-')}/hero.png), url(/images/tokyo/hero.png)`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            zIndex: 1
+                        }} />
+                        {/* Gradient Overlay */}
+                        <div style={{
+                            position: 'absolute',
+                            top: 0, left: 0, right: 0, bottom: 0,
+                            background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%)',
+                            zIndex: 2
+                        }} />
+                        
+                        {/* Content */}
+                        <div style={{ position: 'relative', zIndex: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div style={{ backgroundColor: 'rgba(255,255,255,0.95)', padding: '10px 20px', borderRadius: '12px' }}>
+                                <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#FF4D6D', margin: 0, letterSpacing: '-1px' }}>TripEase.</h1>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <div style={{ fontSize: '1.1rem', fontWeight: '600', backgroundColor: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', padding: '10px 20px', borderRadius: '20px', display: 'inline-block', border: '1px solid rgba(255,255,255,0.2)' }}>
+                                    🗓️ {planInfo.days} Days • 👥 1 Passenger
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style={{ position: 'relative', zIndex: 3 }}>
+                            <p style={{ fontSize: '1.2rem', margin: '0 0 5px 0', opacity: 0.9, fontWeight: '600', textTransform: 'uppercase', letterSpacing: '2px' }}>Your Trip from {planInfo.origin}</p>
+                            <h2 style={{ fontSize: '3.5rem', fontWeight: '800', margin: 0, textShadow: '0 4px 15px rgba(0,0,0,0.5)' }}>{planInfo.destination}</h2>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '40px' }}>
+                        {/* Left Column */}
+                        <div style={{ flex: 2, display: 'flex', flexDirection: 'column', gap: '30px' }}>
+                            
+                            {/* Transport */}
+                            <div style={{ padding: '25px', backgroundColor: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb' }}>
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 15px 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    ✈️ Intercity Transport
+                                </h3>
+                                {selectedTransport ? (
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <div>
+                                            <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>{selectedTransport.operator || selectedTransport.name}</div>
+                                            <div style={{ color: '#4b5563', marginTop: '4px' }}>{selectedTransport.departure} — {selectedTransport.arrival}</div>
+                                        </div>
+                                        <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>{selectedTransport.price}</div>
+                                    </div>
+                                ) : <div style={{ color: '#6b7280' }}>No transport selected.</div>}
+                            </div>
+
+                            {/* Accommodation */}
+                            <div style={{ padding: '25px', backgroundColor: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb' }}>
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 15px 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    🏨 Accommodation
+                                </h3>
+                                {selectedStay ? (
+                                    <div style={{ display: 'flex', gap: '20px' }}>
+                                        {selectedStay.image && (
+                                            <img src={selectedStay.image} alt="Hotel" style={{ width: '100px', height: '80px', objectFit: 'cover', borderRadius: '10px' }} crossOrigin="anonymous" />
+                                        )}
+                                        <div style={{ flex: 1, display: 'flex', justifyContent: 'space-between' }}>
+                                            <div>
+                                                <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>{selectedStay.name}</div>
+                                                <div style={{ color: '#4b5563', marginTop: '4px' }}>@ {selectedStay.distance}</div>
+                                            </div>
+                                            <div style={{ textAlign: 'right' }}>
+                                                <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>₹ {stayCost.toLocaleString('en-IN')}</div>
+                                                <div style={{ color: '#6b7280', fontSize: '0.9rem' }}>₹{selectedStay.pricePerNight}/night</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : <div style={{ color: '#6b7280' }}>No accommodation selected.</div>}
+                            </div>
+
+                            {/* Places */}
+                            <div style={{ padding: '25px', backgroundColor: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb' }}>
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 15px 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    📍 Places to Visit
+                                </h3>
+                                {selectedAttractions.length > 0 ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                        {selectedAttractions.map((p, i) => (
+                                            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: i !== selectedAttractions.length - 1 ? '1px solid #e5e7eb' : 'none', paddingBottom: i !== selectedAttractions.length - 1 ? '10px' : '0' }}>
+                                                <span style={{ fontWeight: '500' }}>{p.name}</span>
+                                                <span style={{ color: '#4b5563' }}>{p.entryFee > 0 ? `₹${p.entryFee}` : 'Free'}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : <div style={{ color: '#6b7280' }}>No places selected.</div>}
+                            </div>
+
+                            {/* Food */}
+                            <div style={{ padding: '25px', backgroundColor: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb' }}>
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 15px 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    🍽️ Must-Try Local Foods
+                                </h3>
+                                {selectedFoods.length > 0 ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                        {selectedFoods.map((f, i) => (
+                                            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: i !== selectedFoods.length - 1 ? '1px solid #e5e7eb' : 'none', paddingBottom: i !== selectedFoods.length - 1 ? '10px' : '0' }}>
+                                                <div>
+                                                    <span style={{ fontWeight: '500' }}>{f.name}</span>
+                                                    <span style={{ color: '#6b7280', fontSize: '0.9rem', marginLeft: '8px' }}>({f.restaurant})</span>
+                                                </div>
+                                                <span style={{ color: '#4b5563' }}>₹{f.price}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : <div style={{ color: '#6b7280' }}>Baseline daily food assumed.</div>}
+                            </div>
+                        </div>
+
+                        {/* Right Column */}
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '30px' }}>
+                            {/* Markets */}
+                            <div style={{ padding: '25px', backgroundColor: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb' }}>
+                                <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 15px 0', color: '#111827', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    🛍️ Markets
+                                </h3>
+                                {selectedMarkets.length > 0 ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                        {selectedMarkets.map((m, i) => (
+                                            <div key={i} style={{ borderBottom: i !== selectedMarkets.length - 1 ? '1px solid #e5e7eb' : 'none', paddingBottom: i !== selectedMarkets.length - 1 ? '10px' : '0' }}>
+                                                <div style={{ fontWeight: '500' }}>{m.name}</div>
+                                                <div style={{ color: '#6b7280', fontSize: '0.9rem' }}>{m.specialty}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : <div style={{ color: '#6b7280' }}>No markets added.</div>}
+                            </div>
+
+                            {/* Guide */}
+                            {selectedGuide && (
+                                <div style={{ padding: '25px', backgroundColor: '#fffbeb', borderRadius: '16px', border: '1px solid #fde68a' }}>
+                                    <h3 style={{ fontSize: '1.3rem', fontWeight: '700', margin: '0 0 15px 0', color: '#92400e', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        🧑‍🏫 Local Guide
+                                    </h3>
+                                    <div style={{ display: 'flex', gap: '15px' }}>
+                                        {selectedGuide.image && (
+                                            <img src={selectedGuide.image} alt="Guide" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '30px' }} crossOrigin="anonymous" />
+                                        )}
+                                        <div>
+                                            <div style={{ fontWeight: '700' }}>{selectedGuide.name}</div>
+                                            <div style={{ color: '#92400e', fontSize: '0.9rem' }}>₹{guideCost.toLocaleString('en-IN')}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Cost Summary Box */}
+                            <div style={{ 
+                                padding: '30px', 
+                                background: 'linear-gradient(135deg, #FF4D6D 0%, #FF8A9B 100%)', 
+                                borderRadius: '20px',
+                                color: 'white',
+                                marginTop: 'auto',
+                                textAlign: 'center'
+                            }}>
+                                <div style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.9, marginBottom: '10px' }}>
+                                    Total Estimated Cost
+                                </div>
+                                <div style={{ fontSize: '2.8rem', fontWeight: '800', margin: '10px 0' }}>
+                                    ₹ {totalEstimated.toLocaleString('en-IN')}
+                                </div>
+                                <div style={{ fontSize: '0.95rem', opacity: 0.9, paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.3)' }}>
+                                    Budget Limit: ₹ {overallBudget.toLocaleString('en-IN')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div style={{ marginTop: '50px', paddingTop: '20px', borderTop: '2px solid #f3f4f6', textAlign: 'center', color: '#9ca3af', fontSize: '0.9rem', fontWeight: '500' }}>
+                        Generated by TripEase • Plan your next adventure with ease.
                     </div>
                 </div>
             </div>
