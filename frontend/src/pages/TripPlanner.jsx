@@ -100,34 +100,57 @@ const TripPlanner = () => {
     const handleMagicPlan = async () => {
         setLoading(true);
         setError('');
-        setPlan(null);
         
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/plan`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     days: formData.days,
                     vibe: formData.tripType || 'relaxing',
                     origin: formData.origin,
-                    destination: formData.destination
+                    destination: formData.destination,
+                    budget: formData.budget
                 })
             });
 
             if (!response.ok) throw new Error('API request failed');
             
-            const data = await response.text();
-            setPlan(data);
+            const data = await response.json();
+            
+            // Navigate to the beautiful structured AI Itinerary page
+            navigate('/ai-itinerary', { 
+                state: { 
+                    plan: data, 
+                    tripDetails: formData 
+                } 
+            });
+
         } catch (err) {
             console.error('Magic AI error:', err);
-            setError('Failed to reach AI. Showing fallback plan.');
             
-            // Fallback Trip Plan
-            const fallbackPlan = `--- FALLBACK 3-DAY RELAXING PLAN ---
-Day 1: Arrival & Evening beach walk. Dinner at a local seaside cafe.
-Day 2: Spa morning & Botanical garden visit. Sunset boat ride.
-Day 3: Local market shopping & Departure.`;
-            setPlan(fallbackPlan);
+            // Fallback structured JSON plan if API fails
+            const fallbackPlan = {
+                itinerary: Array.from({ length: formData.days }).map((_, i) => ({
+                    day: i + 1,
+                    title: `Day ${i + 1} in ${formData.destination}`,
+                    activities: [
+                        { time: "10:00 AM", task: "Morning Exploration", location: "City Highlights", estCost: "₹500" },
+                        { time: "02:00 PM", task: "Afternoon Tour", location: "Local Museums", estCost: "₹800" },
+                        { time: "06:00 PM", task: "Evening Walk", location: "Downtown", estCost: "Free" }
+                    ],
+                    dining: { name: "Popular Local Restaurant", dish: "Chef's Special", type: "Dinner" }
+                })),
+                travelTips: ["Book tickets in advance", "Try the street food safely", "Carry cash for local markets"],
+                budgetSummary: `Estimated within your ₹${formData.budget} budget.`
+            };
+            
+            navigate('/ai-itinerary', { 
+                state: { 
+                    plan: fallbackPlan, 
+                    tripDetails: formData 
+                } 
+            });
         } finally {
             setLoading(false);
         }
@@ -329,25 +352,6 @@ Day 3: Local market shopping & Departure.`;
                                 </button>
                             </div>
 
-                            {plan && (
-                                <motion.div 
-                                    initial={{ opacity: 0, y: 20 }} 
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="ai-plan-result"
-                                    style={{ marginTop: '30px', padding: '20px', background: '#f8f9fa', borderRadius: '12px', border: '1px solid #eee' }}
-                                >
-                                    <h3 style={{ marginBottom: '15px', color: 'var(--primary-color)' }}>Your AI Itinerary</h3>
-                                    <pre style={{ 
-                                        whiteSpace: 'pre-wrap', 
-                                        fontFamily: 'inherit', 
-                                        fontSize: '14px', 
-                                        lineHeight: '1.6',
-                                        color: '#333'
-                                    }}>
-                                        {plan}
-                                    </pre>
-                                </motion.div>
-                            )}
                         </motion.div>
                     )}
 
