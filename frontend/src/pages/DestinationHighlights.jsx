@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import itineraryData from '../data/itineraryData.json';
+import { useTrip } from '../context/TripContext';
 import './DestinationHighlights.css';
 
 const DestinationHighlights = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toggleItem, isSelected, setDays } = useTrip();
   
-  const [selectedAttractions, setSelectedAttractions] = React.useState([]);
-  const [selectedFoods, setSelectedFoods] = React.useState([]);
-  const [selectedMarkets, setSelectedMarkets] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [apiData, setApiData] = React.useState(null);
 
   // Extract destination from location state or fallback
-  const destinationCity = location.state?.plan?.destination || "Goa";
+  const planInfo = location.state?.plan;
+  const destinationCity = planInfo?.destination || "Goa";
   
+  useEffect(() => {
+    if (planInfo?.days) {
+      setDays(planInfo.days);
+    }
+  }, [planInfo?.days, setDays]);
+
   // 1. Try to find the city data in our JSON
   const hardcodedData = itineraryData.destinations && (
     itineraryData.destinations[destinationCity] || 
@@ -45,7 +51,7 @@ const DestinationHighlights = () => {
                   id: p.id,
                   name: p.place_name || p.name,
                   category: (p.category || 'Attraction').charAt(0).toUpperCase() + (p.category || 'Attraction').slice(1),
-                  entryFee: 0,
+                  price: 0, // Using 'price' for consistency in context
                   description: p.description || `Visit the beautiful ${p.place_name || p.name} in ${destinationCity}.`,
                   image: p.image_url || `https://loremflickr.com/800/600/${encodeURIComponent(destinationCity)},landmark/all?lock=${p.id}`
                 })),
@@ -64,6 +70,7 @@ const DestinationHighlights = () => {
                 .map(p => ({
                   id: p.id,
                   name: p.place_name || p.name,
+                  price: 0,
                   specialty: 'Local shopping, souvenirs, and street culture.',
                   image: p.image_url || `https://loremflickr.com/800/600/market,shopping/all?lock=${p.id}`
                 }))
@@ -80,24 +87,6 @@ const DestinationHighlights = () => {
     }
   }, [destinationCity, hardcodedData, apiData]);
 
-  const toggleAttraction = (place) => {
-    setSelectedAttractions(prev => 
-      prev.some(p => p.name === place.name) ? prev.filter(p => p.name !== place.name) : [...prev, place]
-    );
-  };
-
-  const toggleFood = (dish) => {
-    setSelectedFoods(prev => 
-      prev.some(d => d.name === dish.name) ? prev.filter(d => d.name !== dish.name) : [...prev, dish]
-    );
-  };
-
-  const toggleMarket = (market) => {
-    setSelectedMarkets(prev => 
-      prev.some(m => m.name === market.name) ? prev.filter(m => m.name !== market.name) : [...prev, market]
-    );
-  };
-  
   const cityData = hardcodedData || apiData;
 
   // 4. Loading State
@@ -133,16 +122,53 @@ const DestinationHighlights = () => {
   // 3. Hydrate Destination Highlights Page
   const { places = [], food: foods = [], markets = [] } = cityData || {};
 
+  // Asset Resolver for Premium Headers
+  const getHeroImage = (city) => {
+    const formattedCity = city.toLowerCase().replace(/\s+/g, '-');
+    // Try to find a local hero image
+    const localHero = `/images/${formattedCity}/hero.png`;
+    // Fallback to specific premium ones I generated if they exist
+    if (city.toLowerCase() === 'jaipur') return '/images/jaipur/vintage.png';
+    if (city.toLowerCase() === 'goa') return '/images/goa/modern.png';
+    if (city.toLowerCase() === 'mumbai') return '/images/mumbai/moody.png';
+    
+    return localHero; // Fallback to folder structure
+  };
+
+  const heroImage = getHeroImage(destinationCity);
+
   return (
     <div className="destination-highlights">
-      <div className="destination-header">
-        <h1>{destinationCity} Highlights</h1>
-        <p>Discover the best places to visit, eat, and shop in {destinationCity}</p>
-        {hardcodedData ? (
-            <span style={{ fontSize: '0.8rem', background: '#e1f5fe', color: '#01579b', padding: '4px 12px', borderRadius: '20px', fontWeight: 'bold', marginTop: '10px', display: 'inline-block' }}>✓ Hand-Curated Experience</span>
-        ) : (
-            <span style={{ fontSize: '0.8rem', background: '#fff9c4', color: '#f57f17', padding: '4px 12px', borderRadius: '20px', fontWeight: 'bold', marginTop: '10px', display: 'inline-block' }}>⚡ Real-time Smart Data</span>
-        )}
+      <div className="premium-hero-container">
+        <div 
+          className="hero-background" 
+          style={{ 
+            backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url(${heroImage}), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80')` 
+          }}
+        />
+        <div className="hero-text-overlay">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            {destinationCity}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Experience the soul of {destinationCity}
+          </motion.p>
+          <div className="hero-badges">
+            {hardcodedData ? (
+                <span className="badge-curated">✓ Hand-Curated Experience</span>
+            ) : (
+                <span className="badge-smart">⚡ Real-time Smart Data</span>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* SECTION 1: Must Visit Places */}
@@ -162,15 +188,19 @@ const DestinationHighlights = () => {
                 <span className="category-badge">{place.category}</span>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                   <h3 className="card-title" style={{ marginBottom: 0 }}>{place.name}</h3>
-                  {place.entryFee !== undefined && (
-                    <div style={{ fontWeight: '700', color: '#FF4D6D', fontSize: '0.95rem', whiteSpace: 'nowrap', marginLeft: '12px', background: '#fff0f3', padding: '4px 10px', borderRadius: '12px' }}>
-                      {place.entryFee === 0 ? 'Free Entry' : `₹ ${place.entryFee}`}
-                    </div>
-                  )}
+                  <div style={{ fontWeight: '700', color: '#FF4D6D', fontSize: '0.95rem', whiteSpace: 'nowrap', marginLeft: '12px', background: '#fff0f3', padding: '4px 10px', borderRadius: '12px' }}>
+                    {(place.price || place.entryFee) === 0 ? 'Free Entry' : `₹ ${place.price || place.entryFee}`}
+                  </div>
                 </div>
                 <p className="card-desc">{place.description}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                   <input type="checkbox" id={`toggle-${place.id || idx}`} checked={selectedAttractions.some(p => p.name === place.name)} onChange={() => toggleAttraction(place)} style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}/>
+                   <input 
+                     type="checkbox" 
+                     id={`toggle-${place.id || idx}`} 
+                     checked={isSelected('places', place)} 
+                     onChange={() => toggleItem('places', place)} 
+                     style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}
+                   />
                    <label htmlFor={`toggle-${place.id || idx}`} style={{ fontWeight: '600', color: '#222', fontSize: '0.95rem', cursor: 'pointer' }}>Add to Itinerary</label>
                 </div>
               </div>
@@ -191,15 +221,19 @@ const DestinationHighlights = () => {
               <div className="card-content" style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                   <h3 className="card-title" style={{ marginBottom: 0 }}>{dish.name}</h3>
-                  {dish.price !== undefined && (
-                    <div style={{ fontWeight: '700', color: '#FF4D6D', fontSize: '0.95rem', whiteSpace: 'nowrap', marginLeft: '12px', background: '#fff0f3', padding: '4px 10px', borderRadius: '12px' }}>
-                      ₹ {dish.price}
-                    </div>
-                  )}
+                  <div style={{ fontWeight: '700', color: '#FF4D6D', fontSize: '0.95rem', whiteSpace: 'nowrap', marginLeft: '12px', background: '#fff0f3', padding: '4px 10px', borderRadius: '12px' }}>
+                    ₹ {dish.price}
+                  </div>
                 </div>
                 <p className="card-desc" style={{ flexGrow: 1 }}>{dish.description}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginBottom: '16px' }}>
-                   <input type="checkbox" id={`toggle-food-${dish.id || idx}`} checked={selectedFoods.some(d => d.name === dish.name)} onChange={() => toggleFood(dish)} style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}/>
+                   <input 
+                     type="checkbox" 
+                     id={`toggle-food-${dish.id || idx}`} 
+                     checked={isSelected('food', dish)} 
+                     onChange={() => toggleItem('food', dish)} 
+                     style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}
+                   />
                    <label htmlFor={`toggle-food-${dish.id || idx}`} style={{ fontWeight: '600', color: '#222', fontSize: '0.95rem', cursor: 'pointer' }}>Try this dish</label>
                 </div>
                 <button className="btn-solid btn-outline" style={{ marginTop: 'auto' }}>
@@ -227,7 +261,13 @@ const DestinationHighlights = () => {
                     Famous for: {market.specialty}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', marginTop: 'auto' }}>
-                     <input type="checkbox" id={`toggle-market-${market.id || idx}`} checked={selectedMarkets.some(m => m.name === market.name)} onChange={() => toggleMarket(market)} style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}/>
+                     <input 
+                       type="checkbox" 
+                       id={`toggle-market-${market.id || idx}`} 
+                       checked={isSelected('market', market)} 
+                       onChange={() => toggleItem('market', market)} 
+                       style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}
+                     />
                      <label htmlFor={`toggle-market-${market.id || idx}`} style={{ fontWeight: '600', color: '#222', fontSize: '0.95rem', cursor: 'pointer' }}>Add to Itinerary</label>
                   </div>
                 </div>
@@ -241,7 +281,7 @@ const DestinationHighlights = () => {
       <div className="sticky-footer">
         <button 
           className="btn-solid btn-next-step"
-          onClick={() => navigate('/guides', { state: { plan: location.state?.plan, selectedAttractions, selectedFoods, selectedMarkets } })}
+          onClick={() => navigate('/guides', { state: { ...location.state } })}
         >
           Next Step: Local Guides
         </button>

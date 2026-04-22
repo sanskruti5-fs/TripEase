@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, MapPin, Building, Home, Tent } from 'lucide-react';
+import { Star, MapPin, Building, Home, Tent, CheckCircle } from 'lucide-react';
+import { useTrip } from '../context/TripContext';
 
 const accommodations = [
     { id: 'a1', type: 'hotel', name: 'Grand Horizon Resort', pricePerNight: 4500, rating: 4.8, distance: '1.2 km from center', image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80' },
@@ -15,10 +16,10 @@ const accommodations = [
 const Accommodation = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { toggleItem, isSelected, tripCostData } = useTrip();
     const planInfo = location.state?.plan;
 
     const [activeTab, setActiveTab] = useState('all');
-    const [selectedStay, setSelectedStay] = useState(null);
     const [accommodationsData, setAccommodationsData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -35,18 +36,16 @@ const Accommodation = () => {
                 if (!response.ok) throw new Error('Failed to fetch real-time accommodations');
                 const data = await response.json();
                 
-                // Map backend data to UI format
                 const mapped = data.map(item => ({
                     id: item.id || `h-${Math.random().toString(36).substr(2, 9)}`,
                     type: 'hotel',
                     name: item.place_name,
-                    pricePerNight: Math.floor(Math.random() * (10000 - 1500) + 1500), // Mock price as OSM doesn't provide it
+                    pricePerNight: Math.floor(Math.random() * (10000 - 1500) + 1500),
                     rating: item.rating || (Math.random() * (5.0 - 3.8) + 3.8).toFixed(1),
                     distance: `${(Math.random() * 5 + 0.5).toFixed(1)} km from center`,
                     image: item.image_url || `https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80`
                 }));
 
-                // Fallback to dynamic mock if API returns nothing (e.g. Overpass fails)
                 if (mapped.length === 0) {
                     const fallbackAccommodations = accommodations.map(acc => ({
                         ...acc,
@@ -61,7 +60,6 @@ const Accommodation = () => {
                 const fallbackAccommodations = accommodations.map(acc => ({
                     ...acc,
                     name: `${acc.name} ${destName}`
-                    // fallback logic kept for visual stability
                 }));
                 setAccommodationsData(fallbackAccommodations);
                 setError(err.message);
@@ -82,12 +80,9 @@ const Accommodation = () => {
         : accommodationsData.filter(a => a.type === activeTab);
 
     const handleNext = () => {
-        const stayCost = selectedStay ? (selectedStay.pricePerNight * planInfo.days) : 0;
-
         navigate('/transport', {
             state: {
-                ...location.state,
-                plan: { ...planInfo, stayCost, selectedStay }
+                ...location.state
             }
         });
     };
@@ -99,7 +94,6 @@ const Accommodation = () => {
                 <p style={{ color: 'var(--text-light)', fontSize: '1.2rem' }}>Find the perfect place to rest your head.</p>
             </div>
 
-            {/* Tabs */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '48px', flexWrap: 'wrap' }}>
                 {[
                     { id: 'all', label: 'All Stays', icon: null },
@@ -138,7 +132,7 @@ const Accommodation = () => {
             ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '32px' }}>
                 {filteredStays.map((stay, idx) => {
-                    const isSelected = selectedStay?.id === stay.id;
+                    const selected = isSelected('accommodation', stay);
                     return (
                         <motion.div
                             key={stay.id}
@@ -149,28 +143,13 @@ const Accommodation = () => {
                             style={{
                                 borderRadius: '16px',
                                 overflow: 'hidden',
-                                boxShadow: isSelected ? '0 0 0 3px var(--primary-color)' : 'var(--shadow-sm)',
+                                boxShadow: selected ? '0 0 0 3px var(--primary-color)' : 'var(--shadow-sm)',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                position: 'relative'
                             }}
-                            onClick={() => {
-                                if (selectedStay?.id !== stay.id) {
-                                    const baseFoodCost = planInfo.days * 800;
-                                    const transportCost = planInfo.transportMode ? planInfo.transportMode.price : 0;
-                                    const extraFoodCost = planInfo.extraFoodCost || 0;
-                                    const guideCost = planInfo.guideCost || 0;
-                                    const spentSoFar = transportCost + baseFoodCost + extraFoodCost + guideCost;
-
-                                    const cost = stay.pricePerNight * planInfo.days;
-
-                                    if (spentSoFar + cost > planInfo.budget) {
-                                        alert(`Selecting ${stay.name} exceeds your overall budget of ₹${planInfo.budget.toLocaleString('en-IN')}! Try a different accommodation.`);
-                                        return;
-                                    }
-                                }
-                                setSelectedStay(selectedStay?.id === stay.id ? null : stay);
-                            }}
+                            onClick={() => toggleItem('accommodation', stay)}
                         >
                             <div style={{ height: '220px', width: '100%', position: 'relative' }}>
                                 <img src={stay.image} alt={stay.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -181,6 +160,7 @@ const Accommodation = () => {
                                 }}>
                                     <Star size={14} fill="#F59E0B" color="#F59E0B" /> {stay.rating}
                                 </div>
+                                {selected && <CheckCircle color="var(--primary-color)" style={{ position: 'absolute', top: '15px', left: '15px', background: 'white', borderRadius: '50%' }} />}
                             </div>
 
                             <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -197,12 +177,19 @@ const Accommodation = () => {
                                         <span style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--primary-color)' }}>₹{stay.pricePerNight}</span>
                                         <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}> / night</span>
                                     </div>
-                                    <button
-                                        className={isSelected ? "btn-secondary-custom" : "btn-primary-custom"}
-                                        style={{ padding: '8px 16px' }}
-                                    >
-                                        {isSelected ? 'Selected' : 'Select'}
-                                    </button>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                        <input 
+                                            type="checkbox" 
+                                            id={`stay-${stay.id}`} 
+                                            checked={selected} 
+                                            onChange={(e) => {
+                                                e.stopPropagation();
+                                                toggleItem('accommodation', stay);
+                                            }} 
+                                            style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}
+                                        />
+                                        <label htmlFor={`stay-${stay.id}`} style={{ fontWeight: '600', color: '#222', fontSize: '0.9rem', cursor: 'pointer' }} onClick={(e) => e.stopPropagation()}>Add to Itinerary</label>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
@@ -221,14 +208,14 @@ const Accommodation = () => {
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                         Total Stay Cost: <strong style={{ color: 'var(--primary-color)' }}>
-                            ₹{selectedStay ? (selectedStay.pricePerNight * planInfo.days).toLocaleString('en-IN') : 0}
+                            ₹{tripCostData.accommodation ? (tripCostData.accommodation.pricePerNight * planInfo.days).toLocaleString('en-IN') : 0}
                         </strong> for {planInfo.days} days
                     </div>
                     <button
                         className="btn-primary-custom"
                         onClick={handleNext}
-                        disabled={!selectedStay}
-                        style={{ opacity: !selectedStay ? 0.5 : 1, cursor: !selectedStay ? 'not-allowed' : 'pointer' }}
+                        disabled={!tripCostData.accommodation}
+                        style={{ opacity: !tripCostData.accommodation ? 0.5 : 1, cursor: !tripCostData.accommodation ? 'not-allowed' : 'pointer' }}
                     >
                         Next Step: Plan Transport
                     </button>

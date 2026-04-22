@@ -79,16 +79,28 @@ const AIItinerary = () => {
         return groups;
     };
 
-    const destinationImg = `/images/${tripDetails?.destination.toLowerCase().replace(/\s+/g, '-')}/hero.png`;
+    const getHeroImage = (city) => {
+        const formattedCity = city.toLowerCase().replace(/\s+/g, '-');
+        // Try to find a local hero image
+        const localHero = `/images/${formattedCity}/hero.png`;
+        // Specific premium overrides
+        if (city.toLowerCase() === 'jaipur') return '/images/jaipur/vintage.png';
+        if (city.toLowerCase() === 'goa') return '/images/goa/modern.png';
+        if (city.toLowerCase() === 'mumbai') return '/images/mumbai/moody.png';
+        
+        return localHero;
+    };
+
+    const destinationImg = getHeroImage(tripDetails.destination);
 
     return (
         <div ref={itineraryRef} className="ai-itinerary-container capture-area">
             {/* Photo Header (Visible in capture) */}
             <div className="photo-header">
-                <div className="photo-hero" style={{ backgroundImage: `url(${destinationImg}), url('/images/tokyo/hero.png')` }}>
+                <div className="photo-hero" style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6)), url(${destinationImg}), url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80')` }}>
                     <div className="photo-hero-overlay">
-                        <div className="photo-badge">✨ TRIPES AI PLANNER</div>
-                        <h1>{tripDetails.destination}</h1>
+                        <div className="photo-badge">✨ TRIPES AI PREMIUM PLAN</div>
+                        <h1 style={{ textShadow: '2px 2px 10px rgba(0,0,0,0.5)' }}>{tripDetails.destination}</h1>
                         <p>{tripDetails.days} DAYS • {tripDetails.tripType.toUpperCase()} • ₹{tripDetails.budget}</p>
                     </div>
                 </div>

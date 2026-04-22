@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { TrainFront, Bus, Plane, ChevronRight, Filter, Clock, Loader2 } from 'lucide-react';
+import { TrainFront, Bus, Plane, ChevronRight, Filter, Clock, Loader2, CheckCircle } from 'lucide-react';
+import { useTrip } from '../context/TripContext';
 import './TransportOptions.css';
 
 const TransportOptions = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { toggleItem, isSelected, tripCostData } = useTrip();
     const [activeTab, setActiveTab] = useState('flights');
-    const [selectedTransport, setSelectedTransport] = useState(null);
     const [liveFlights, setLiveFlights] = useState([]);
     const [aiTransport, setAiTransport] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -153,46 +154,57 @@ const TransportOptions = () => {
                             <p>{activeTab === 'flights' ? 'Fetching live flights...' : 'Magic AI is finding trains and buses...'}</p>
                         </div>
                     ) : currentDisplayData.length > 0 ? (
-                        currentDisplayData.map((item, idx) => (
-                            <div className={`transport-card ${selectedTransport?.id === (item.id || idx) ? 'selected' : ''}`} key={item.id || idx}>
-                                <div className="card-left">
-                                    {item.logo ? (
-                                        <img src={item.logo} alt={item.operator} className="operator-img" />
-                                    ) : (
-                                        <div className="operator-icon-placeholder">
-                                            {item.type === 'train' ? <TrainFront size={24} /> : <Bus size={24} />}
+                        currentDisplayData.map((item, idx) => {
+                            const selected = isSelected('transport', item);
+                            return (
+                                <div className={`transport-card ${selected ? 'selected' : ''}`} key={item.id || idx} onClick={() => toggleItem('transport', item)}>
+                                    <div className="card-left">
+                                        {item.logo ? (
+                                            <img src={item.logo} alt={item.operator} className="operator-img" />
+                                        ) : (
+                                            <div className="operator-icon-placeholder">
+                                                {item.type === 'train' ? <TrainFront size={24} /> : <Bus size={24} />}
+                                            </div>
+                                        )}
+                                        <div className="card-details">
+                                            <h4>{item.operator || item.name}</h4>
+                                            <span className="badge">{item.type.toUpperCase()}</span>
                                         </div>
-                                    )}
-                                    <div className="card-details">
-                                        <h4>{item.operator || item.name}</h4>
-                                        <span className="badge">{item.type.toUpperCase()}</span>
+                                    </div>
+                                    <div className="card-middle">
+                                        <div className="time-block">
+                                            <div className="time">{item.departure}</div>
+                                            <div className="place">{item.from || routeOrigin}</div>
+                                        </div>
+                                        <div className="duration-block">
+                                            <div className="duration-text">{item.duration}</div>
+                                            <div className="duration-line"></div>
+                                        </div>
+                                        <div className="time-block">
+                                            <div className="time">{item.arrival}</div>
+                                            <div className="place">{item.to || routeDest}</div>
+                                        </div>
+                                    </div>
+                                    <div className="card-right">
+                                        <div className="price">{item.price}</div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input 
+                                                type="checkbox" 
+                                                id={`transport-${item.id || idx}`} 
+                                                checked={selected} 
+                                                onChange={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleItem('transport', item);
+                                                }} 
+                                                style={{ accentColor: '#FF4D6D', width: '18px', height: '18px', cursor: 'pointer' }}
+                                            />
+                                            <label htmlFor={`transport-${item.id || idx}`} style={{ fontWeight: '600', color: '#222', fontSize: '0.9rem', cursor: 'pointer' }} onClick={(e) => e.stopPropagation()}>Add to Itinerary</label>
+                                        </div>
+                                        {selected && <CheckCircle color="var(--primary-color)" size={20} style={{ marginTop: '8px' }} />}
                                     </div>
                                 </div>
-                                <div className="card-middle">
-                                    <div className="time-block">
-                                        <div className="time">{item.departure}</div>
-                                        <div className="place">{item.from || routeOrigin}</div>
-                                    </div>
-                                    <div className="duration-block">
-                                        <div className="duration-text">{item.duration}</div>
-                                        <div className="duration-line"></div>
-                                    </div>
-                                    <div className="time-block">
-                                        <div className="time">{item.arrival}</div>
-                                        <div className="place">{item.to || routeDest}</div>
-                                    </div>
-                                </div>
-                                <div className="card-right">
-                                    <div className="price">{item.price}</div>
-                                    <button 
-                                        className="btn-select"
-                                        onClick={() => setSelectedTransport({ ...item, id: item.id || idx })}
-                                    >
-                                        {selectedTransport?.id === (item.id || idx) ? 'Selected' : 'Select'}
-                                    </button>
-                                </div>
-                            </div>
-                        ))
+                            );
+                        })
                     ) : (
                         <div className="no-data">
                             <Clock size={40} color="#ccc" />
@@ -204,14 +216,14 @@ const TransportOptions = () => {
 
             <div className="sticky-footer">
                 <div style={{ fontSize: '1.2rem' }}>
-                    {selectedTransport ? (
-                        <>Selected: <span style={{ color: '#FF4D6D', fontWeight: 'bold' }}>{selectedTransport.operator || selectedTransport.name}</span> ({selectedTransport.price})</>
+                    {tripCostData.transport ? (
+                        <>Selected: <span style={{ color: '#FF4D6D', fontWeight: 'bold' }}>{tripCostData.transport.operator || tripCostData.transport.name}</span> ({tripCostData.transport.price})</>
                     ) : 'Please select a travel option to proceed'}
                 </div>
                 <button 
                     className="btn-primary-next" 
-                    disabled={!selectedTransport}
-                    onClick={() => navigate('/final-review', { state: { ...location.state, selectedTransport } })}
+                    disabled={!tripCostData.transport}
+                    onClick={() => navigate('/final-review', { state: { ...location.state } })}
                 >
                     Review Final Plan <ChevronRight size={20} />
                 </button>
