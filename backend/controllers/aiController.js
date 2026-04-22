@@ -156,6 +156,55 @@ const aiController = {
                 suggestion: 'Check if your API key is correct and active in Google AI Studio.'
             });
         }
+    },
+
+    async generateTransport(req, res) {
+        const { origin, destination, type } = req.body;
+        const key = process.env.GEMINI_API_KEY;
+
+        if (!key) return res.status(500).json({ error: 'AI Key missing' });
+
+        const genAI = new GoogleGenerativeAI(key);
+        const modelsToTry = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-pro"];
+        
+        let result;
+        for (const modelName of modelsToTry) {
+            try {
+                const model = genAI.getGenerativeModel({ model: modelName });
+                const prompt = `
+                    Suggest 3 realistic ${type} (train or bus) options for travel from ${origin} to ${destination}.
+                    Format the response as a valid JSON array of objects.
+                    
+                    Structure:
+                    [
+                      {
+                        "id": 1,
+                        "operator": "Name of Train/Bus",
+                        "depTime": "HH:MM AM/PM",
+                        "arrTime": "HH:MM AM/PM",
+                        "duration": "XH XM",
+                        "price": "₹XXXX",
+                        "from": "Station/Stop Name",
+                        "to": "Station/Stop Name",
+                        "badge": "Class/Type (e.g. Sleeper, AC)"
+                      }
+                    ]
+                    RETURN ONLY THE JSON ARRAY.
+                `;
+                result = await model.generateContent(prompt);
+                if (result) break;
+            } catch (err) {
+                console.warn(`Transport AI fallback: ${modelName} failed`);
+            }
+        }
+
+        try {
+            const text = result.response.text();
+            const jsonMatch = text.match(/\[[\s\S]*\]/);
+            res.json(JSON.parse(jsonMatch ? jsonMatch[0] : text));
+        } catch (e) {
+            res.status(500).json({ error: 'Failed to parse transport AI' });
+        }
     }
 };
 

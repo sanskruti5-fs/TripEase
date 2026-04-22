@@ -11,174 +11,75 @@ const TransportOptions = () => {
   
   // Tasks 1 & 2: State and API Logic
   const [liveFlights, setLiveFlights] = useState([]);
+  const [liveTrains, setLiveTrains] = useState([]);
+  const [liveBuses, setLiveBuses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const routeOrigin = location.state?.plan?.origin || "Mumbai";
   const routeDest = location.state?.plan?.destination || "Goa";
   const travelDate = location.state?.plan?.dates || "14 April 2026";
 
-  // Task 2 & Constraint 2: IATA Mapping (Full 27-City Coverage)
-  const getIataCode = (city) => {
-    const cityName = city.trim();
-    const mapping = {
-      // Domestic India
-      'Goa': { code: 'GOI', region: 'domestic_india' },
-      'Mumbai': { code: 'BOM', region: 'domestic_india' },
-      'Jaipur': { code: 'JAI', region: 'domestic_india' },
-      'Delhi': { code: 'DEL', region: 'domestic_india' },
-      'Hyderabad': { code: 'HYD', region: 'domestic_india' },
-      'Udaipur': { code: 'UDR', region: 'domestic_india' },
-      'Kochi': { code: 'COK', region: 'domestic_india' },
-      'Kolkata': { code: 'CCU', region: 'domestic_india' },
-      'Bengaluru': { code: 'BLR', region: 'domestic_india' },
-      'Varanasi': { code: 'VNS', region: 'domestic_india' },
-      'Rishikesh': { code: 'DED', region: 'domestic_india' },
-      'Leh-Ladakh': { code: 'IXL', region: 'domestic_india' },
-      'Agra': { code: 'AGR', region: 'domestic_india' },
-      'Manali': { code: 'KUU', region: 'domestic_india' },
-      'Chennai': { code: 'MAA', region: 'domestic_india' },
-      
-      // International Hubs
-      'Bali': { code: 'DPS', region: 'international' },
-      'Bangkok': { code: 'BKK', region: 'international' },
-      'Dubai': { code: 'DXB', region: 'international' },
-      'Singapore': { code: 'SIN', region: 'international' },
-      'London': { code: 'LON', region: 'international' },
-      'Paris': { code: 'PAR', region: 'international' },
-      'Tokyo': { code: 'TYO', region: 'international' },
-      'Rome': { code: 'ROM', region: 'international' },
-      'Istanbul': { code: 'IST', region: 'international' },
-      'Barcelona': { code: 'BCN', region: 'international' },
-      'Amsterdam': { code: 'AMS', region: 'international' },
-      'New York': { code: 'NYC', region: 'international' },
-      'Los Angeles': { code: 'LAX', region: 'international' },
-      'Las Vegas': { code: 'LAS', region: 'international' }
-    };
-    
-    // Case-insensitive lookup
-    const found = Object.keys(mapping).find(k => k.toLowerCase() === cityName.toLowerCase());
-    return found ? mapping[found] : { code: 'BOM', region: 'domestic_india' };
-  };
-
-  // Constraint 3: Date Formatting (YYYY-MM-DD)
-  const formatApiDate = (dateStr) => {
+  const fetchTransportData = async (type) => {
     try {
-      // Basic parser for "14 April 2026"
-      const parts = dateStr.split(' ');
-      if (parts.length === 3) {
-        const day = parts[0].padStart(2, '0');
-        const months = { 'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May': '05', 'June': '06', 'July': '07', 'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12' };
-        const month = months[parts[1]] || '04';
-        const year = parts[2];
-        return `${year}-${month}-${day}`;
-      }
-      return '2026-04-14';
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/transport`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ origin: routeOrigin, destination: routeDest, type })
+      });
+      const data = await response.json();
+      return data;
     } catch (err) {
-      return '2026-04-14';
-    }
-  };
-
-  // Constraint 1: Strict Data Normalization
-  const normalizeFlightData = (apiResponse, originCode, destCode) => {
-    if (!apiResponse || !apiResponse.data || !apiResponse.data.flights) {
+      console.error(`AI ${type} fetch failed:`, err);
       return [];
     }
-    
-    return apiResponse.data.flights.slice(0, 5).map((flight, index) => ({
-      id: `live-${index}`,
-      operator: flight.airlineName || 'Airlines',
-      logo: flight.airlineLogo || 'https://placehold.co/100x100/eeeeee/222222?text=FL',
-      depTime: flight.departureTime || '08:00 AM',
-      arrTime: flight.arrivalTime || '10:00 AM',
-      duration: flight.duration || '2h 0m',
-      price: `₹${flight.price || '4,500'}`,
-      from: flight.originCode || originCode,
-      to: flight.destinationCode || destCode
-    }));
   };
 
-  // Task 2: Implement the API Fetch Logic (Hybrid Approach)
-  const fetchLiveFlights = async () => {
+  const fetchAllTransport = async () => {
     setIsLoading(true);
-    setIsLoading(true);
-
+    
+    // Fetch Flights
     const originInfo = getIataCode(routeOrigin);
     const destInfo = getIataCode(routeDest);
     const departDate = formatApiDate(travelDate);
-
-    // Determine fallback hub based on destination region
     const fallbackHub = destInfo.region === 'international' ? 'international' : 'domestic_india';
 
     try {
-      // Skyscanner Integration Attempt (Hybrid logic)
-      const apiUrl = `https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originInfo.code}&to=${destInfo.code}&departDate=${departDate}`;
-      
-      const response = await fetch(apiUrl, {
+      const flightApiUrl = `https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originInfo.code}&to=${destInfo.code}&departDate=${departDate}`;
+      const flightRes = await fetch(flightApiUrl, {
         method: 'GET',
         headers: {
           'X-RapidAPI-Key': '8578e7d3aemshc3f133f7409b184p188149jsn826f94fe7236',
           'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
         }
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const normalizedData = normalizeFlightData(data, originInfo.code, destInfo.code);
-      
-      if (normalizedData.length > 0) {
-        setLiveFlights(normalizedData);
+      if (flightRes.ok) {
+        const flightData = await flightRes.json();
+        const norm = normalizeFlightData(flightData, originInfo.code, destInfo.code);
+        setLiveFlights(norm.length > 0 ? norm : itineraryData.transport[fallbackHub].flights);
       } else {
-        // Fallback: Map static data to current search
-        const mappedFallback = itineraryData.transport[fallbackHub].flights.map(f => ({
-          ...f,
-          from: originInfo.code,
-          to: destInfo.code
-        }));
-        setLiveFlights(mappedFallback);
+        setLiveFlights(itineraryData.transport[fallbackHub].flights);
       }
-    } catch (err) {
-      console.warn("API Fetch Failed - Triggering Dynamic Fallback:", err);
-      // Fallback (DYNAMIC): Map static data to current search codes
-      const mappedFallback = itineraryData.transport[fallbackHub].flights.map(f => ({
-        ...f,
-        from: originInfo.code,
-        to: destInfo.code
-      }));
-      setLiveFlights(mappedFallback);
-    } finally {
-      setIsLoading(false);
+    } catch (e) {
+      setLiveFlights(itineraryData.transport[fallbackHub].flights);
     }
+
+    // Fetch AI Trains & Buses
+    const trains = await fetchTransportData('trains');
+    const buses = await fetchTransportData('buses');
+    
+    setLiveTrains(trains.length > 0 ? trains : [
+      { id: 1, operator: 'Konkan Kanya Exp', depTime: '23:05 PM', arrTime: '10:50 AM', duration: '11h 45m', price: '₹1,450', from: 'CSMT', to: 'MAO' }
+    ]);
+    setLiveBuses(buses.length > 0 ? buses : [
+      { id: 1, operator: 'VRL Travels', badge: 'A/C Sleeper', depTime: '22:00 PM', arrTime: '09:30 AM', duration: '11h 30m', price: '₹1,500', from: 'Sion', to: 'Mapusa' }
+    ]);
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchLiveFlights();
+    fetchAllTransport();
   }, []);
-
-  // Fix: Reset scroll on load and tab change to prevent cards hiding under sticky header
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [activeTab]);
-
-  const tabs = [
-    { id: 'flights', label: '✈️ Flights' },
-    { id: 'trains', label: '🚆 Trains' },
-    { id: 'buses', label: '🚌 Buses' },
-    { id: 'cabs', label: '🚕 Cabs & Rentals' }
-  ];
-
-  /* Trains, Buses, Cabs remain static for now */
-  const trainsData = [
-    { id: 1, operator: 'Konkan Kanya Exp', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=IR', depTime: '23:05 PM', arrTime: '10:50 AM', duration: '11h 45m', price: '₹1,450', from: 'CSMT', to: 'MAO' },
-    { id: 2, operator: 'Vande Bharat Exp', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=VB', depTime: '05:25 AM', arrTime: '13:10 PM', duration: '7h 45m', price: '₹2,100', from: 'CSMT', to: 'MAO' }
-  ];
-
-  const busesData = [
-    { id: 1, operator: 'Kallada Travels', badge: 'Volvo A/C Semi-Sleeper', depTime: '21:30 PM', arrTime: '08:00 AM', duration: '10h 30m', price: '₹1,200', from: 'Borivali', to: 'Panjim' },
-    { id: 2, operator: 'VRL Travels', badge: 'A/C Sleeper (2+1)', depTime: '22:00 PM', arrTime: '09:30 AM', duration: '11h 30m', price: '₹1,500', from: 'Sion', to: 'Mapusa' }
-  ];
 
   const cabsData = [
     { id: 1, operator: 'Swift Dzire or similar', badge: 'Sedan', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=300&q=80', luggage: '2 Bags', pax: '4 Seats', price: '₹8,500' },
@@ -251,11 +152,10 @@ const TransportOptions = () => {
         {/* MAIN LIST */}
         <main className="transport-list">
           
-          {isLoading && activeTab === 'flights' ? (
+          {isLoading ? (
             <div className="loading-container">
               <div className="spinner"></div>
-              <p>Searching live airlines...</p>
-              {/* Optional: Add skeleton cards here */}
+              <p>Magic AI is finding the best transport for you...</p>
               {[1, 2, 3].map(i => (
                 <div key={i} className="transport-card skeleton">
                   <div className="card-left"><div className="skeleton-img"></div></div>
@@ -265,14 +165,19 @@ const TransportOptions = () => {
               ))}
             </div>
           ) : (
-            (activeTab === 'flights' ? liveFlights : activeTab === 'trains' ? trainsData : []).map(item => {
+            (activeTab === 'flights' ? liveFlights : activeTab === 'trains' ? liveTrains : activeTab === 'buses' ? liveBuses : []).map(item => {
               const uniqueId = `${activeTab}-${item.id}`;
               return (
               <div className="transport-card" key={uniqueId}>
                 <div className="card-left">
-                  <img src={item.logo} alt={item.operator} className="operator-img"/>
+                  {item.logo ? (
+                    <img src={item.logo} alt={item.operator} className="operator-img"/>
+                  ) : (
+                    <div className="operator-placeholder">{item.operator.substring(0, 1)}</div>
+                  )}
                   <div className="card-details">
                     <h4>{item.operator}</h4>
+                    {item.badge && <span className="badge">{item.badge}</span>}
                   </div>
                 </div>
                 <div className="card-middle">
@@ -302,43 +207,6 @@ const TransportOptions = () => {
               </div>
             )})
           )}
-
-          {activeTab === 'buses' && busesData.map(item => {
-            const uniqueId = `buses-${item.id}`;
-            return (
-            <div className="transport-card" key={uniqueId}>
-              <div className="card-left" style={{ flex: '1.2' }}>
-                <div className="card-details">
-                  <h4>{item.operator}</h4>
-                  <span className="badge">{item.badge}</span>
-                </div>
-              </div>
-              <div className="card-middle">
-                <div className="time-block">
-                  <div className="time">{item.depTime}</div>
-                  <div className="place">{item.from}</div>
-                </div>
-                <div className="duration-block">
-                  <div className="duration-text">{item.duration}</div>
-                  <div className="duration-line"></div>
-                </div>
-                <div className="time-block">
-                  <div className="time">{item.arrTime}</div>
-                  <div className="place">{item.to}</div>
-                </div>
-              </div>
-              <div className="card-right">
-                <div className="price">{item.price}</div>
-                <button 
-                  className="btn-select"
-                  style={{ background: selectedTransport?.uniqueId === uniqueId ? '#28a745' : '#FF4D6D' }}
-                  onClick={() => setSelectedTransport(selectedTransport?.uniqueId === uniqueId ? null : { ...item, uniqueId })}
-                >
-                  {selectedTransport?.uniqueId === uniqueId ? 'Selected' : 'Select'}
-                </button>
-              </div>
-            </div>
-          )})}
 
           {activeTab === 'cabs' && cabsData.map(item => {
             const uniqueId = `cabs-${item.id}`;
