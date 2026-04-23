@@ -47,23 +47,23 @@ const TransportOptions = () => {
         const date = formatApiDate(travelDate);
 
         try {
-            const res = await fetch(`https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights?from=${originCode}&to=${destCode}&departDate=${date}`, {
+            const res = await fetch(`https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights?originSkyId=${originCode}&destinationSkyId=${destCode}&date=${date}`, {
                 headers: {
                     'X-RapidAPI-Key': '8578e7d3aemshc3f133f7409b184p188149jsn826f94fe7236',
-                    'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
+                    'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com'
                 }
             });
             const data = await res.json();
-            if (data?.data?.flights) {
-                const mapped = data.data.flights.slice(0, 5).map(f => ({
+            if (data?.data?.itineraries) {
+                const mapped = data.data.itineraries.slice(0, 5).map(f => ({
                     id: f.id,
                     type: 'flight',
-                    operator: f.airlineName,
-                    logo: f.airlineLogo || 'https://placehold.co/100x100/e6f7ff/0050b3?text=✈️',
-                    departure: f.departureTime,
-                    arrival: f.arrivalTime,
-                    duration: f.duration,
-                    price: `₹${f.price}`,
+                    operator: f.legs[0].carriers.marketing[0].name || 'Airlines',
+                    logo: f.legs[0].carriers.marketing[0].logoUrl || 'https://placehold.co/100x100/e6f7ff/0050b3?text=✈️',
+                    departure: new Date(f.legs[0].departure).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    arrival: new Date(f.legs[0].arrival).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                    duration: `${Math.floor(f.legs[0].durationInMinutes / 60)}h ${f.legs[0].durationInMinutes % 60}m`,
+                    price: f.price.formatted,
                     from: originCode,
                     to: destCode
                 }));
@@ -107,10 +107,24 @@ const TransportOptions = () => {
         { id: 'ground', label: 'Trains & Buses', icon: <TrainFront size={20} /> }
     ];
 
+    const isInternational = ['Dubai', 'London', 'Paris', 'Tokyo', 'New York', 'Bali', 'Bangkok', 'Singapore', 'Istanbul', 'Rome', 'Amsterdam'].includes(routeDest);
+    
+    const price1 = isInternational ? '₹14,450' : '₹3,450';
+    const price2 = isInternational ? '₹16,200' : '₹4,100';
+    const price3 = isInternational ? '₹18,500' : '₹5,600';
+    
+    const dur1 = isInternational ? '4h 30m' : '1h 15m';
+    const dur2 = isInternational ? '5h 10m' : '1h 45m';
+    const dur3 = isInternational ? '4h 45m' : '2h 10m';
+
+    const fallbackFlights = [
+        { id: 'f1', type: 'flight', operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', departure: '06:15 AM', arrival: isInternational ? '10:45 AM' : '07:30 AM', duration: dur1, price: price1, from: getIataCode(routeOrigin), to: getIataCode(routeDest) },
+        { id: 'f2', type: 'flight', operator: 'Air India', logo: 'https://placehold.co/100x100/fff0f6/eb2f96?text=AI', departure: '09:30 AM', arrival: isInternational ? '02:40 PM' : '11:15 AM', duration: dur2, price: price2, from: getIataCode(routeOrigin), to: getIataCode(routeDest) },
+        { id: 'f3', type: 'flight', operator: 'Vistara', logo: 'https://placehold.co/100x100/f6ffed/52c41a?text=UK', departure: '04:00 PM', arrival: isInternational ? '08:45 PM' : '06:10 PM', duration: dur3, price: price3, from: getIataCode(routeOrigin), to: getIataCode(routeDest) }
+    ];
+
     const currentDisplayData = activeTab === 'flights' 
-        ? (liveFlights.length > 0 ? liveFlights : [
-            { id: 'f1', type: 'flight', operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', departure: '06:15 AM', arrival: '07:30 AM', duration: '1h 15m', price: '₹3,450', from: getIataCode(routeOrigin), to: getIataCode(routeDest) }
-          ])
+        ? (liveFlights.length > 0 ? liveFlights : fallbackFlights)
         : aiTransport;
 
     return (

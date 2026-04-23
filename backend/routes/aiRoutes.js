@@ -69,8 +69,8 @@ router.post('/transport-ai', async (req, res) => {
 Generate transport options from ${origin} to ${destination}.
 
 Requirements:
-1. FIRST, carefully determine if it is physically possible and realistic to travel by train or bus between ${origin} and ${destination} (e.g. if they are in different continents, separated by oceans, or international routes with no land connection, it is NOT possible).
-2. IF it is NOT possible, return an EMPTY JSON array exactly like this: []
+1. FIRST, carefully determine if it is physically possible and realistic to travel by train or bus between ${origin} and ${destination} (e.g. if they are in different continents, separated by oceans, or international routes like India to Dubai, it is NOT possible).
+2. IF it is NOT possible, you MUST return an empty array for options.
 3. IF it IS possible, provide up to 2 train options and 2 bus options.
 
 For each valid option include:
@@ -81,18 +81,26 @@ For each valid option include:
   - duration
   - price
 
-Return response STRICTLY as a JSON array. No extra text.
-Example of valid options (only if possible):
-[
-  {
-    "type": "train",
-    "name": "Express Train",
-    "departure": "06:00 AM",
-    "arrival": "02:00 PM",
-    "duration": "8h",
-    "price": "₹1200"
-  }
-]
+Return response STRICTLY as a JSON object with a single key "options" containing the array of options.
+
+Example response if NOT possible:
+{
+  "options": []
+}
+
+Example response if possible:
+{
+  "options": [
+    {
+      "type": "train",
+      "name": "Express Train",
+      "departure": "06:00 AM",
+      "arrival": "02:00 PM",
+      "duration": "8h",
+      "price": "₹1200"
+    }
+  ]
+}
         `;
 
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -110,8 +118,8 @@ Example of valid options (only if possible):
 
         const data = await response.json();
         const text = data.choices[0].message.content;
-        const jsonMatch = text.match(/\[[\s\S]*\]/);
-        res.json(JSON.parse(jsonMatch ? jsonMatch[0] : text));
+        const parsed = JSON.parse(text);
+        res.json(parsed.options || []);
     } catch (error) {
         res.status(500).json({ error: 'Failed to generate transport with AI' });
     }
