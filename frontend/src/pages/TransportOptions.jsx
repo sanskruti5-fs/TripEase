@@ -3,6 +3,22 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { TrainFront, Bus, Plane, ChevronRight, Filter, Clock, Loader2 } from 'lucide-react';
 import './TransportOptions.css';
 
+const cityCountryMap = {
+  "Mumbai": "India", "Delhi": "India", "Agra": "India", "Goa": "India",
+  "Jaipur": "India", "Varanasi": "India", "Bangalore": "India", "Kolkata": "India",
+  "Shimla": "India", "Manali": "India", "Rishikesh": "India", "Kochi": "India",
+  "Udaipur": "India", "Chennai": "India", "Hyderabad": "India",
+  "Dubai": "UAE", "Paris": "France", "London": "UK", "New York": "USA",
+  "Tokyo": "Japan", "Singapore": "Singapore", "Bangkok": "Thailand", "Bali": "Indonesia",
+  "Kuala Lumpur": "Malaysia", "Istanbul": "Turkey", "Rome": "Italy",
+  "Barcelona": "Spain", "Amsterdam": "Netherlands", "Los Angeles": "USA"
+};
+
+const isSameCountry = (origin, destination) => {
+  if (!cityCountryMap[origin] || !cityCountryMap[destination]) return false;
+  return cityCountryMap[origin] === cityCountryMap[destination];
+};
+
 const TransportOptions = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -77,6 +93,11 @@ const TransportOptions = () => {
     };
 
     const fetchAiTransport = async () => {
+        if (!isSameCountry(routeOrigin, routeDest)) {
+            setAiTransport([]);
+            return;
+        }
+
         setAiLoading(true);
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/transport-ai`, {
@@ -205,10 +226,9 @@ const TransportOptions = () => {
                     ) : (
                         <div className="no-data" style={{ textAlign: 'center', padding: '60px 20px', background: '#fcfcfc', borderRadius: '24px', border: '1px dashed #ddd' }}>
                             <Plane size={48} color="#FF4D6D" style={{ marginBottom: '16px' }} />
-                            <h3 style={{ fontSize: '1.4rem', marginBottom: '12px', color: '#111' }}>No Land Routes Available</h3>
+                            <h3 style={{ fontSize: '1.4rem', marginBottom: '12px', color: '#111' }}>⚠️ No Land Routes Available</h3>
                             <p style={{ color: '#666', maxWidth: '400px', margin: '0 auto 24px', lineHeight: '1.6' }}>
-                                Trains and buses are not feasible between <strong>{routeOrigin}</strong> and <strong>{routeDest}</strong>. 
-                                Please use flights for this route.
+                                No trains or buses available for this route. ✈️ Please choose flights.
                             </p>
                             <button 
                                 className="btn-solid" 
