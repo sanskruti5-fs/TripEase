@@ -152,7 +152,7 @@ Example format:
                     num = 50000;
                 }
             }
-            opt.price = \`₹\${num.toLocaleString('en-IN')}\`;
+            opt.price = `₹${num.toLocaleString('en-IN')}`;
             return opt;
         });
 
