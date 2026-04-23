@@ -125,4 +125,66 @@ Example response if possible:
     }
 });
 
+router.post('/flights-ai', async (req, res) => {
+    const { origin, destination, routeType } = req.body;
+    const apiKey = process.env.GROQ_API_KEY;
+
+    try {
+        const prompt = `
+Generate 3 realistic flight options from ${origin} to ${destination}.
+
+Rules:
+- Route type is ${routeType}.
+- If domestic, price must be ₹3,000 to ₹10,000.
+- If short_international, price must be ₹10,000 to ₹30,000.
+- If long_international, price must be ₹40,000 to ₹120,000.
+- Use realistic airlines for this route (e.g., Air India, Emirates, British Airways).
+- DO NOT generate unrealistic cheap prices.
+
+Return response STRICTLY as a JSON object with a single key "options" containing the array of flights. 
+Each flight must have:
+- type: "flight"
+- operator: airline name
+- departure: e.g. "06:00 AM"
+- arrival: e.g. "02:00 PM"
+- duration: e.g. "8h 30m"
+- price: e.g. "₹45,000"
+
+Example:
+{
+  "options": [
+    {
+      "type": "flight",
+      "operator": "Air India",
+      "departure": "08:30 AM",
+      "arrival": "04:15 PM",
+      "duration": "7h 45m",
+      "price": "₹45,000"
+    }
+  ]
+}
+        `;
+
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.1-8b-instant',
+                messages: [{ role: 'user', content: prompt }],
+                response_format: { type: "json_object" }
+            })
+        });
+
+        const data = await response.json();
+        const text = data.choices[0].message.content;
+        const parsed = JSON.parse(text);
+        res.json(parsed.options || []);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to generate flights with AI' });
+    }
+});
+
 module.exports = router;

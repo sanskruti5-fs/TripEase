@@ -19,6 +19,41 @@ const isSameCountry = (origin, destination) => {
   return cityCountryMap[origin] === cityCountryMap[destination];
 };
 
+const getRouteType = (origin, destination) => {
+    const c1 = cityCountryMap[origin];
+    const c2 = cityCountryMap[destination];
+    if (!c1 || !c2) return "long_international";
+    if (c1 === c2) return "domestic";
+    
+    const regions = {
+        "India": "Asia", "UAE": "MiddleEast", "Singapore": "Asia", "Thailand": "Asia", "Malaysia": "Asia", "Indonesia": "Asia", "Japan": "Asia",
+        "France": "Europe", "UK": "Europe", "Italy": "Europe", "Spain": "Europe", "Netherlands": "Europe", "Turkey": "Europe",
+        "USA": "NorthAmerica"
+    };
+    const r1 = regions[c1] || "Unknown";
+    const r2 = regions[c2] || "Unknown";
+    
+    if (r1 === "Europe" && r2 === "Europe") return "short_international";
+    if ((r1 === "Asia" || r1 === "MiddleEast") && (r2 === "Asia" || r2 === "MiddleEast")) return "short_international";
+    return "long_international";
+};
+
+const validatePrice = (priceStr, type) => {
+    if (!priceStr) return priceStr;
+    const num = parseInt(priceStr.toString().replace(/[^0-9]/g, ''));
+    if (isNaN(num) || num === 0) return priceStr;
+    
+    let min = 3000, max = 10000;
+    if (type === 'short_international') { min = 10000; max = 30000; }
+    else if (type === 'long_international') { min = 40000; max = 120000; }
+    
+    if (num < min) {
+        const adj = min + Math.floor(Math.random() * (max - min) * 0.3); 
+        return `₹${adj.toLocaleString('en-IN')}`;
+    }
+    return `₹${num.toLocaleString('en-IN')}`;
+};
+
 const TransportOptions = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -61,6 +96,7 @@ const TransportOptions = () => {
         const originCode = getIataCode(routeOrigin);
         const destCode = getIataCode(routeDest);
         const date = formatApiDate(travelDate);
+        const currentRouteType = getRouteType(routeOrigin, routeDest);
 
         try {
             const res = await fetch(`https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights?originSkyId=${originCode}&destinationSkyId=${destCode}&date=${date}`, {
@@ -70,7 +106,7 @@ const TransportOptions = () => {
                 }
             });
             const data = await res.json();
-            if (data?.data?.itineraries) {
+            if (data?.data?.itineraries && data.data.itineraries.length > 0) {
                 const mapped = data.data.itineraries.slice(0, 5).map(f => ({
                     id: f.id,
                     type: 'flight',
@@ -79,16 +115,58 @@ const TransportOptions = () => {
                     departure: new Date(f.legs[0].departure).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
                     arrival: new Date(f.legs[0].arrival).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
                     duration: `${Math.floor(f.legs[0].durationInMinutes / 60)}h ${f.legs[0].durationInMinutes % 60}m`,
-                    price: f.price.formatted,
+                    price: validatePrice(f.price.formatted || `₹${Math.round(f.price.raw)}`, currentRouteType),
                     from: originCode,
                     to: destCode
                 }));
                 setLiveFlights(mapped);
+                setLoading(false);
+                return;
+            } else {
+                throw new Error("No sky-scrapper data");
             }
         } catch (err) {
-            console.error('Flight fetch error:', err);
-        } finally {
-            setLoading(false);
+            console.warn('Skyscanner fetch failed, falling back to AI...', err);
+            try {
+                const aiRes = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/flights-ai`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ origin: routeOrigin, destination: routeDest, routeType: currentRouteType })
+                });
+                const aiData = await aiRes.json();
+                if (aiData && aiData.length > 0) {
+                    const mappedAi = aiData.slice(0, 3).map((f, idx) => ({
+                        id: `ai_f${idx}`,
+                        type: 'flight',
+                        operator: f.operator || 'Airlines',
+                        logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=✈️',
+                        departure: f.departure || '10:00 AM',
+                        arrival: f.arrival || '02:00 PM',
+                        duration: f.duration || '4h',
+                        price: validatePrice(f.price, currentRouteType),
+                        from: originCode,
+                        to: destCode
+                    }));
+                    setLiveFlights(mappedAi);
+                    setLoading(false);
+                    return;
+                } else {
+                    throw new Error("AI returned no flights");
+                }
+            } catch (err2) {
+                console.warn('AI fetch failed, falling back to hardcoded...', err2);
+                const p1 = validatePrice('₹1', currentRouteType);
+                const p2 = validatePrice('₹1', currentRouteType);
+                const p3 = validatePrice('₹1', currentRouteType);
+                
+                const fallbackFlights = [
+                    { id: 'f1', type: 'flight', operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', departure: '06:15 AM', arrival: '10:45 AM', duration: '4h 30m', price: p1, from: originCode, to: destCode },
+                    { id: 'f2', type: 'flight', operator: 'Air India', logo: 'https://placehold.co/100x100/fff0f6/eb2f96?text=AI', departure: '09:30 AM', arrival: '02:40 PM', duration: '5h 10m', price: p2, from: originCode, to: destCode },
+                    { id: 'f3', type: 'flight', operator: 'Vistara', logo: 'https://placehold.co/100x100/f6ffed/52c41a?text=UK', departure: '04:00 PM', arrival: '08:45 PM', duration: '4h 45m', price: p3, from: originCode, to: destCode }
+                ];
+                setLiveFlights(fallbackFlights);
+                setLoading(false);
+            }
         }
     };
 
@@ -128,24 +206,8 @@ const TransportOptions = () => {
         { id: 'ground', label: 'Trains & Buses', icon: <TrainFront size={20} /> }
     ];
 
-    const isInternational = ['Dubai', 'London', 'Paris', 'Tokyo', 'New York', 'Bali', 'Bangkok', 'Singapore', 'Istanbul', 'Rome', 'Amsterdam'].includes(routeDest);
-    
-    const price1 = isInternational ? '₹14,450' : '₹3,450';
-    const price2 = isInternational ? '₹16,200' : '₹4,100';
-    const price3 = isInternational ? '₹18,500' : '₹5,600';
-    
-    const dur1 = isInternational ? '4h 30m' : '1h 15m';
-    const dur2 = isInternational ? '5h 10m' : '1h 45m';
-    const dur3 = isInternational ? '4h 45m' : '2h 10m';
-
-    const fallbackFlights = [
-        { id: 'f1', type: 'flight', operator: 'IndiGo', logo: 'https://placehold.co/100x100/e6f7ff/0050b3?text=6E', departure: '06:15 AM', arrival: isInternational ? '10:45 AM' : '07:30 AM', duration: dur1, price: price1, from: getIataCode(routeOrigin), to: getIataCode(routeDest) },
-        { id: 'f2', type: 'flight', operator: 'Air India', logo: 'https://placehold.co/100x100/fff0f6/eb2f96?text=AI', departure: '09:30 AM', arrival: isInternational ? '02:40 PM' : '11:15 AM', duration: dur2, price: price2, from: getIataCode(routeOrigin), to: getIataCode(routeDest) },
-        { id: 'f3', type: 'flight', operator: 'Vistara', logo: 'https://placehold.co/100x100/f6ffed/52c41a?text=UK', departure: '04:00 PM', arrival: isInternational ? '08:45 PM' : '06:10 PM', duration: dur3, price: price3, from: getIataCode(routeOrigin), to: getIataCode(routeDest) }
-    ];
-
     const currentDisplayData = activeTab === 'flights' 
-        ? (liveFlights.length > 0 ? liveFlights : fallbackFlights)
+        ? liveFlights
         : aiTransport;
 
     return (
