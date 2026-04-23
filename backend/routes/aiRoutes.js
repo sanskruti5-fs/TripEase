@@ -69,19 +69,20 @@ router.post('/transport-ai', async (req, res) => {
 Generate transport options from ${origin} to ${destination}.
 
 Requirements:
-- Include exactly 2 train options and 2 bus options
-- For each option include:
+1. FIRST, carefully determine if it is physically possible and realistic to travel by train or bus between ${origin} and ${destination} (e.g. if they are in different continents, separated by oceans, or international routes with no land connection, it is NOT possible).
+2. IF it is NOT possible, return an EMPTY JSON array exactly like this: []
+3. IF it IS possible, provide up to 2 train options and 2 bus options.
+
+For each valid option include:
   - type (train or bus)
   - name
   - departure time
   - arrival time
   - duration
   - price
-- Data should look realistic based on route
-- Do NOT include any other cities
-- Keep it clean and structured
 
-Return response strictly in JSON format like:
+Return response STRICTLY as a JSON array. No extra text.
+Example of valid options (only if possible):
 [
   {
     "type": "train",

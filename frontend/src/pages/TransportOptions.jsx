@@ -88,12 +88,7 @@ const TransportOptions = () => {
             setAiTransport(data);
         } catch (err) {
             console.error('AI Transport error:', err);
-            setAiTransport([
-                { id: 't1', type: 'train', name: 'Shatabdi Express', departure: '06:00 AM', arrival: '01:00 PM', duration: '7h', price: '₹1,250' },
-                { id: 't2', type: 'train', name: 'Rajdhani Exp', departure: '04:30 PM', arrival: '11:00 PM', duration: '6h 30m', price: '₹2,100' },
-                { id: 'b1', type: 'bus', name: 'National Travels', departure: '09:00 PM', arrival: '07:30 AM', duration: '10h 30m', price: '₹950' },
-                { id: 'b2', type: 'bus', name: 'Orange Tours', departure: '10:30 PM', arrival: '09:00 AM', duration: '10h 30m', price: '₹1,400' }
-            ]);
+            setAiTransport([]);
         } finally {
             setAiLoading(false);
         }
@@ -194,9 +189,20 @@ const TransportOptions = () => {
                             </div>
                         ))
                     ) : (
-                        <div className="no-data">
-                            <Clock size={40} color="#ccc" />
-                            <p>No options available for this route.</p>
+                        <div className="no-data" style={{ textAlign: 'center', padding: '60px 20px', background: '#fcfcfc', borderRadius: '24px', border: '1px dashed #ddd' }}>
+                            <Plane size={48} color="#FF4D6D" style={{ marginBottom: '16px' }} />
+                            <h3 style={{ fontSize: '1.4rem', marginBottom: '12px', color: '#111' }}>No Land Routes Available</h3>
+                            <p style={{ color: '#666', maxWidth: '400px', margin: '0 auto 24px', lineHeight: '1.6' }}>
+                                Trains and buses are not feasible between <strong>{routeOrigin}</strong> and <strong>{routeDest}</strong>. 
+                                Please use flights for this route.
+                            </p>
+                            <button 
+                                className="btn-solid" 
+                                style={{ padding: '12px 30px', borderRadius: '30px', fontWeight: '700' }}
+                                onClick={() => setActiveTab('flights')}
+                            >
+                                Switch to Flights
+                            </button>
                         </div>
                     )}
                 </main>
