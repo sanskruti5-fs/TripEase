@@ -178,10 +178,11 @@ const TransportOptions = () => {
 
         setAiLoading(true);
         try {
+            const currentRouteType = isSameCountry(routeOrigin, routeDest) ? 'domestic' : 'international';
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/transport-ai`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ origin: routeOrigin, destination: routeDest })
+                body: JSON.stringify({ origin: routeOrigin, destination: routeDest, routeType: currentRouteType })
             });
             const data = await response.json();
             setAiTransport(data);
@@ -252,7 +253,7 @@ const TransportOptions = () => {
                                         <img src={item.logo} alt={item.operator} className="operator-img" />
                                     ) : (
                                         <div className="operator-icon-placeholder">
-                                            {item.type === 'train' ? <TrainFront size={24} /> : <Bus size={24} />}
+                                            {item.type.toLowerCase().includes('ship') ? <Plane size={24} style={{transform: 'rotate(45deg)'}} /> : item.type === 'train' ? <TrainFront size={24} /> : <Bus size={24} />}
                                         </div>
                                     )}
                                     <div className="card-details">

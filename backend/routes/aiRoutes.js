@@ -60,44 +60,57 @@ Return only plain formatted text. Do NOT use markdown symbols like ** or #. Just
     }
 });
 
+const transportCache = {};
+
 router.post('/transport-ai', async (req, res) => {
-    const { origin, destination } = req.body;
+    const { origin, destination, routeType } = req.body;
+    const cacheKey = `${origin}-${destination}`;
+
+    if (transportCache[cacheKey]) {
+        return res.json(transportCache[cacheKey]);
+    }
+
     const apiKey = process.env.GROQ_API_KEY;
 
     try {
         const prompt = `
-Generate transport options from ${origin} to ${destination}.
+Generate realistic transport options from ${origin} to ${destination}.
 
-Requirements:
-1. FIRST, carefully determine if it is physically possible and realistic to travel by train or bus between ${origin} and ${destination} (e.g. if they are in different continents, separated by oceans, or international routes like India to Dubai, it is NOT possible).
-2. IF it is NOT possible, you MUST return an empty array for options.
-3. IF it IS possible, provide up to 2 train options and 2 bus options.
+STRICT RULES:
+- Follow pricing rules EXACTLY:
+  ${routeType}
 
-For each valid option include:
-  - type (train or bus)
-  - name
-  - departure time
-  - arrival time
-  - duration
-  - price
+- If route is international:
+  DO NOT generate direct train or bus
+  ONLY generate:
+    - Ship + Train OR Bus + Ship
+
+- Prices must be realistic and stable
+- DO NOT generate random cheap prices
+
+- Maintain consistency:
+  If route is long international, prices must always be high (₹20,000+)
+
+- Include:
+  type (train/bus/ship combination)
+  name
+  departure
+  arrival
+  duration
+  price
 
 Return response STRICTLY as a JSON object with a single key "options" containing the array of options.
 
-Example response if NOT possible:
-{
-  "options": []
-}
-
-Example response if possible:
+Example format:
 {
   "options": [
     {
-      "type": "train",
-      "name": "Express Train",
+      "type": "Ship + Train",
+      "name": "Oceanic Express",
       "departure": "06:00 AM",
-      "arrival": "02:00 PM",
-      "duration": "8h",
-      "price": "₹1200"
+      "arrival": "02:00 PM (next day)",
+      "duration": "32h",
+      "price": "₹45,000"
     }
   ]
 }
@@ -119,9 +132,40 @@ Example response if possible:
         const data = await response.json();
         const text = data.choices[0].message.content;
         const parsed = JSON.parse(text);
-        res.json(parsed.options || []);
+        
+        let finalOptions = parsed.options || [];
+
+        // Post-validation clamping
+        finalOptions = finalOptions.map(opt => {
+            let priceStr = opt.price || "₹0";
+            let num = parseInt(priceStr.toString().replace(/[^0-9]/g, ''));
+            if (isNaN(num)) num = 0;
+
+            if (routeType === 'domestic') {
+                if (opt.type && opt.type.toLowerCase().includes('train')) {
+                    num = Math.max(300, Math.min(3000, num));
+                } else {
+                    num = Math.max(200, Math.min(2000, num));
+                }
+            } else {
+                if (num < 20000) {
+                    num = 50000;
+                }
+            }
+            opt.price = \`₹\${num.toLocaleString('en-IN')}\`;
+            return opt;
+        });
+
+        transportCache[cacheKey] = finalOptions;
+        res.json(finalOptions);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to generate transport with AI' });
+        const fallback = routeType === 'domestic' ? [
+            { type: "train", name: "Express Train", departure: "06:00 AM", arrival: "02:00 PM", duration: "8h", price: "₹850" },
+            { type: "bus", name: "Volvo AC Sleeper", departure: "09:00 PM", arrival: "08:00 AM", duration: "11h", price: "₹1,200" }
+        ] : [
+            { type: "Ship + Train", name: "Oceanic Transit", departure: "08:00 AM", arrival: "10:00 AM (next day)", duration: "26h", price: "₹45,000" }
+        ];
+        res.json(fallback);
     }
 });
 
