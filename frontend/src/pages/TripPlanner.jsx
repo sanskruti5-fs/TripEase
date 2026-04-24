@@ -15,9 +15,29 @@ const popularCities = [
     { name: "Manali", img: "/images/manali/hero.png" },
     { name: "Dubai", img: "/images/dubai/hero.png" },
     { name: "New York", img: "/images/new-york/hero.png" },
-    "Jaipur", "Kerala", "Varanasi", "Delhi", "Shimla", "Kolkata", "Bangalore", 
-    "Rishikesh", "Leh-Ladakh", "Bangkok", "Singapore", "Bali", "Kuala Lumpur", 
-    "Istanbul", "Rome", "Barcelona", "Amsterdam", "Los Angeles", "Las Vegas"
+    { name: "Jaipur", img: "/images/jaipur/hero.png" },
+    { name: "Kerala", img: "/images/kerala/hero.png" },
+    { name: "Varanasi", img: "/images/varanasi/hero.png" },
+    { name: "Delhi", img: "/images/delhi/hero.png" },
+    { name: "Kolkata", img: "/images/kolkata/hero.png" },
+    { name: "Bengaluru", img: "/images/bengaluru/hero.png" },
+    { name: "Rishikesh", img: "/images/rishikesh/hero.png" },
+    { name: "Leh-Ladakh", img: "/images/leh-ladakh/hero.png" },
+    { name: "Bangkok", img: "/images/bangkok/hero.png" },
+    { name: "Singapore", img: "/images/singapore/hero.png" },
+    { name: "Bali", img: "/images/bali/hero.png" },
+    { name: "Kuala Lumpur", img: "/images/kuala-lumpur/hero.png" },
+    { name: "Istanbul", img: "/images/istanbul/hero.png" },
+    { name: "Rome", img: "/images/rome/hero.png" },
+    { name: "Barcelona", img: "/images/barcelona/hero.png" },
+    { name: "Amsterdam", img: "/images/amsterdam/hero.png" },
+    { name: "Los Angeles", img: "/images/los-angeles/hero.png" },
+    { name: "Las Vegas", img: "/images/las-vegas/hero.png" },
+    { name: "Pune", img: "/images/pune/hero.png" },
+    { name: "Kochi", img: "/images/kochi/hero.png" },
+    { name: "Udaipur", img: "/images/udaipur/hero.png" },
+    { name: "Chennai", img: "/images/chennai/hero.png" },
+    { name: "Hyderabad", img: "/images/hyderabad/hero.png" }
 ];
 
 const TripPlanner = () => {
@@ -201,13 +221,20 @@ const TripPlanner = () => {
                                 <AnimatePresence>
                                     {showOriginDropdown && (
                                         <motion.ul className="dropdown-list" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                                            {filteredOrigins.map((city, idx) => (
-                                                <li key={idx} onClick={() => selectOrigin(city)}>
-                                                    {(typeof city !== 'string' && city.img) && <img src={city.img} alt={city.name} className="dropdown-thumb" />}
-                                                    <span>{typeof city === 'string' ? city : city.name}</span>
-                                                    {(typeof city !== 'string' && city.img) && <Star size={14} className="verified-star" />}
+                                            {filteredOrigins.length > 0 ? (
+                                                filteredOrigins.map((city, idx) => (
+                                                    <li key={idx} onClick={() => selectOrigin(city)}>
+                                                        {(typeof city !== 'string' && city.img) && <img src={city.img} alt={city.name} className="dropdown-thumb" />}
+                                                        <span>{typeof city === 'string' ? city : city.name}</span>
+                                                        {(typeof city !== 'string' && city.img) && <Star size={14} className="verified-star" />}
+                                                    </li>
+                                                ))
+                                            ) : searchOrigin && (
+                                                <li onClick={() => { selectOrigin(searchOrigin); setShowOriginDropdown(false); }} className="custom-entry">
+                                                    <MapPin size={18} />
+                                                    <span>Traveling from "{searchOrigin}"</span>
                                                 </li>
-                                            ))}
+                                            )}
                                         </motion.ul>
                                     )}
                                 </AnimatePresence>
@@ -253,13 +280,20 @@ const TripPlanner = () => {
                                 <AnimatePresence>
                                     {showDestDropdown && (
                                         <motion.ul className="dropdown-list" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-                                            {filteredDestinations.map((city, idx) => (
-                                                <li key={idx} onClick={() => selectDestination(city)}>
-                                                    {(typeof city !== 'string' && city.img) && <img src={city.img} alt={city.name} className="dropdown-thumb" />}
-                                                    <span>{typeof city === 'string' ? city : city.name}</span>
-                                                    {(typeof city !== 'string' && city.img) && <Star size={14} className="verified-star" />}
+                                            {filteredDestinations.length > 0 ? (
+                                                filteredDestinations.map((city, idx) => (
+                                                    <li key={idx} onClick={() => selectDestination(city)}>
+                                                        {(typeof city !== 'string' && city.img) && <img src={city.img} alt={city.name} className="dropdown-thumb" />}
+                                                        <span>{typeof city === 'string' ? city : city.name}</span>
+                                                        {(typeof city !== 'string' && city.img) && <Star size={14} className="verified-star" />}
+                                                    </li>
+                                                ))
+                                            ) : searchDest && (
+                                                <li onClick={() => { selectDestination(searchDest); setShowDestDropdown(false); }} className="custom-entry">
+                                                    <Compass size={18} />
+                                                    <span>Explore "{searchDest}" with AI</span>
                                                 </li>
-                                            ))}
+                                            )}
                                         </motion.ul>
                                     )}
                                 </AnimatePresence>
