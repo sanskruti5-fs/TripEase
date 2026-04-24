@@ -34,6 +34,11 @@ app.use('/api/auth', authRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/ai', aiRoutes);
 
+//uptime robot works
+app.get("/api/test", (req, res) => {
+    res.send("Server is alive");
+});
+
 // Simple Health Check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: 'TripEase Backend' }));
 
