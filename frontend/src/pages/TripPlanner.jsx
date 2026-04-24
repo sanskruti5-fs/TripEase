@@ -373,12 +373,12 @@ const TripPlanner = () => {
                             )}
                             
                             {formData.destination && !popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) && (
-                                <div style={{ backgroundColor: 'rgba(255, 56, 92, 0.05)', padding: '15px', borderRadius: '12px', marginBottom: '20px', border: '1px dashed var(--primary-color)', textAlign: 'center' }}>
-                                    <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--primary-color)', fontWeight: '600' }}>
+                                <div style={{ backgroundColor: 'rgba(16, 185, 129, 0.05)', padding: '15px', borderRadius: '12px', marginBottom: '20px', border: '1px dashed #10B981', textAlign: 'center' }}>
+                                    <p style={{ margin: 0, fontSize: '0.9rem', color: '#059669', fontWeight: '600' }}>
                                         📍 "{formData.destination}" is a new destination!
                                     </p>
                                     <p style={{ margin: '5px 0 0 0', fontSize: '0.85rem', color: 'var(--text-light)' }}>
-                                        Verified manual data is limited. Magic AI Plan is highly recommended.
+                                        Our AI will now fetch real-time attractions, food, and markets for you.
                                     </p>
                                 </div>
                             )}
@@ -392,13 +392,13 @@ const TripPlanner = () => {
                                     disabled={!formData.tripType || loading} 
                                     className="btn-primary-custom btn-outline" 
                                     style={{ 
-                                        border: '2px solid var(--primary-color)', 
-                                        color: 'var(--primary-color)', 
+                                        border: `2px solid ${popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 'var(--primary-color)' : '#10B981'}`, 
+                                        color: popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 'var(--primary-color)' : '#059669', 
                                         background: 'transparent',
-                                        opacity: popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 1 : 0.5
+                                        opacity: 1
                                     }}
                                 >
-                                    {popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 'Manual Plan →' : 'Limited Manual →'}
+                                    {popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 'Manual Plan →' : '⚡ Smart Manual →'}
                                 </button>
 
                                 <button type="button" onClick={(e) => { e.preventDefault(); handleMagicPlan(); }} disabled={!formData.tripType || loading} className="btn-primary-custom magic-btn-main">

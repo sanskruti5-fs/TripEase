@@ -80,119 +80,83 @@ const tripController = {
                 return res.json({ destination: destRecord, places: results, verified: true });
             }
 
-            // Fetch fresh data
-            const coords = await osmService.getCoordinates(destination);
+            // --- AI DATA FETCH FOR ALL OTHER CITIES ---
+            console.log(`🤖 Fetching AI details for: ${destination}`);
             
+            const groqKey = process.env.GROQ_API_KEY;
+            if (!groqKey) throw new Error('Groq API Key missing');
+
+            const aiPrompt = `
+                Act as a local travel expert for ${destination}. Generate a comprehensive list of 12-15 travel data points.
+                You MUST return exactly 3 types of data: "attractions", "food", and "markets".
+                
+                RULES:
+                1. Entry fees must be in INR (₹). If it's outside India, estimate the equivalent in INR.
+                2. Be realistic. Use real locations in ${destination}.
+                3. Each attraction must have a "name", "description", "entryFee" (number), and "suitability".
+                4. Each food item must have a "name", "dish", "restaurant", and "description".
+                5. Each market must have a "name", "specialty", and "description".
+                
+                RETURN ONLY VALID JSON:
+                {
+                  "attractions": [{ "name": "...", "description": "...", "entryFee": 500, "suitability": "Family" }],
+                  "food": [{ "name": "Dish Name @ Restaurant Name", "description": "..." }],
+                  "markets": [{ "name": "...", "specialty": "...", "description": "..." }]
+                }
+            `;
+
+            const aiResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${groqKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.1-8b-instant',
+                    messages: [{ role: 'user', content: aiPrompt }],
+                    response_format: { type: "json_object" }
+                })
+            });
+
+            const aiData = await aiResponse.json();
+            const aiContent = JSON.parse(aiData.choices[0].message.content);
+
             if (!destRecord) {
                 destRecord = await Destination.create({
                     name: destination,
-                    latitude: coords.lat,
-                    longitude: coords.lon,
+                    latitude: 0,
+                    longitude: 0,
                     last_updated: new Date()
                 });
-            } else {
-                destRecord.latitude = coords.lat;
-                destRecord.longitude = coords.lon;
-                destRecord.last_updated = new Date();
-                await destRecord.save();
-            }
-
-            let poiList = [];
-            try {
-                poiList = await osmService.fetchNearbyPlaces(coords.lat, coords.lon);
-            } catch (poiError) {
-                console.warn('POI Fetch failed, using popular fallbacks:', poiError.message);
-            }
-
-            if (poiList.length < 5) {
-                const fallbacks = {
-                    'Delhi': [
-                        { name: 'Red Fort', category: 'attraction', latitude: 28.6562, longitude: 77.2410, tags: { 'addr:suburb': 'Old Delhi' } },
-                        { name: 'India Gate', category: 'attraction', latitude: 28.6129, longitude: 77.2295 },
-                        { name: 'Qutub Minar', category: 'attraction', latitude: 28.5245, longitude: 77.1855 }
-                    ],
-                    'Mumbai': [
-                        { name: 'Gateway of India', category: 'attraction', latitude: 18.9220, longitude: 72.8347 },
-                        { name: 'Marine Drive', category: 'attraction', latitude: 18.9431, longitude: 72.8230 }
-                    ],
-                    'Paris': [
-                        { name: 'Eiffel Tower', category: 'attraction', latitude: 48.8584, longitude: 2.2945 },
-                        { name: 'Louvre Museum', category: 'museum', latitude: 48.8606, longitude: 2.3376 }
-                    ],
-                    'London': [
-                        { name: 'Big Ben', category: 'attraction', latitude: 51.5007, longitude: -0.1246 },
-                        { name: 'London Eye', category: 'attraction', latitude: 51.5033, longitude: -0.1195 }
-                    ],
-                    'Tokyo': [
-                        { name: 'Shibuya Crossing', category: 'attraction', latitude: 35.6595, longitude: 139.7005 },
-                        { name: 'Tokyo Tower', category: 'attraction', latitude: 35.6586, longitude: 139.7454 }
-                    ]
-                };
-
-                const cityKey = Object.keys(fallbacks).find(k => destination.toLowerCase().includes(k.toLowerCase()));
-                if (cityKey) {
-                    poiList = [...poiList, ...fallbacks[cityKey]];
-                }
             }
 
             await PlaceCache.deleteMany({ destination_id: destRecord._id });
-            const placeRecords = poiList.map(p => {
-                const bestTimes = ['Early Morning', 'Morning to Afternoon', 'Late Afternoon', 'Evening', 'Sunset', 'Anytime'];
-                const bestTime = bestTimes[Math.floor(Math.random() * bestTimes.length)];
-                
-                let budget = '₹' + (Math.floor(Math.random() * 1500) + 300);
-                if (p.category === 'hotel') budget = '₹' + (Math.floor(Math.random() * 8000) + 2000) + ' / night';
-                if (p.category === 'beach' || p.category === 'temple') budget = 'Free or Nominal Entry';
 
-                const suitabilityMap = {
-                    'attraction': 'Family & Sightseeing',
-                    'museum': 'Educational & Family',
-                    'temple': 'Family & Peace',
-                    'beach': 'Relaxation & Friends',
-                    'food': 'Foodies & Friends',
-                    'hotel': 'Couples & Solo',
-                    'market': 'Solo & Shopping',
-                    'gem': 'Adventure & Solo'
-                };
-                const suitability = suitabilityMap[p.category] || 'General Visit';
+            const allItems = [
+                ...(aiContent.attractions || []).map(a => ({ ...a, category: 'attraction' })),
+                ...(aiContent.food || []).map(f => ({ ...f, category: 'food' })),
+                ...(aiContent.markets || []).map(m => ({ ...m, category: 'market' }))
+            ];
 
-                const tags = p.tags || {};
-                const shortAddress = tags['addr:suburb'] || tags['addr:neighbourhood'] || tags['addr:quarter'] || destination;
-
-                const signatureFoods = {
-                    'Delhi': ['Chole Bhature', 'Butter Chicken'], 'Mumbai': ['Vada Pav', 'Pav Bhaji'], 'Paris': ['Croissant', 'Macarons'], 'London': ['Fish and Chips'], 'Tokyo': ['Sushi', 'Ramen']
-                };
-
-                const cityKey = Object.keys(signatureFoods).find(k => destination.toLowerCase().includes(k.toLowerCase()));
-                const dishes = signatureFoods[cityKey] || ['Local Special Dish'];
-                const randomDish = dishes[Math.floor(Math.random() * dishes.length)];
-
-                let finalName = p.name;
-                if (p.category === 'food' || (p.tags && p.tags.amenity === 'restaurant')) {
-                    finalName = `Famous ${randomDish} @ ${p.name}`;
-                }
-
-                return {
-                    destination_id: destRecord._id,
-                    place_name: finalName,
-                    category: p.category,
-                    latitude: p.latitude,
-                    longitude: p.longitude,
-                    description: `Experience the authentic taste of ${randomDish} at this highly rated spot in ${shortAddress}.`,
-                    rating: (Math.random() * (5.0 - 4.2) + 4.2).toFixed(1),
-                    image_url: `https://loremflickr.com/800/600/${encodeURIComponent(destination)},${encodeURIComponent(p.category || 'food')}/all/?lock=${Math.floor(Math.random() * 1000)}`,
-                    best_time_to_visit: bestTime,
-                    estimated_budget: budget,
-                    suitability: suitability,
-                    address: shortAddress,
-                    last_updated: new Date()
-                };
-            });
+            const placeRecords = allItems.map((p, idx) => ({
+                destination_id: destRecord._id,
+                place_name: p.name,
+                category: p.category,
+                latitude: 0,
+                longitude: 0,
+                description: p.description || 'Great local spot.',
+                rating: (Math.random() * (5.0 - 4.2) + 4.2).toFixed(1),
+                image_url: `https://loremflickr.com/800/600/${encodeURIComponent(destination)},${encodeURIComponent(p.category)}/all/?lock=${idx}`,
+                best_time_to_visit: 'Flexible',
+                estimated_budget: p.entryFee ? `₹${p.entryFee}` : 'Variable',
+                suitability: p.suitability || 'General',
+                address: destination,
+                last_updated: new Date()
+            }));
 
             await PlaceCache.insertMany(placeRecords);
             const savedPlaces = await PlaceCache.find({ destination_id: destRecord._id });
-
-            res.json({ destination: destRecord, places: savedPlaces });
+            res.json({ destination: destRecord, places: savedPlaces, aiGenerated: true });
         } catch (error) {
             console.error('Search Destination Error:', error.message);
             res.status(500).json({ error: 'Failed to search destination. Please check the city name.' });
