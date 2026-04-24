@@ -18,6 +18,7 @@ import TransportOptions from './pages/TransportOptions'
 import AIItinerary from './pages/AIItinerary'
 
 import ProtectedRoute from './components/ProtectedRoute'
+import TripCostBar from './components/TripCostBar'
 function App() {
   return (
     <>
@@ -43,6 +44,7 @@ function App() {
       </main>
       <Footer />
       <BackToTop />
+      <TripCostBar />
     </>
   )
 }
