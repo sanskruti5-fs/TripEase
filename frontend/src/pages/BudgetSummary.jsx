@@ -829,10 +829,10 @@ const BudgetSummary = () => {
                         {/* City Hero Image for Poster */}
                         <div style={{ width: '100%', height: '300px', borderRadius: '24px', overflow: 'hidden', marginBottom: '30px' }}>
                             <img 
-                                src={`https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80`} 
+                                src={`/images/${planInfo.destination.toLowerCase().replace(/\s+/g, '-')}/hero.png`} 
                                 alt={planInfo.destination} 
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80' }}
+                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' }}
                             />
                         </div>
 
