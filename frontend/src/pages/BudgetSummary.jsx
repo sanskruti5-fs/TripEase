@@ -388,9 +388,20 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Local Guide (If selected) */}
+                        {selectedGuide && (
+                            <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Local Guide</h3>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                                    <img src={selectedGuide.image} alt="Guide" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
+                                    <div>
+                                        <div style={{ fontWeight: '700', fontSize: '1.2rem' }}>{selectedGuide.name}</div>
+                                        <div style={{ color: '#717171' }}>₹{selectedGuide.pricePerDay} per day</div>
+                                    </div>
+                                </div>
+                            </div>
                         )}
-                        </>
-                        )}
+                    </>
+                )}
                     </div>
 
                     {/* RIGHT COLUMN: Sticky Summary Command Center */}
