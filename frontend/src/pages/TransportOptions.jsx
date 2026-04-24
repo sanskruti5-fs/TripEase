@@ -242,10 +242,7 @@ const TransportOptions = () => {
             <div className="transport-layout container">
                 <aside className="filters-sidebar">
                     <div className="filter-title"><Filter size={18} /> Filters</div>
-                    <div className="filter-section">
-                        <h4>Price</h4>
-                        <input type="range" min="500" max="10000" className="filter-slider" />
-                    </div>
+                    {/* Price filter removed as requested */}
                 </aside>
 
                 <main className="transport-list">

@@ -66,8 +66,18 @@ const Accommodation = () => {
         ];
     }
 
-    // Derived filtered list
-    const filteredHotels = activeTab === 'all' ? hotels : hotels.filter(h => h.category === activeTab);
+    const [sortOrder, setSortOrder] = useState('none');
+
+    // Derived filtered and sorted list
+    const filteredHotels = (() => {
+        let list = activeTab === 'all' ? hotels : hotels.filter(h => h.category === activeTab);
+        if (sortOrder === 'low-to-high') {
+            return [...list].sort((a, b) => a.price_per_night - b.price_per_night);
+        } else if (sortOrder === 'high-to-low') {
+            return [...list].sort((a, b) => b.price_per_night - a.price_per_night);
+        }
+        return list;
+    })();
 
     const handleNext = () => {
         const stayCost = dayWiseStays.reduce((sum, stay) => sum + (stay?.price_per_night || 0), 0);
@@ -174,21 +184,47 @@ const Accommodation = () => {
             </div>
 
             {/* Tab Filters */}
-            <div className="acc-tabs">
-                {[
-                    { id: 'all', label: 'All Stays', icon: null },
-                    { id: 'hotel', label: 'Hotels', icon: <Building size={16} /> },
-                    { id: 'homestay', label: 'Homestays', icon: <Home size={16} /> },
-                    { id: 'hostel', label: 'Hostels', icon: <Tent size={16} /> },
-                ].map(tab => (
-                    <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`acc-tab ${activeTab === tab.id ? 'acc-tab--active' : ''}`}
+            <div className="acc-tabs-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '32px' }}>
+                <div className="acc-tabs" style={{ marginBottom: 0 }}>
+                    {[
+                        { id: 'all', label: 'All Stays', icon: null },
+                        { id: 'hotel', label: 'Hotels', icon: <Building size={16} /> },
+                        { id: 'homestay', label: 'Homestays', icon: <Home size={16} /> },
+                        { id: 'hostel', label: 'Hostels', icon: <Tent size={16} /> },
+                    ].map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`acc-tab ${activeTab === tab.id ? 'acc-tab--active' : ''}`}
+                        >
+                            {tab.icon} {tab.label}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="acc-sort">
+                    <select 
+                        value={sortOrder} 
+                        onChange={(e) => setSortOrder(e.target.value)}
+                        className="acc-sort-select"
+                        style={{
+                            padding: '10px 16px',
+                            borderRadius: '12px',
+                            border: '1px solid var(--border-color)',
+                            background: 'white',
+                            color: 'var(--text-dark)',
+                            fontWeight: '600',
+                            fontSize: '0.9rem',
+                            outline: 'none',
+                            cursor: 'pointer',
+                            boxShadow: 'var(--shadow-sm)'
+                        }}
                     >
-                        {tab.icon} {tab.label}
-                    </button>
-                ))}
+                        <option value="none">Sort by: Default</option>
+                        <option value="low-to-high">Price: Low to High</option>
+                        <option value="high-to-low">Price: High to Low</option>
+                    </select>
+                </div>
             </div>
 
             {/* Hotel Grid */}
