@@ -30,6 +30,7 @@ const aiController = {
                     {
                       "day": 1,
                       "title": "Title",
+                      "stay": { "name": "Recommended Hotel/Hostel", "type": "Accommodation Type", "estCost": "₹XXX" },
                       "activities": [
                         { "time": "Morning", "task": "Activity name", "location": "Location", "estCost": "₹XXX" }
                       ],

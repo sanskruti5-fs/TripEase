@@ -286,19 +286,20 @@
     gap: 6px;
 }
 
-/* Dining Card Styling */
-.dining-premium-card {
+/* Stay Card Styling */
+.stay-premium-card {
     margin-top: 40px;
-    background: linear-gradient(135deg, #fff9f0, #fff);
-    border: 1px solid #ffe8cc;
+    background: linear-gradient(135deg, #f0fdf4, #fff);
+    border: 1px solid #dcfce7;
     border-radius: 20px;
     padding: 24px;
     position: relative;
     overflow: hidden;
+    margin-bottom: -20px; /* Overlap slightly with dining */
 }
 
-.dining-badge {
-    background: #ff8a00;
+.stay-badge {
+    background: #10b981;
     color: white;
     padding: 4px 12px;
     border-radius: 30px;
@@ -311,24 +312,26 @@
     gap: 6px;
 }
 
-.dining-header {
+.stay-header {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 8px;
 }
 
-.dining-header h4 {
+.stay-header h4 {
     font-size: 1.4rem;
     margin: 0;
 }
 
-.dining-type {
+.stay-type {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #ff8a00;
+    color: #10b981;
     text-transform: uppercase;
 }
+
+/* Dining Card Styling */
 
 /* Sidebar Styling */
 .ai-sidebar-refined {

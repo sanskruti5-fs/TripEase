@@ -199,6 +199,19 @@ const AIItinerary = () => {
                                                     )
                                                 ))}
 
+                                                {day.stay && (
+                                                    <div className="stay-premium-card">
+                                                        <div className="stay-badge"><MapPin size={14} /> ACCOMMODATION</div>
+                                                        <div className="stay-body">
+                                                            <div className="stay-header">
+                                                                <h4>{day.stay.name}</h4>
+                                                                <span className="stay-type">{day.stay.type}</span>
+                                                            </div>
+                                                            <p>Recommended stay: <strong>{day.stay.name}</strong> • {day.stay.estCost}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 <div className="dining-premium-card">
                                                     <div className="dining-badge"><Utensils size={14} /> DINING PICK</div>
                                                     <div className="dining-body">
