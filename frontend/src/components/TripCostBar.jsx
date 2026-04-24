@@ -72,8 +72,11 @@ const TripCostBar = () => {
                     <div className="cost-bar-amount">
                         ₹{currentTotal.toLocaleString('en-IN')}
                     </div>
-                    <div className="cost-bar-limit">
-                        Limit: ₹{budgetLimit.toLocaleString('en-IN')}
+                    <div className="cost-bar-limit" style={{ lineHeight: '1.4' }}>
+                        <div>Limit: ₹{budgetLimit.toLocaleString('en-IN')}</div>
+                        <div style={{ fontSize: '0.7rem', opacity: 0.85 }}>
+                            Includes ₹{baseFoodCost.toLocaleString('en-IN')} base food cost
+                        </div>
                     </div>
                 </div>
 
