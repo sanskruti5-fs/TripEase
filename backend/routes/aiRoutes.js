@@ -4,6 +4,8 @@ const aiController = require('../controllers/aiController');
 
 router.post('/generate', aiController.generateItinerary);
 router.post('/transport', aiController.generateTransport);
+router.post('/optimize', aiController.optimizeItinerary);
+
 router.post('/plan', async (req, res) => {
     const { days, vibe, origin, destination } = req.body;
     const apiKey = process.env.GROQ_API_KEY;

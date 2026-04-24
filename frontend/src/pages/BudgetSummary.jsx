@@ -13,12 +13,22 @@ const BudgetSummary = () => {
     const selectedAttractions = location.state?.selectedAttractions || [];
     const selectedFoods = location.state?.selectedFoods || [];
     const selectedMarkets = location.state?.selectedMarkets || [];
+    
+    // Multi-hotel support
+    const dayWiseStays = planInfo?.dayWiseStays || [];
     const selectedStay = location.state?.selectedStay || planInfo?.selectedStay;
+    
     const selectedTransport = location.state?.selectedTransport;
     const selectedGuide = location.state?.selectedGuide;
 
     const itineraryRef = useRef(null);
+    const optimizedRef = useRef(null);
     const user = JSON.parse(localStorage.getItem('user'));
+
+    // AI Optimization State
+    const [isOptimizing, setIsOptimizing] = useState(false);
+    const [optimizedPlan, setOptimizedPlan] = useState(null);
+    const [activeView, setActiveView] = useState('manual'); // 'manual' or 'ai'
 
     if (!planInfo) {
         return <Navigate to="/planner" replace />;
@@ -33,7 +43,9 @@ const BudgetSummary = () => {
     };
 
     // Cost Extraction & Logic
-    const stayCost = selectedStay ? (selectedStay.pricePerNight * planInfo.days) : (planInfo.stayCost || 0);
+    const stayCost = dayWiseStays.length > 0 
+        ? dayWiseStays.reduce((sum, stay) => sum + (stay?.price_per_night || 0), 0)
+        : (selectedStay ? (selectedStay.pricePerNight * planInfo.days) : (planInfo.stayCost || 0));
     const transportCost = selectedTransport ? parsePrice(selectedTransport.price) : 0;
     const guideCost = selectedGuide ? (selectedGuide.pricePerDay * planInfo.days) : (planInfo.guideCost || 0);
     const attractionsCost = selectedAttractions.reduce((sum, item) => sum + (item.entryFee || 0), 0);
@@ -67,20 +79,139 @@ const BudgetSummary = () => {
         }
     };
 
+    const handleDownloadAI = async () => {
+        setIsDownloading(true);
+        try {
+            const canvas = await html2canvas(optimizedRef.current, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            });
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const link = document.createElement('a');
+            link.download = `TripEase-AI-Optimized-${planInfo.destination}.jpg`;
+            link.href = dataUrl;
+            link.click();
+        } catch (error) {
+            console.error('Error generating AI itinerary:', error);
+            alert('Failed to generate AI itinerary. Please try again.');
+        } finally {
+            setIsDownloading(false);
+        }
+    };
+
+    const handleOptimize = async () => {
+        setIsOptimizing(true);
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/ai/optimize`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    places: selectedAttractions,
+                    hotels: dayWiseStays.length > 0 ? dayWiseStays : [selectedStay],
+                    food: selectedFoods,
+                    transport: selectedTransport,
+                    budget: overallBudget,
+                    planInfo
+                })
+            });
+            if (!response.ok) throw new Error('AI optimization failed');
+            const data = await response.json();
+            setOptimizedPlan(data);
+            setActiveView('ai');
+        } catch (err) {
+            console.error(err);
+            alert('Could not optimize trip at this time. Please try again.');
+        } finally {
+            setIsOptimizing(false);
+        }
+    };
+
     return (
         <div style={{ backgroundColor: '#F9FAFB', minHeight: '100vh', padding: '100px 0' }}>
             <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 
                 {/* 1. Header Section */}
-                <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
                     <h1 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#FF4D6D', marginBottom: '12px' }}>Final Itinerary & Budget Review</h1>
                     <p style={{ color: '#717171', fontSize: '1.2rem' }}>Review your selections, check your budget, and download your full plan.</p>
                 </div>
+
+                {/* AI Toggle Buttons if Optimized */}
+                {optimizedPlan && (
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '40px' }}>
+                        <button 
+                            onClick={() => setActiveView('manual')}
+                            style={{ padding: '12px 24px', borderRadius: '30px', fontWeight: '700', cursor: 'pointer', border: '2px solid #FF4D6D', background: activeView === 'manual' ? '#FF4D6D' : 'white', color: activeView === 'manual' ? 'white' : '#FF4D6D' }}
+                        >
+                            Original Plan
+                        </button>
+                        <button 
+                            onClick={() => setActiveView('ai')}
+                            style={{ padding: '12px 24px', borderRadius: '30px', fontWeight: '700', cursor: 'pointer', border: '2px solid #10B981', background: activeView === 'ai' ? '#10B981' : 'white', color: activeView === 'ai' ? 'white' : '#10B981', display: 'flex', alignItems: 'center', gap: '8px' }}
+                        >
+                            ✨ AI Optimized
+                        </button>
+                    </div>
+                )}
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 7.5fr) minmax(0, 4.5fr)', gap: '40px' }}>
                     
                     {/* LEFT COLUMN: The Itinerary Breakdown */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        
+                        {activeView === 'ai' && optimizedPlan ? (
+                            /* AI OPTIMIZED VIEW */
+                            <>
+                                <div style={{ backgroundColor: '#ECFDF5', padding: '20px', borderRadius: '16px', border: '1px solid #34D399', color: '#065F46', marginBottom: '10px' }}>
+                                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '0 0 8px 0' }}>✨ AI Optimization Complete</h3>
+                                    <p style={{ margin: 0, fontSize: '0.95rem' }}>{optimizedPlan.optimizationSummary}</p>
+                                    {optimizedPlan.totalEstimatedSavings && (
+                                        <p style={{ margin: '8px 0 0 0', fontWeight: 'bold' }}>Savings: {optimizedPlan.totalEstimatedSavings}</p>
+                                    )}
+                                </div>
+
+                                {optimizedPlan.optimizedPlan.map((dayPlan, idx) => (
+                                    <div key={idx} style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', borderLeft: '6px solid #10B981', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                                        <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '20px', color: '#111827' }}>Day {dayPlan.day}</h3>
+                                        
+                                        {dayPlan.hotel && (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', paddingBottom: '15px', borderBottom: '1px solid #F3F4F6', marginBottom: '15px' }}>
+                                                <div style={{ background: '#F3F4F6', padding: '10px', borderRadius: '10px' }}>🏨</div>
+                                                <div>
+                                                    <div style={{ fontWeight: '700' }}>Hotel: {dayPlan.hotel.name}</div>
+                                                    <div style={{ fontSize: '0.85rem', color: '#6B7280' }}>{dayPlan.hotel.price}</div>
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div style={{ marginBottom: '15px' }}>
+                                            <div style={{ fontWeight: '700', marginBottom: '10px', color: '#4B5563' }}>📍 Planned Route:</div>
+                                            {dayPlan.places?.map((p, i) => (
+                                                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+                                                    <div style={{ width: '20px', height: '20px', borderRadius: '10px', background: '#FF4D6D', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', marginTop: '2px' }}>{i + 1}</div>
+                                                    <div>
+                                                        <div style={{ fontWeight: '600' }}>{p.name} <span style={{ color: '#10B981', fontSize: '0.75rem', marginLeft: '5px', fontWeight: '500' }}>({p.rationale})</span></div>
+                                                        <div style={{ fontSize: '0.85rem', color: '#9CA3AF' }}>Fee: ₹{p.entryFee || 0}</div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {dayPlan.food?.length > 0 && (
+                                            <div>
+                                                <div style={{ fontWeight: '700', marginBottom: '10px', color: '#4B5563' }}>🍽️ Food Stops:</div>
+                                                {dayPlan.food.map((f, i) => (
+                                                    <div key={i} style={{ fontSize: '0.9rem', marginBottom: '4px' }}>• {f.name} at {f.restaurant}</div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            /* ORIGINAL MANUAL VIEW */
+                            <>
                         
                         {/* Route Summary */}
                         <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', borderLeft: '6px solid #FF4D6D', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
@@ -116,19 +247,37 @@ const BudgetSummary = () => {
 
                         {/* Accommodation Selection */}
                         <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
-                            <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Accommodation ({planInfo.days} Days)</h3>
-                            {selectedStay ? (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: '700', margin: 0 }}>Accommodation ({planInfo.days} Days)</h3>
+                                <div style={{ fontWeight: '800', fontSize: '1.2rem' }}>₹ {stayCost.toLocaleString('en-IN')}</div>
+                            </div>
+                            
+                            {dayWiseStays.length > 0 ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                    {dayWiseStays.map((stay, idx) => (
+                                        <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: idx !== dayWiseStays.length - 1 ? '15px' : '0', borderBottom: idx !== dayWiseStays.length - 1 ? '1px solid #F3F4F6' : 'none' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                                <div style={{ fontWeight: '700', color: '#FF4D6D', width: '50px' }}>Day {idx + 1}</div>
+                                                <img src={stay?.image_url || stay?.image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=100&q=80'} alt="Hotel" style={{ width: '60px', height: '45px', objectFit: 'cover', borderRadius: '8px' }} />
+                                                <div>
+                                                    <div style={{ fontWeight: '600' }}>{stay?.place_name || stay?.name || 'No Hotel'}</div>
+                                                </div>
+                                            </div>
+                                            <div style={{ fontWeight: '600', color: '#4B5563' }}>₹ {stay?.price_per_night || stay?.pricePerNight || 0}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : selectedStay ? (
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                                        <img src={selectedStay.image} alt="Hotel" style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '12px' }} />
+                                        <img src={selectedStay.image || selectedStay.image_url} alt="Hotel" style={{ width: '80px', height: '60px', objectFit: 'cover', borderRadius: '12px' }} />
                                         <div>
-                                            <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>{selectedStay.name}</div>
-                                            <div style={{ fontSize: '0.9rem', color: '#717171' }}>@ {selectedStay.distance}</div>
+                                            <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>{selectedStay.name || selectedStay.place_name}</div>
+                                            <div style={{ fontSize: '0.9rem', color: '#717171' }}>@ {selectedStay.distance || destName}</div>
                                         </div>
                                     </div>
                                     <div style={{ textAlign: 'right' }}>
-                                        <div style={{ fontWeight: '800', fontSize: '1.2rem' }}>₹ {stayCost.toLocaleString('en-IN')}</div>
-                                        <div style={{ fontSize: '0.8rem', color: '#9CA3AF' }}>₹ {selectedStay.pricePerNight} / night</div>
+                                        <div style={{ fontSize: '0.8rem', color: '#9CA3AF' }}>₹ {selectedStay.pricePerNight || selectedStay.price_per_night} / night</div>
                                     </div>
                                 </div>
                             ) : (
@@ -179,20 +328,8 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Local Guide (If selected) */}
-                        {selectedGuide && (
-                            <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #FCD34D', borderLeft: '6px solid #F59E0B', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
-                                <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Local Guide (Optional Add-on)</h3>
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                                        <img src={selectedGuide.image} alt="Guide" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '50%' }} />
-                                        <div>
-                                            <div style={{ fontWeight: '700', fontSize: '1.1rem' }}>{selectedGuide.name} ({selectedGuide.title})</div>
-                                            <div style={{ fontSize: '0.9rem', color: '#717171' }}>• {selectedGuide.experience} exp</div>
-                                        </div>
-                                    </div>
-                                    <div style={{ fontWeight: '800', fontSize: '1.2rem' }}>₹ {guideCost.toLocaleString('en-IN')}</div>
-                                </div>
-                            </div>
+                        )}
+                        </>
                         )}
                     </div>
 
@@ -257,30 +394,86 @@ const BudgetSummary = () => {
                                 {totalEstimated <= overallBudget ? 'Great! Your trip is under budget.' : 'Warning: You are over your budget limit!'}
                             </div>
 
-                            <button 
-                                onClick={handleDownload}
-                                style={{
-                                    width: '100%',
-                                    backgroundColor: '#FF4D6D',
-                                    color: 'white',
-                                    border: 'none',
-                                    padding: '18px',
-                                    borderRadius: '16px',
-                                    fontSize: '1.1rem',
-                                    fontWeight: '700',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '12px',
-                                    cursor: 'pointer',
-                                    boxShadow: '0 10px 15px -3px rgba(255, 77, 109, 0.3)',
-                                    transition: 'transform 0.2s ease'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                            >
-                                <Download size={22} /> {isDownloading ? 'Generating itinerary...' : 'Download Complete Itinerary'}
-                            </button>
+                            {activeView === 'manual' && !optimizedPlan && (
+                                <button 
+                                    onClick={handleOptimize}
+                                    style={{
+                                        width: '100%',
+                                        backgroundColor: '#10B981',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '16px',
+                                        borderRadius: '16px',
+                                        fontSize: '1.05rem',
+                                        fontWeight: '700',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '10px',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
+                                        transition: 'transform 0.2s ease',
+                                        marginBottom: '15px'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                    disabled={isOptimizing}
+                                >
+                                    ✨ {isOptimizing ? 'Optimizing...' : 'Optimize My Trip with AI'}
+                                </button>
+                            )}
+
+                            {activeView === 'ai' ? (
+                                <button 
+                                    onClick={handleDownloadAI}
+                                    style={{
+                                        width: '100%',
+                                        backgroundColor: '#10B981',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '18px',
+                                        borderRadius: '16px',
+                                        fontSize: '1.1rem',
+                                        fontWeight: '700',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '12px',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 10px 15px -3px rgba(16, 185, 129, 0.3)',
+                                        transition: 'transform 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                >
+                                    <Download size={22} /> {isDownloading ? 'Generating...' : 'Download AI Plan'}
+                                </button>
+                            ) : (
+                                <button 
+                                    onClick={handleDownload}
+                                    style={{
+                                        width: '100%',
+                                        backgroundColor: '#FF4D6D',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '18px',
+                                        borderRadius: '16px',
+                                        fontSize: '1.1rem',
+                                        fontWeight: '700',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '12px',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 10px 15px -3px rgba(255, 77, 109, 0.3)',
+                                        transition: 'transform 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                >
+                                    <Download size={22} /> {isDownloading ? 'Generating...' : 'Download Manual Plan'}
+                                </button>
+                            )}
 
                             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                                 <Link to="/planner" style={{ color: '#9CA3AF', textDecoration: 'none', fontSize: '0.9rem' }}>← Start Over</Link>
@@ -489,12 +682,36 @@ const BudgetSummary = () => {
                         </div>
                     </div>
 
-                    {/* Footer */}
-                    <div style={{ marginTop: '50px', paddingTop: '20px', borderTop: '2px solid #f3f4f6', textAlign: 'center', color: '#9ca3af', fontSize: '0.9rem', fontWeight: '500' }}>
-                        Generated by TripEase • Plan your next adventure with ease.
+            {/* HIDDEN AI OPTIMIZED ITINERARY FOR DOWNLOAD */}
+            {optimizedPlan && (
+                <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '100%', pointerEvents: 'none' }}>
+                    <div ref={optimizedRef} style={{ width: '900px', backgroundColor: '#ffffff', padding: '60px', fontFamily: '"Inter", "Roboto", sans-serif', color: '#1f2937' }}>
+                        <div style={{ backgroundColor: '#10B981', color: 'white', padding: '40px', borderRadius: '24px', marginBottom: '40px', textAlign: 'center' }}>
+                            <h1 style={{ fontSize: '2.5rem', margin: '0 0 10px 0' }}>{planInfo.destination} — AI Optimized Plan</h1>
+                            <p style={{ fontSize: '1.2rem', opacity: 0.9, margin: 0 }}>{planInfo.days} Days • Highly optimized for minimal travel</p>
+                        </div>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            {optimizedPlan.optimizedPlan.map((day, idx) => (
+                                <div key={idx} style={{ padding: '25px', border: '2px solid #E5E7EB', borderRadius: '16px', borderLeft: '8px solid #10B981' }}>
+                                    <h2 style={{ margin: '0 0 15px 0', color: '#111827' }}>Day {day.day}</h2>
+                                    {day.hotel && <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🏨 Hotel: {day.hotel.name}</div>}
+                                    <div style={{ marginBottom: '10px' }}>
+                                        <strong>📍 Places:</strong> {day.places?.map(p => p.name).join(' → ')}
+                                    </div>
+                                    <div>
+                                        <strong>🍽️ Food:</strong> {day.food?.map(f => f.name).join(', ')}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div style={{ marginTop: '40px', textAlign: 'center', fontSize: '1.5rem', fontWeight: 'bold', color: '#10B981' }}>
+                            Total Estimated Cost: ₹{totalEstimated.toLocaleString('en-IN')}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

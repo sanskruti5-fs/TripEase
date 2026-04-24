@@ -112,6 +112,85 @@ const aiController = {
             console.error('❌ Groq Transport Error:', e.message);
             res.status(500).json({ error: 'Failed to parse transport AI' });
         }
+    },
+
+    async optimizeItinerary(req, res) {
+        const { places, hotels, food, transport, budget, planInfo } = req.body;
+        const apiKey = process.env.GROQ_API_KEY;
+
+        if (!apiKey) return res.status(500).json({ error: 'Groq API Key missing' });
+
+        const days = planInfo?.days || 3;
+        const destination = planInfo?.destination || 'the destination';
+
+        try {
+            const prompt = `
+                Act as an expert travel optimizer. You are given a list of user-selected items for a ${days}-day trip to ${destination}.
+                Your task is to reorder and group these exact items into a highly optimized, logical day-by-day itinerary.
+
+                USER SELECTIONS:
+                - Places to visit: ${JSON.stringify(places)}
+                - Hotels (Day-wise): ${JSON.stringify(hotels)}
+                - Food: ${JSON.stringify(food)}
+                - Budget: ₹${budget}
+                
+                STRICT RULES:
+                1. DO NOT invent new places, hotels, or foods. ONLY use the items provided above.
+                2. Group places that are logically close to each other on the same day to minimize travel distance.
+                3. Allocate places based on the hotel booked for that specific day (if hotels vary by day).
+                4. Maintain realistic pricing for the output.
+                5. Output MUST be strictly valid JSON in the exact structure below.
+
+                REQUIRED JSON STRUCTURE:
+                {
+                  "optimizedPlan": [
+                    {
+                      "day": 1,
+                      "hotel": { "name": "Hotel Name", "price": "Price", "image": "URL" },
+                      "places": [
+                        { "name": "Place Name", "entryFee": 500, "rationale": "Close to hotel" }
+                      ],
+                      "food": [
+                        { "name": "Food Name", "restaurant": "Restaurant Name" }
+                      ],
+                      "dailyCost": "₹XXXX"
+                    }
+                  ],
+                  "optimizationSummary": "Brief summary of how the trip was optimized (e.g., 'Grouped South ${destination} attractions on Day 1 to minimize travel time.')",
+                  "totalEstimatedSavings": "₹XXX (estimate savings from optimized travel route)"
+                }
+            `;
+
+            const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.1-8b-instant',
+                    messages: [{ role: 'user', content: prompt }],
+                    temperature: 0.3,
+                    response_format: { type: "json_object" }
+                })
+            });
+
+            const data = await response.json();
+            const text = data.choices[0].message.content;
+            
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            const optimizedJson = JSON.parse(jsonMatch ? jsonMatch[0] : text);
+            
+            console.log('✅ Successfully optimized itinerary using Groq');
+            res.json(optimizedJson);
+
+        } catch (error) {
+            console.error('❌ Groq Optimization Error:', error.message);
+            res.status(500).json({ 
+                error: 'Failed to optimize plan with AI.',
+                details: error.message
+            });
+        }
     }
 };
 

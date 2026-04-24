@@ -10,7 +10,13 @@ const Accommodation = () => {
     const planInfo = location.state?.plan;
 
     const [activeTab, setActiveTab] = useState('all');
-    const [selectedStay, setSelectedStay] = useState(null);
+    
+    // Day-wise selection logic
+    const numDays = parseInt(planInfo?.days) || 1;
+    const [sameForAllDays, setSameForAllDays] = useState(true);
+    const [dayWiseStays, setDayWiseStays] = useState(Array(numDays).fill(null));
+    const [activeDayIndex, setActiveDayIndex] = useState(0);
+
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -60,18 +66,47 @@ const Accommodation = () => {
         ];
     }
 
-    // Derived filtered list (all data is already 'hotel' type from backend)
-    const filteredHotels = hotels;
+    // Derived filtered list
+    const filteredHotels = activeTab === 'all' ? hotels : hotels.filter(h => h.category === activeTab);
 
     const handleNext = () => {
-        const stayCost = selectedStay ? (selectedStay.price_per_night * planInfo.days) : 0;
+        const stayCost = dayWiseStays.reduce((sum, stay) => sum + (stay?.price_per_night || 0), 0);
         navigate('/transport', {
             state: {
                 ...location.state,
-                plan: { ...planInfo, stayCost, selectedStay }
+                plan: { ...planInfo, stayCost, dayWiseStays }
             }
         });
     };
+
+    const handleHotelSelect = (hotel) => {
+        const isCurrentlySelected = sameForAllDays 
+            ? dayWiseStays[0]?._id === hotel._id 
+            : dayWiseStays[activeDayIndex]?._id === hotel._id;
+
+        if (!isCurrentlySelected) {
+            const costToAdd = sameForAllDays ? hotel.price_per_night * numDays : hotel.price_per_night;
+            const currentStayCost = dayWiseStays.reduce((sum, stay) => sum + (stay?.price_per_night || 0), 0);
+            const oldCostToReplace = sameForAllDays ? currentStayCost : (dayWiseStays[activeDayIndex]?.price_per_night || 0);
+            
+            const spent = (planInfo.transportMode?.price || 0) + (numDays * 800) + (planInfo.extraFoodCost || 0) + (planInfo.guideCost || 0);
+            if (spent + currentStayCost - oldCostToReplace + costToAdd > planInfo.budget) {
+                alert(`Selecting "${hotel.place_name}" exceeds your budget of ₹${planInfo.budget.toLocaleString('en-IN')}!`);
+                return;
+            }
+        }
+
+        if (sameForAllDays) {
+            setDayWiseStays(isCurrentlySelected ? Array(numDays).fill(null) : Array(numDays).fill(hotel));
+        } else {
+            const newStays = [...dayWiseStays];
+            newStays[activeDayIndex] = isCurrentlySelected ? null : hotel;
+            setDayWiseStays(newStays);
+        }
+    };
+
+    const isReady = dayWiseStays.every(stay => stay !== null);
+    const totalStayCost = dayWiseStays.reduce((sum, stay) => sum + (stay?.price_per_night || 0), 0);
 
     const renderStars = (rating) => {
         const full = Math.floor(rating);
@@ -102,6 +137,40 @@ const Accommodation = () => {
                     Where will you stay?
                 </motion.h1>
                 <p>City-specific hotels for <strong>{destName}</strong> — real rates, real stays.</p>
+            </div>
+
+            {/* Day Wise Controls */}
+            <div className="acc-day-controls">
+                <div className="acc-toggle-wrap">
+                    <label className="acc-toggle">
+                        <input 
+                            type="checkbox" 
+                            checked={sameForAllDays} 
+                            onChange={(e) => {
+                                setSameForAllDays(e.target.checked);
+                                if (e.target.checked && dayWiseStays[0]) {
+                                    setDayWiseStays(Array(numDays).fill(dayWiseStays[0]));
+                                }
+                            }} 
+                        />
+                        <span className="acc-slider"></span>
+                    </label>
+                    <span className="acc-toggle-label">Book same hotel for all {numDays} days</span>
+                </div>
+
+                {!sameForAllDays && (
+                    <div className="acc-day-tabs">
+                        {Array.from({ length: numDays }).map((_, idx) => (
+                            <button
+                                key={idx}
+                                className={`acc-day-tab ${activeDayIndex === idx ? 'acc-day-tab--active' : ''} ${dayWiseStays[idx] ? 'acc-day-tab--filled' : ''}`}
+                                onClick={() => setActiveDayIndex(idx)}
+                            >
+                                Day {idx + 1} {dayWiseStays[idx] && <CheckCircle2 size={12} />}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Tab Filters */}
@@ -137,7 +206,10 @@ const Accommodation = () => {
                 <div className="acc-grid">
                     <AnimatePresence>
                         {filteredHotels.map((hotel, idx) => {
-                            const isSelected = selectedStay?._id === hotel._id;
+                            const isSelected = sameForAllDays 
+                                ? dayWiseStays[0]?._id === hotel._id 
+                                : dayWiseStays[activeDayIndex]?._id === hotel._id;
+                            
                             return (
                                 <motion.div
                                     key={hotel._id || idx}
@@ -146,20 +218,7 @@ const Accommodation = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ delay: idx * 0.07 }}
-                                    onClick={() => {
-                                        if (!isSelected) {
-                                            const cost = hotel.price_per_night * planInfo.days;
-                                            const spent = (planInfo.transportMode?.price || 0)
-                                                + (planInfo.days * 800)
-                                                + (planInfo.extraFoodCost || 0)
-                                                + (planInfo.guideCost || 0);
-                                            if (spent + cost > planInfo.budget) {
-                                                alert(`Selecting "${hotel.place_name}" exceeds your budget of ₹${planInfo.budget.toLocaleString('en-IN')}!`);
-                                                return;
-                                            }
-                                        }
-                                        setSelectedStay(isSelected ? null : hotel);
-                                    }}
+                                    onClick={() => handleHotelSelect(hotel)}
                                 >
                                     {/* Image */}
                                     <div className="acc-card__img-wrap">
@@ -214,7 +273,9 @@ const Accommodation = () => {
                                                 <span className="acc-price-amount">₹{hotel.price_per_night?.toLocaleString('en-IN')}</span>
                                                 <span className="acc-price-label">/ night</span>
                                                 <span className="acc-price-total">
-                                                    ₹{(hotel.price_per_night * planInfo.days).toLocaleString('en-IN')} total
+                                                    {sameForAllDays 
+                                                        ? `₹${(hotel.price_per_night * numDays).toLocaleString('en-IN')} for ${numDays} days` 
+                                                        : `₹${hotel.price_per_night.toLocaleString('en-IN')} for Day ${activeDayIndex + 1}`}
                                                 </span>
                                             </div>
                                             <button className={`acc-btn ${isSelected ? 'acc-btn--deselect' : 'acc-btn--select'}`}>
@@ -233,20 +294,22 @@ const Accommodation = () => {
             <div className="acc-footer glass-panel">
                 <div className="container acc-footer__inner">
                     <div className="acc-footer__summary">
-                        {selectedStay ? (
+                        {isReady ? (
                             <>
                                 <CheckCircle2 size={18} color="var(--primary-color)" />
-                                <span><strong>{selectedStay.place_name}</strong> · ₹{(selectedStay.price_per_night * planInfo.days).toLocaleString('en-IN')} for {planInfo.days} nights</span>
+                                <span><strong>All {numDays} days booked</strong> · ₹{totalStayCost.toLocaleString('en-IN')} total</span>
                             </>
                         ) : (
-                            <span style={{ color: 'var(--text-light)' }}>Select a hotel to continue</span>
+                            <span style={{ color: 'var(--text-light)' }}>
+                                Select hotel{sameForAllDays ? 's' : ` for Day ${dayWiseStays.findIndex(s => s === null) + 1}`}
+                            </span>
                         )}
                     </div>
                     <button
                         className="btn-primary-custom"
                         onClick={handleNext}
-                        disabled={!selectedStay}
-                        style={{ opacity: !selectedStay ? 0.5 : 1, cursor: !selectedStay ? 'not-allowed' : 'pointer' }}
+                        disabled={!isReady}
+                        style={{ opacity: !isReady ? 0.5 : 1, cursor: !isReady ? 'not-allowed' : 'pointer' }}
                     >
                         Next Step: Plan Transport →
                     </button>
