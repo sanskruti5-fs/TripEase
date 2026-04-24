@@ -163,6 +163,21 @@ const BudgetSummary = () => {
                         {activeView === 'ai' && optimizedPlan ? (
                             /* AI OPTIMIZED VIEW */
                             <>
+                                <div style={{ width: '100%', height: '240px', borderRadius: '20px', overflow: 'hidden', marginBottom: '24px', position: 'relative', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
+                                    <img 
+                                        src={`https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80`} 
+                                        alt={planInfo.destination}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80' }}
+                                    />
+                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)', display: 'flex', alignItems: 'flex-end', padding: '30px' }}>
+                                        <div>
+                                            <div style={{ color: 'white', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '4px', opacity: 0.9 }}>AI Optimized Journey</div>
+                                            <h2 style={{ color: 'white', fontSize: '2.8rem', fontWeight: '800', margin: 0, lineHeight: 1 }}>{planInfo.destination}</h2>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div style={{ backgroundColor: '#ECFDF5', padding: '20px', borderRadius: '16px', border: '1px solid #34D399', color: '#065F46', marginBottom: '10px' }}>
                                     <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '0 0 8px 0' }}>✨ AI Optimization Complete</h3>
                                     <p style={{ margin: 0, fontSize: '0.95rem' }}>{optimizedPlan.optimizationSummary}</p>
@@ -692,6 +707,16 @@ const BudgetSummary = () => {
             {optimizedPlan && (
                 <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '100%', pointerEvents: 'none' }}>
                     <div ref={optimizedRef} style={{ width: '900px', backgroundColor: '#ffffff', padding: '60px', fontFamily: '"Inter", "Roboto", sans-serif', color: '#1f2937' }}>
+                        {/* City Hero Image for Poster */}
+                        <div style={{ width: '100%', height: '300px', borderRadius: '24px', overflow: 'hidden', marginBottom: '30px' }}>
+                            <img 
+                                src={`https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80`} 
+                                alt={planInfo.destination} 
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80' }}
+                            />
+                        </div>
+
                         <div style={{ backgroundColor: '#10B981', color: 'white', padding: '40px', borderRadius: '24px', marginBottom: '40px', textAlign: 'center' }}>
                             <h1 style={{ fontSize: '2.5rem', margin: '0 0 10px 0' }}>{planInfo.destination} — AI Optimized Plan</h1>
                             <p style={{ fontSize: '1.2rem', opacity: 0.9, margin: 0 }}>{planInfo.days} Days • Highly optimized for minimal travel</p>

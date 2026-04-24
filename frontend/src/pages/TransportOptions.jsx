@@ -38,6 +38,13 @@ const getRouteType = (origin, destination) => {
     return "long_international";
 };
 
+const parsePrice = (priceStr) => {
+    if (!priceStr) return 0;
+    if (typeof priceStr === 'number') return priceStr;
+    const num = parseInt(priceStr.toString().replace(/[^0-9]/g, ''));
+    return isNaN(num) ? 0 : num;
+};
+
 const validatePrice = (priceStr, type) => {
     if (!priceStr) return priceStr;
     const num = parseInt(priceStr.toString().replace(/[^0-9]/g, ''));
@@ -203,6 +210,8 @@ const TransportOptions = () => {
         }
     };
 
+    const [isRoundTrip, setIsRoundTrip] = useState(false);
+
     useEffect(() => {
         if (activeTab === 'flights') {
             fetchFlights();
@@ -223,8 +232,32 @@ const TransportOptions = () => {
     return (
         <div className="transport-page">
             <div className="transport-header">
-                <h2 className="route-title">{routeOrigin} ➔ {routeDest}</h2>
-                <p className="route-date">{travelDate} | 1 Adult</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+                    <div>
+                        <h2 className="route-title">{routeOrigin} ➔ {routeDest}</h2>
+                        <p className="route-date">{travelDate} | 1 Adult</p>
+                    </div>
+                    
+                    <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '12px', 
+                        padding: '12px 20px', 
+                        background: 'rgba(255, 77, 109, 0.08)', 
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255, 77, 109, 0.2)'
+                    }}>
+                        <span style={{ fontWeight: '600', color: '#FF4D6D' }}>Round Trip?</span>
+                        <label className="acc-toggle" style={{ transform: 'scale(0.8)' }}>
+                            <input 
+                                type="checkbox" 
+                                checked={isRoundTrip} 
+                                onChange={(e) => setIsRoundTrip(e.target.checked)} 
+                            />
+                            <span className="acc-slider"></span>
+                        </label>
+                    </div>
+                </div>
                 
                 <div className="transport-tabs">
                     {tabs.map(tab => (
@@ -314,13 +347,30 @@ const TransportOptions = () => {
             <div className="sticky-footer">
                 <div style={{ fontSize: '1.2rem' }}>
                     {selectedTransport ? (
-                        <>Selected: <span style={{ color: '#FF4D6D', fontWeight: 'bold' }}>{selectedTransport.operator || selectedTransport.name}</span> ({selectedTransport.price})</>
+                        <>
+                            Selected: <span style={{ color: '#FF4D6D', fontWeight: 'bold' }}>{selectedTransport.operator || selectedTransport.name}</span> 
+                            {isRoundTrip ? (
+                                <span style={{ marginLeft: '10px' }}>
+                                    (₹{parsePrice(selectedTransport.price).toLocaleString('en-IN')} x 2 = <span style={{ color: '#FF4D6D' }}>₹{(parsePrice(selectedTransport.price) * 2).toLocaleString('en-IN')}</span>)
+                                </span>
+                            ) : (
+                                <span style={{ marginLeft: '10px' }}>({selectedTransport.price})</span>
+                            )}
+                        </>
                     ) : 'Please select a travel option to proceed'}
                 </div>
                 <button 
                     className="btn-primary-next" 
                     disabled={!selectedTransport}
-                    onClick={() => navigate('/final-review', { state: { ...location.state, selectedTransport } })}
+                    onClick={() => {
+                        const finalTransport = {
+                            ...selectedTransport,
+                            isRoundTrip,
+                            originalPrice: selectedTransport.price,
+                            price: isRoundTrip ? `₹${(parsePrice(selectedTransport.price) * 2).toLocaleString('en-IN')}` : selectedTransport.price
+                        };
+                        navigate('/final-review', { state: { ...location.state, selectedTransport: finalTransport } });
+                    }}
                 >
                     Review Final Plan <ChevronRight size={20} />
                 </button>
