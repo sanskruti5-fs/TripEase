@@ -298,11 +298,6 @@ const TripPlanner = () => {
                                         <input type="number" value={formData.budget} onChange={(e) => setFormData({ ...formData, budget: Number(e.target.value) })} />
                                     </div>
                                 </div>
-                                <input
-                                    type="range" min="5000" max="500000" step="5000"
-                                    value={formData.budget} onChange={(e) => setFormData({ ...formData, budget: Number(e.target.value) })}
-                                    className="budget-slider"
-                                />
                             </div>
 
                             <div className="days-section">
