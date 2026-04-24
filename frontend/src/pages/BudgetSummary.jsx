@@ -29,10 +29,32 @@ const BudgetSummary = () => {
     const [isOptimizing, setIsOptimizing] = useState(false);
     const [optimizedPlan, setOptimizedPlan] = useState(null);
     const [activeView, setActiveView] = useState('manual'); // 'manual' or 'ai'
+    const [showMap, setShowMap] = useState(false);
 
     if (!planInfo) {
         return <Navigate to="/planner" replace />;
     }
+
+    const destName = planInfo.destination || '';
+    const currencyMap = {
+        "Dubai": { code: "AED", rate: 22.7 },
+        "Paris": { code: "EUR", rate: 90.5 },
+        "London": { code: "GBP", rate: 105.2 },
+        "Tokyo": { code: "JPY", rate: 0.55 },
+        "New York": { code: "USD", rate: 83.4 },
+        "Singapore": { code: "SGD", rate: 61.8 },
+        "Bangkok": { code: "THB", rate: 2.3 },
+        "Bali": { code: "IDR", rate: 0.0053 },
+        "Kuala Lumpur": { code: "MYR", rate: 17.5 },
+        "Istanbul": { code: "TRY", rate: 2.6 },
+        "Rome": { code: "EUR", rate: 90.5 },
+        "Barcelona": { code: "EUR", rate: 90.5 },
+        "Amsterdam": { code: "EUR", rate: 90.5 },
+        "Los Angeles": { code: "USD", rate: 83.4 },
+        "Las Vegas": { code: "USD", rate: 83.4 }
+    };
+
+    const localCurrency = currencyMap[destName] || null;
 
     // Helper to parse prices
     const parsePrice = (priceStr) => {
@@ -40,6 +62,11 @@ const BudgetSummary = () => {
         if (typeof priceStr === 'number') return priceStr;
         const num = parseInt(priceStr.replace(/[^0-9]/g, ''));
         return isNaN(num) ? 0 : num;
+    };
+
+    const convert = (inr) => {
+        if (!localCurrency) return null;
+        return (inr / localCurrency.rate).toLocaleString('en-US', { maximumFractionDigits: 0 });
     };
 
     // Cost Extraction & Logic
@@ -185,6 +212,24 @@ const BudgetSummary = () => {
                                         <p style={{ margin: '8px 0 0 0', fontWeight: 'bold' }}>Savings: {optimizedPlan.totalEstimatedSavings}</p>
                                     )}
                                 </div>
+
+                                {optimizedPlan.savingsMessage && (
+                                    <div style={{ 
+                                        backgroundColor: '#DBEAFE', 
+                                        padding: '15px 20px', 
+                                        borderRadius: '16px', 
+                                        border: '1px solid #93C5FD', 
+                                        color: '#1E40AF', 
+                                        marginBottom: '24px', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: '12px',
+                                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+                                    }}>
+                                        <Wallet size={22} />
+                                        <span style={{ fontWeight: '700', fontSize: '1rem' }}>{optimizedPlan.savingsMessage}</span>
+                                    </div>
+                                )}
 
                                 {optimizedPlan.optimizedPlan.map((dayPlan, idx) => (
                                     <div key={idx} style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', borderLeft: '6px solid #10B981', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
@@ -681,8 +726,8 @@ const BudgetSummary = () => {
                                 background: 'linear-gradient(135deg, #FF4D6D 0%, #FF8A9B 100%)', 
                                 borderRadius: '20px',
                                 color: 'white',
-                                marginTop: 'auto',
-                                textAlign: 'center'
+                                textAlign: 'center',
+                                boxShadow: '0 10px 20px rgba(255, 77, 109, 0.2)'
                             }}>
                                 <div style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.9, marginBottom: '10px' }}>
                                     Total Estimated Cost
@@ -692,6 +737,62 @@ const BudgetSummary = () => {
                                 </div>
                                 <div style={{ fontSize: '0.95rem', opacity: 0.9, paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.3)' }}>
                                     Budget Limit: ₹ {overallBudget.toLocaleString('en-IN')}
+                                </div>
+                            </div>
+
+                            {/* Currency Support Card */}
+                            {localCurrency && (
+                                <div style={{ 
+                                    padding: '25px', 
+                                    backgroundColor: 'white', 
+                                    borderRadius: '20px', 
+                                    border: '1px solid #E5E7EB',
+                                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+                                }}>
+                                    <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '15px', color: '#111827', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        💱 Local Currency ({localCurrency.code})
+                                    </h3>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <div style={{ fontSize: '0.9rem', color: '#6B7280', marginBottom: '4px' }}>In {localCurrency.code}</div>
+                                            <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#10B981' }}>{localCurrency.code} {convert(totalEstimated)}</div>
+                                        </div>
+                                        <div style={{ textAlign: 'right', fontSize: '0.85rem', color: '#9CA3AF' }}>
+                                            Rate: 1 {localCurrency.code} = ₹{localCurrency.rate}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Trip Map Card */}
+                            <div style={{ 
+                                padding: '25px', 
+                                backgroundColor: 'white', 
+                                borderRadius: '20px', 
+                                border: '1px solid #E5E7EB',
+                                boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+                                overflow: 'hidden'
+                            }}>
+                                <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '15px', color: '#111827', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    🗺️ Trip Map: {destName}
+                                </h3>
+                                <div style={{ width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+                                    <img 
+                                        src={`https://maps.googleapis.com/maps/api/staticmap?center=${encodeURIComponent(destName)}&zoom=12&size=400x200&key=YOUR_GOOGLE_MAPS_KEY_HERE`} 
+                                        alt="Map"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        onError={(e) => {
+                                            e.target.src = 'https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=600&q=80';
+                                        }}
+                                    />
+                                    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <button 
+                                            onClick={() => window.open(`https://www.google.com/maps/search/${encodeURIComponent(destName)}+attractions`, '_blank')}
+                                            style={{ padding: '10px 20px', borderRadius: '30px', background: 'white', border: 'none', fontWeight: '700', boxShadow: '0 4px 10px rgba(0,0,0,0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                                        >
+                                            <Compass size={18} color="#FF4D6D" /> Open in Google Maps
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

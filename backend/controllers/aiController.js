@@ -138,8 +138,11 @@ const aiController = {
                 1. DO NOT invent new places, hotels, or foods. ONLY use the items provided above.
                 2. Group places that are logically close to each other on the same day to minimize travel distance.
                 3. Allocate places based on the hotel booked for that specific day (if hotels vary by day).
-                4. Maintain realistic pricing for the output.
-                5. Output MUST be strictly valid JSON in the exact structure below.
+                4. BE FRUGAL: Do NOT try to use the entire budget just because it's available. Every traveler wants to save money.
+                5. REALISTIC FOOD COSTS: Do NOT inflate food prices. For example, ₹12,000 for 3 days is unrealistic for most trips. Keep it natural.
+                6. INCLUDE RETURN TRANSPORTATION: Factor in the cost of returning to ${planInfo?.origin || 'origin'} in the total calculations.
+                7. Maintain realistic pricing for the output.
+                8. Output MUST be strictly valid JSON in the exact structure below.
 
                 REQUIRED JSON STRUCTURE:
                 {
@@ -156,8 +159,9 @@ const aiController = {
                       "dailyCost": "₹XXXX"
                     }
                   ],
-                  "optimizationSummary": "Brief summary of how the trip was optimized (e.g., 'Grouped South ${destination} attractions on Day 1 to minimize travel time.')",
-                  "totalEstimatedSavings": "₹XXX (estimate savings from optimized travel route)"
+                  "optimizationSummary": "Brief summary of how the trip was optimized.",
+                  "totalEstimatedSavings": "₹XXX",
+                  "savingsMessage": "A friendly message about how much the user is saving (e.g., 'You are saving ₹12,000 compared to your maximum budget!')"
                 }
             `;
 
