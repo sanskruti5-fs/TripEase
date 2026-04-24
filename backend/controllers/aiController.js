@@ -12,7 +12,17 @@ const aiController = {
         try {
             const prompt = `
                 Act as a professional travel planner. Create a highly detailed ${actualDuration}-day travel itinerary for a trip from ${origin || 'the user\'s location'} to ${destination}.
-                The vibe should be ${actualVibe}, with a ${budget || 'flexible'} budget.
+                The vibe should be ${actualVibe}.
+                
+                USER BUDGET: ₹${budget || 'Flexible'}
+                YOUR GOAL: Plan a great trip while SAVING as much money as possible. 
+                
+                STRICT FRUGALITY RULES:
+                1. DO NOT spend the entire budget. A person's budget is their LIMIT, not their TARGET.
+                2. If the budget is high (e.g. ₹50,000), DO NOT inflate costs to reach it. 
+                3. Keep meal costs realistic (e.g. ₹300-₹800 per day, NOT ₹4000).
+                4. Always look for the best value for money.
+                5. In the "budgetSummary", explicitly state how much you are SAVING from their total budget.
                 
                 You MUST return ONLY a valid JSON object with this exact structure:
                 {
@@ -27,7 +37,7 @@ const aiController = {
                     }
                   ],
                   "travelTips": ["Tip 1"],
-                  "budgetSummary": "Summary"
+                  "budgetSummary": "Summary (Mention savings here)"
                 }
                 Do not include any extra text before or after the JSON.
             `;
@@ -41,7 +51,7 @@ const aiController = {
                 body: JSON.stringify({
                     model: 'llama-3.1-8b-instant',
                     messages: [{ role: 'user', content: prompt }],
-                    temperature: 0.7,
+                    temperature: 0.4,
                     response_format: { type: "json_object" }
                 })
             });
@@ -138,11 +148,12 @@ const aiController = {
                 1. DO NOT invent new places, hotels, or foods. ONLY use the items provided above.
                 2. Group places that are logically close to each other on the same day to minimize travel distance.
                 3. Allocate places based on the hotel booked for that specific day (if hotels vary by day).
-                4. BE FRUGAL: Do NOT try to use the entire budget just because it's available. Every traveler wants to save money.
-                5. REALISTIC FOOD COSTS: Do NOT inflate food prices. For example, ₹12,000 for 3 days is unrealistic for most trips. Keep it natural.
+                4. BE EXTREMELY FRUGAL: Do NOT try to use the entire budget. Every traveler wants to save money.
+                5. REALISTIC FOOD COSTS: Keep meal costs natural (₹300-₹800/day). For example, ₹12,000 for 3 days is absurd.
                 6. INCLUDE RETURN TRANSPORTATION: Factor in the cost of returning to ${planInfo?.origin || 'origin'} in the total calculations.
-                7. Maintain realistic pricing for the output.
-                8. Output MUST be strictly valid JSON in the exact structure below.
+                7. Report actual needed money and show the remaining savings clearly.
+                8. If the total cost is much lower than the budget, DO NOT add "miscellaneous" costs to fill it up. Just show the savings.
+                9. Output MUST be strictly valid JSON in the exact structure below.
 
                 REQUIRED JSON STRUCTURE:
                 {
