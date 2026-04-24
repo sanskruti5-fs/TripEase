@@ -232,6 +232,20 @@
   width: 60%;
 }
 
+@media (max-width: 600px) {
+  .market-card {
+    flex-direction: column;
+  }
+  .market-img-container {
+    width: 100%;
+    height: 200px;
+  }
+  .market-content {
+    width: 100%;
+    padding: 16px;
+  }
+}
+
 .market-badge {
   align-self: flex-start;
   background: #fff0f3;

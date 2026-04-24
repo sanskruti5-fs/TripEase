@@ -60,18 +60,39 @@ const Navbar = () => {
                     )}
                 </div>
 
-                {/* Mobile Toggle Button */}
-                <button 
-                    className={`mobile-toggle ${isMenuOpen ? 'is-open' : ''}`} 
-                    onClick={toggleMenu}
-                    aria-label="Toggle navigation"
-                >
-                    <div className="hamburger">
-                        <div className="bar"></div>
-                        <div className="bar"></div>
-                        <div className="bar"></div>
-                    </div>
-                </button>
+                {/* Mobile Actions (Visible only on mobile) */}
+                <div className="mobile-actions">
+                    {token ? (
+                        <span style={{ 
+                            fontWeight: '600', 
+                            color: 'var(--text-dark)', 
+                            fontSize: '0.9rem',
+                            maxWidth: '80px',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: 'inline-block'
+                        }}>
+                            {user?.name.split(' ')[0]}
+                        </span>
+                    ) : (
+                        <Link to="/login" className="btn-primary-custom mobile-login-btn" style={{ padding: '6px 12px', fontSize: '0.9rem', textDecoration: 'none' }}>
+                            Log In
+                        </Link>
+                    )}
+                    {/* Mobile Toggle Button */}
+                    <button 
+                        className={`mobile-toggle ${isMenuOpen ? 'is-open' : ''}`} 
+                        onClick={toggleMenu}
+                        aria-label="Toggle navigation"
+                    >
+                        <div className="hamburger">
+                            <div className="bar"></div>
+                            <div className="bar"></div>
+                            <div className="bar"></div>
+                        </div>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu Overlay (Top-Down) */}

@@ -155,3 +155,39 @@ ul {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* Global Responsive Sticky Footers */
+.sticky-footer .section-container,
+.food-sticky-footer .container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.action-buttons {
+  display: flex !important;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .sticky-footer .section-container,
+  .food-sticky-footer .container {
+    flex-direction: column !important;
+    text-align: center;
+  }
+  
+  .action-buttons {
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .action-buttons button,
+  .btn-next-step {
+    width: 100%;
+    margin-top: 12px;
+  }
+}

@@ -16,11 +16,11 @@ const placeCacheSchema = new mongoose.Schema({
     },
     latitude: {
         type: Number,
-        required: true
+        default: 0
     },
     longitude: {
         type: Number,
-        required: true
+        default: 0
     },
     description: {
         type: String
@@ -44,6 +44,24 @@ const placeCacheSchema = new mongoose.Schema({
     suitability: {
         type: String
     },
+    // --- Hotel-specific fields ---
+    price_per_night: {
+        type: Number,
+        default: null
+    },
+    amenities: {
+        type: [String],
+        default: []
+    },
+    hotel_source: {
+        type: String,
+        default: null
+    },
+    tags: {
+        type: [String],
+        default: []
+    },
+    // --- Cache control ---
     last_updated: {
         type: Date,
         default: Date.now

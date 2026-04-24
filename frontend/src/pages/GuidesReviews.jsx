@@ -18,8 +18,8 @@ const mockReviews = [
 const galleryImages = [
     "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1534142498263-d143c965c276?auto=format&fit=crop&w=400&q=80",
-    "https://images.unsplash.com/photo-1587452308709-661ff97cf707?auto=format&fit=crop&w=400&q=80"
+    "/images/manali/hero.png",
+    "/images/new-york/hero.png"
 ];
 
 const GuidesReviews = () => {

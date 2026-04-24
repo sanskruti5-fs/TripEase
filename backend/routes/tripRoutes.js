@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tripController = require('../controllers/tripController');
+const hotelController = require('../controllers/hotelController');
 
 /**
  * TripEase Trip Routes
@@ -21,4 +22,8 @@ router.get('/places/map-points', tripController.getMapPoints);
 router.post('/save', tripController.saveTrip);
 router.get('/saved/:userId', tripController.getSavedTrips);
 
+// 5. Real-time Hotel Data (SERP → Groq → Fallback pipeline)
+router.get('/hotels', hotelController.getHotels);
+
 module.exports = router;
+

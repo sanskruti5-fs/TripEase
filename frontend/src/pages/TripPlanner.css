@@ -564,4 +564,18 @@
   .choice-card {
     padding: 24px 16px;
   }
+
+  .step-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .step-actions.dual {
+    flex-direction: column;
+  }
+
+  .step-actions button {
+    width: 100%;
+    padding: 14px 20px;
+  }
 }

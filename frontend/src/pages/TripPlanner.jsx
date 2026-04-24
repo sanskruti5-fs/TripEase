@@ -344,7 +344,7 @@ const TripPlanner = () => {
                             {!formData.tripType && (
                                 <p className="vibe-hint">✨ Please select a vibe above to unlock Magic AI Plan</p>
                             )}
-                            <div className="step-actions dual" style={{ display: 'flex', gap: '10px', marginTop: '30px' }}>
+                            <div className="step-actions dual">
                                 <button type="button" onClick={() => setStep(1)} className="btn-secondary-custom">Back</button>
                                 <button type="button" onClick={(e) => { e.preventDefault(); handleNext(); }} disabled={!formData.tripType || loading} className="btn-primary-custom btn-outline" style={{ border: '2px solid var(--primary-color)', color: 'var(--primary-color)', background: 'transparent' }}>Manual Plan →</button>
                                 <button type="button" onClick={(e) => { e.preventDefault(); handleMagicPlan(); }} disabled={!formData.tripType || loading} className="btn-primary-custom magic-btn-main">

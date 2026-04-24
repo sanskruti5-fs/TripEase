@@ -59,13 +59,19 @@
   align-items: center;
 }
 
+/* Mobile Actions Container */
+.mobile-actions {
+  display: none;
+  align-items: center;
+  gap: 16px;
+  z-index: 1001;
+}
+
 /* Mobile Toggle */
 .mobile-toggle {
-  display: none;
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 1001;
   padding: 8px;
   color: var(--text-dark);
 }
@@ -109,13 +115,9 @@
   .nav-desktop, .nav-cta-desktop {
     display: none;
   }
-  
-  .nav-cta-desktop {
-    display: none;
-  }
 
-  .mobile-toggle {
-    display: block;
+  .mobile-actions {
+    display: flex;
   }
 
   .navbar-container {
