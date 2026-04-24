@@ -373,9 +373,36 @@ const TripPlanner = () => {
                             {!formData.tripType && (
                                 <p className="vibe-hint">✨ Please select a vibe above to unlock Magic AI Plan</p>
                             )}
+                            
+                            {formData.destination && !popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) && (
+                                <div style={{ backgroundColor: 'rgba(255, 56, 92, 0.05)', padding: '15px', borderRadius: '12px', marginBottom: '20px', border: '1px dashed var(--primary-color)', textAlign: 'center' }}>
+                                    <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--primary-color)', fontWeight: '600' }}>
+                                        📍 "{formData.destination}" is a new destination!
+                                    </p>
+                                    <p style={{ margin: '5px 0 0 0', fontSize: '0.85rem', color: 'var(--text-light)' }}>
+                                        Verified manual data is limited. Magic AI Plan is highly recommended.
+                                    </p>
+                                </div>
+                            )}
+
                             <div className="step-actions dual">
                                 <button type="button" onClick={() => setStep(1)} className="btn-secondary-custom">Back</button>
-                                <button type="button" onClick={(e) => { e.preventDefault(); handleNext(); }} disabled={!formData.tripType || loading} className="btn-primary-custom btn-outline" style={{ border: '2px solid var(--primary-color)', color: 'var(--primary-color)', background: 'transparent' }}>Manual Plan →</button>
+                                
+                                <button 
+                                    type="button" 
+                                    onClick={(e) => { e.preventDefault(); handleNext(); }} 
+                                    disabled={!formData.tripType || loading} 
+                                    className="btn-primary-custom btn-outline" 
+                                    style={{ 
+                                        border: '2px solid var(--primary-color)', 
+                                        color: 'var(--primary-color)', 
+                                        background: 'transparent',
+                                        opacity: popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 1 : 0.5
+                                    }}
+                                >
+                                    {popularCities.some(c => c.name.toLowerCase() === formData.destination.toLowerCase()) ? 'Manual Plan →' : 'Limited Manual →'}
+                                </button>
+
                                 <button type="button" onClick={(e) => { e.preventDefault(); handleMagicPlan(); }} disabled={!formData.tripType || loading} className="btn-primary-custom magic-btn-main">
                                     {loading ? <Loader2 className="animate-spin" /> : <>✨ Magic AI Plan</>}
                                 </button>
