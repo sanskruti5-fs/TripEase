@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Wallet, MapPin, Calendar, Users, Download, ArrowRight, CheckCircle, Camera, Award, Star, Compass, TrainFront, Plane, Clock } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import './BudgetSummary.css';
 
 const BudgetSummary = () => {
     const [isDownloading, setIsDownloading] = useState(false);
@@ -155,18 +156,18 @@ const BudgetSummary = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#F9FAFB', minHeight: '100vh', padding: '100px 0' }}>
-            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="summary-page-wrapper">
+            <div className="summary-container">
                 
                 {/* 1. Header Section */}
-                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                    <h1 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#FF4D6D', marginBottom: '12px' }}>Final Itinerary & Budget Review</h1>
-                    <p style={{ color: '#717171', fontSize: '1.2rem' }}>Review your selections, check your budget, and download your full plan.</p>
+                <div className="summary-header">
+                    <h1>Final Itinerary & Budget Review</h1>
+                    <p>Review your selections, check your budget, and download your full plan.</p>
                 </div>
 
                 {/* AI Toggle Buttons if Optimized */}
                 {optimizedPlan && (
-                    <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '40px' }}>
+                    <div className="view-toggle-container">
                         <button 
                             onClick={() => setActiveView('manual')}
                             style={{ padding: '12px 24px', borderRadius: '30px', fontWeight: '700', cursor: 'pointer', border: '2px solid #FF4D6D', background: activeView === 'manual' ? '#FF4D6D' : 'white', color: activeView === 'manual' ? 'white' : '#FF4D6D' }}
@@ -182,25 +183,25 @@ const BudgetSummary = () => {
                     </div>
                 )}
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 7.5fr) minmax(0, 4.5fr)', gap: '40px' }}>
+                <div className="summary-grid">
                     
                     {/* LEFT COLUMN: The Itinerary Breakdown */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div className="itinerary-column">
                         
                         {activeView === 'ai' && optimizedPlan ? (
                             /* AI OPTIMIZED VIEW */
                             <>
-                                <div style={{ width: '100%', height: '240px', borderRadius: '20px', overflow: 'hidden', marginBottom: '24px', position: 'relative', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
+                                <div className="summary-hero-card">
                                     <img 
-                                        src={`https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80`} 
+                                        src={`/images/${planInfo.destination.toLowerCase().replace(/\s+/g, '-')}/hero.png`} 
                                         alt={planInfo.destination}
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80' }}
+                                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' }}
                                     />
-                                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)', display: 'flex', alignItems: 'flex-end', padding: '30px' }}>
+                                    <div className="hero-overlay">
                                         <div>
-                                            <div style={{ color: 'white', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '4px', opacity: 0.9 }}>AI Optimized Journey</div>
-                                            <h2 style={{ color: 'white', fontSize: '2.8rem', fontWeight: '800', margin: 0, lineHeight: 1 }}>{planInfo.destination}</h2>
+                                            <div className="hero-text-label">AI Optimized Journey</div>
+                                            <h2 className="hero-text-title">{planInfo.destination}</h2>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +233,7 @@ const BudgetSummary = () => {
                                 )}
 
                                 {optimizedPlan.optimizedPlan.map((dayPlan, idx) => (
-                                    <div key={idx} style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', borderLeft: '6px solid #10B981', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                                    <div key={idx} className="summary-card itinerary-card-ai">
                                         <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '20px', color: '#111827' }}>Day {dayPlan.day}</h3>
                                         
                                         {dayPlan.hotel && (
@@ -272,9 +273,23 @@ const BudgetSummary = () => {
                         ) : (
                             /* ORIGINAL MANUAL VIEW */
                             <>
+                                <div className="summary-hero-card">
+                                    <img 
+                                        src={`/images/${planInfo.destination.toLowerCase().replace(/\s+/g, '-')}/hero.png`} 
+                                        alt={planInfo.destination}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' }}
+                                    />
+                                    <div className="hero-overlay">
+                                        <div>
+                                            <div className="hero-text-label">Your Custom Journey</div>
+                                            <h2 className="hero-text-title">{planInfo.destination}</h2>
+                                        </div>
+                                    </div>
+                                </div>
                         
                         {/* Route Summary */}
-                        <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', borderLeft: '6px solid #FF4D6D', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                        <div className="summary-card itinerary-card">
                             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '16px' }}>
                                 <h2 style={{ fontSize: '1.8rem', fontWeight: '700', margin: 0 }}>{planInfo.origin} ➔ {planInfo.destination}</h2>
                             </div>
@@ -285,7 +300,7 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Transport Selection */}
-                        <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                        <div className="summary-card">
                             <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Intercity Transport</h3>
                             {selectedTransport ? (
                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -306,8 +321,8 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Accommodation Selection */}
-                        <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                        <div className="summary-card">
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
                                 <h3 style={{ fontSize: '1.2rem', fontWeight: '700', margin: 0 }}>Accommodation ({planInfo.days} Days)</h3>
                                 <div style={{ fontWeight: '800', fontSize: '1.2rem' }}>₹ {stayCost.toLocaleString('en-IN')}</div>
                             </div>
@@ -346,7 +361,7 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Activities & Places Selection */}
-                        <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                        <div className="summary-card">
                             <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Activities & Places to Visit</h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                                 {selectedAttractions.length > 0 ? selectedAttractions.map((p, i) => (
@@ -359,7 +374,7 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Food Selection */}
-                        <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                        <div className="summary-card">
                             <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Must-Try Local Foods</h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                                 {selectedFoods.length > 0 ? selectedFoods.map((f, i) => (
@@ -375,7 +390,7 @@ const BudgetSummary = () => {
                         </div>
 
                         {/* Markets Selection */}
-                        <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                        <div className="summary-card">
                             <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Local Markets to Explore</h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                                 {selectedMarkets.length > 0 ? selectedMarkets.map((m, i) => (
@@ -389,7 +404,7 @@ const BudgetSummary = () => {
 
                         {/* Local Guide (If selected) */}
                         {selectedGuide && (
-                            <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '20px', border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+                            <div className="summary-card">
                                 <h3 style={{ fontSize: '1.2rem', fontWeight: '700', marginBottom: '20px' }}>Local Guide</h3>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                                     <img src={selectedGuide.image} alt="Guide" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover' }} />
@@ -405,9 +420,9 @@ const BudgetSummary = () => {
                     </div>
 
                     {/* RIGHT COLUMN: Sticky Summary Command Center */}
-                    <div style={{ position: 'sticky', top: '100px', height: 'fit-content' }}>
-                        <div style={{ backgroundColor: 'white', padding: '35px', borderRadius: '24px', border: '1px solid #E5E7EB', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
-                            <h2 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div className="sticky-sidebar">
+                        <div className="summary-card">
+                            <h2 style={{ fontSize: '1.3rem', fontWeight: '700', marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
                                 <Wallet color="#FF4D6D" /> Final Budget Summary
                             </h2>
 
@@ -436,17 +451,9 @@ const BudgetSummary = () => {
                                 )}
                             </div>
 
-                            <div style={{ 
-                                background: 'linear-gradient(135deg, #FF4D6D 0%, #FF8A9B 100%)',
-                                padding: '25px',
-                                borderRadius: '20px',
-                                color: 'white',
-                                marginBottom: '25px',
-                                textAlign: 'center',
-                                boxShadow: '0 10px 15px -3px rgba(255, 77, 109, 0.4)'
-                            }}>
-                                <div style={{ fontSize: '0.9rem', opacity: 0.9, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '5px' }}>Total Estimated Cost</div>
-                                <div style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '10px' }}>₹ {totalEstimated.toLocaleString('en-IN')}</div>
+                            <div className="cost-box">
+                                <h4>Total Estimated Cost</h4>
+                                <div className="total-price">₹ {totalEstimated.toLocaleString('en-IN')}</div>
                                 <div style={{ fontSize: '0.85rem', opacity: 0.8, paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.2)' }}>
                                     Budget Limit: ₹ {overallBudget.toLocaleString('en-IN')}
                                 </div>
